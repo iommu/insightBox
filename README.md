@@ -1,2 +1,3 @@
 # insightBox
-CSIT321 project for analysing personal email statistics
+CSIT321 project that connects to a user's inbox (gmail or outlook), processes data and then displays statistics and insights based off it.
+

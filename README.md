@@ -4,8 +4,8 @@ CSIT321 project that connects to a user's inbox (gmail or outlook), processes da
 All software is split into 3 main pieces. 
 
 Frontend:
-    react
+- react
  
 Backend:
-    go (data download + process + store)
-    Apollo graphQL + MongoDB (DB API)
+- go (data download + process + store)
+- Apollo graphQL + MongoDB (DB API)

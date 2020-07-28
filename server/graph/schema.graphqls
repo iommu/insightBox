@@ -1,0 +1,45 @@
+
+type ColorScheme {
+  id: ID!
+  name: String!
+  text: String!
+  background: String!
+  primary: String!
+  secondary: String!
+  muted: String!
+  highlight: String!
+  gray: String!
+  accent: String!
+  darken: String!
+}
+
+type User {
+  id: ID!
+  name: String!
+  token: [String!]!
+  colorSchemeID: ID!
+  data: [Day!]!
+}
+
+type Day {
+  id: ID!
+  date: Time!
+  emails: Int!
+}
+
+input Oauth {
+  code: String!
+}
+
+type Mutation {
+  signIn(input: Oauth!): String!
+}
+
+type Query {
+  user: User # can only query for current user info
+  data(start: Time!, end: Time!): [Day]
+}
+
+scalar Time
+
+# go run github.com/99designs/gqlgen generate

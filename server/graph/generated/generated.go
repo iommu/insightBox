@@ -43,28 +43,15 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
-	ColorScheme struct {
-		Accent     func(childComplexity int) int
-		Background func(childComplexity int) int
-		Darken     func(childComplexity int) int
-		Gray       func(childComplexity int) int
-		Highlight  func(childComplexity int) int
-		ID         func(childComplexity int) int
-		Muted      func(childComplexity int) int
-		Name       func(childComplexity int) int
-		Primary    func(childComplexity int) int
-		Secondary  func(childComplexity int) int
-		Text       func(childComplexity int) int
-	}
-
 	Day struct {
 		Date   func(childComplexity int) int
 		Emails func(childComplexity int) int
 		ID     func(childComplexity int) int
+		User   func(childComplexity int) int
 	}
 
 	Mutation struct {
-		SignIn func(childComplexity int, input model.Oauth) int
+		SignIn func(childComplexity int, input string) int
 	}
 
 	Query struct {
@@ -74,7 +61,6 @@ type ComplexityRoot struct {
 
 	User struct {
 		ColorSchemeID func(childComplexity int) int
-		Data          func(childComplexity int) int
 		ID            func(childComplexity int) int
 		Name          func(childComplexity int) int
 		Token         func(childComplexity int) int
@@ -82,7 +68,7 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	SignIn(ctx context.Context, input model.Oauth) (string, error)
+	SignIn(ctx context.Context, input string) (string, error)
 }
 type QueryResolver interface {
 	User(ctx context.Context) (*model.User, error)
@@ -103,83 +89,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	ec := executionContext{nil, e}
 	_ = ec
 	switch typeName + "." + field {
-
-	case "ColorScheme.accent":
-		if e.complexity.ColorScheme.Accent == nil {
-			break
-		}
-
-		return e.complexity.ColorScheme.Accent(childComplexity), true
-
-	case "ColorScheme.background":
-		if e.complexity.ColorScheme.Background == nil {
-			break
-		}
-
-		return e.complexity.ColorScheme.Background(childComplexity), true
-
-	case "ColorScheme.darken":
-		if e.complexity.ColorScheme.Darken == nil {
-			break
-		}
-
-		return e.complexity.ColorScheme.Darken(childComplexity), true
-
-	case "ColorScheme.gray":
-		if e.complexity.ColorScheme.Gray == nil {
-			break
-		}
-
-		return e.complexity.ColorScheme.Gray(childComplexity), true
-
-	case "ColorScheme.highlight":
-		if e.complexity.ColorScheme.Highlight == nil {
-			break
-		}
-
-		return e.complexity.ColorScheme.Highlight(childComplexity), true
-
-	case "ColorScheme.id":
-		if e.complexity.ColorScheme.ID == nil {
-			break
-		}
-
-		return e.complexity.ColorScheme.ID(childComplexity), true
-
-	case "ColorScheme.muted":
-		if e.complexity.ColorScheme.Muted == nil {
-			break
-		}
-
-		return e.complexity.ColorScheme.Muted(childComplexity), true
-
-	case "ColorScheme.name":
-		if e.complexity.ColorScheme.Name == nil {
-			break
-		}
-
-		return e.complexity.ColorScheme.Name(childComplexity), true
-
-	case "ColorScheme.primary":
-		if e.complexity.ColorScheme.Primary == nil {
-			break
-		}
-
-		return e.complexity.ColorScheme.Primary(childComplexity), true
-
-	case "ColorScheme.secondary":
-		if e.complexity.ColorScheme.Secondary == nil {
-			break
-		}
-
-		return e.complexity.ColorScheme.Secondary(childComplexity), true
-
-	case "ColorScheme.text":
-		if e.complexity.ColorScheme.Text == nil {
-			break
-		}
-
-		return e.complexity.ColorScheme.Text(childComplexity), true
 
 	case "Day.date":
 		if e.complexity.Day.Date == nil {
@@ -202,6 +111,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Day.ID(childComplexity), true
 
+	case "Day.user":
+		if e.complexity.Day.User == nil {
+			break
+		}
+
+		return e.complexity.Day.User(childComplexity), true
+
 	case "Mutation.signIn":
 		if e.complexity.Mutation.SignIn == nil {
 			break
@@ -212,7 +128,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.SignIn(childComplexity, args["input"].(model.Oauth)), true
+		return e.complexity.Mutation.SignIn(childComplexity, args["input"].(string)), true
 
 	case "Query.data":
 		if e.complexity.Query.Data == nil {
@@ -239,13 +155,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.ColorSchemeID(childComplexity), true
-
-	case "User.data":
-		if e.complexity.User.Data == nil {
-			break
-		}
-
-		return e.complexity.User.Data(childComplexity), true
 
 	case "User.id":
 		if e.complexity.User.ID == nil {
@@ -332,41 +241,22 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	&ast.Source{Name: "graph/schema.graphqls", Input: `
-type ColorScheme {
+	&ast.Source{Name: "graph/schema.graphqls", Input: `type User {
   id: ID!
   name: String!
-  text: String!
-  background: String!
-  primary: String!
-  secondary: String!
-  muted: String!
-  highlight: String!
-  gray: String!
-  accent: String!
-  darken: String!
-}
-
-type User {
-  id: ID!
-  name: String!
-  token: [String!]!
-  colorSchemeID: ID!
-  data: [Day!]!
+  token: String!
+  colorSchemeID: Int!
 }
 
 type Day {
   id: ID!
+  user: ID!
   date: Time!
   emails: Int!
 }
 
-input Oauth {
-  code: String!
-}
-
 type Mutation {
-  signIn(input: Oauth!): String!
+  signIn(input: String!): String! #takes in oauth key, returns JWT string
 }
 
 type Query {
@@ -387,9 +277,9 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 func (ec *executionContext) field_Mutation_signIn_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 model.Oauth
+	var arg0 string
 	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNOauth2githubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐOauth(ctx, tmp)
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -470,7 +360,7 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _ColorScheme_id(ctx context.Context, field graphql.CollectedField, obj *model.ColorScheme) (ret graphql.Marshaler) {
+func (ec *executionContext) _Day_id(ctx context.Context, field graphql.CollectedField, obj *model.Day) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -478,7 +368,7 @@ func (ec *executionContext) _ColorScheme_id(ctx context.Context, field graphql.C
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "ColorScheme",
+		Object:   "Day",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -504,347 +394,7 @@ func (ec *executionContext) _ColorScheme_id(ctx context.Context, field graphql.C
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ColorScheme_name(ctx context.Context, field graphql.CollectedField, obj *model.ColorScheme) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "ColorScheme",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Name, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _ColorScheme_text(ctx context.Context, field graphql.CollectedField, obj *model.ColorScheme) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "ColorScheme",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Text, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _ColorScheme_background(ctx context.Context, field graphql.CollectedField, obj *model.ColorScheme) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "ColorScheme",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Background, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _ColorScheme_primary(ctx context.Context, field graphql.CollectedField, obj *model.ColorScheme) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "ColorScheme",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Primary, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _ColorScheme_secondary(ctx context.Context, field graphql.CollectedField, obj *model.ColorScheme) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "ColorScheme",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Secondary, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _ColorScheme_muted(ctx context.Context, field graphql.CollectedField, obj *model.ColorScheme) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "ColorScheme",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Muted, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _ColorScheme_highlight(ctx context.Context, field graphql.CollectedField, obj *model.ColorScheme) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "ColorScheme",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Highlight, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _ColorScheme_gray(ctx context.Context, field graphql.CollectedField, obj *model.ColorScheme) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "ColorScheme",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Gray, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _ColorScheme_accent(ctx context.Context, field graphql.CollectedField, obj *model.ColorScheme) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "ColorScheme",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Accent, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _ColorScheme_darken(ctx context.Context, field graphql.CollectedField, obj *model.ColorScheme) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "ColorScheme",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Darken, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Day_id(ctx context.Context, field graphql.CollectedField, obj *model.Day) (ret graphql.Marshaler) {
+func (ec *executionContext) _Day_user(ctx context.Context, field graphql.CollectedField, obj *model.Day) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -861,7 +411,7 @@ func (ec *executionContext) _Day_id(ctx context.Context, field graphql.Collected
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
+		return obj.User, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -970,7 +520,7 @@ func (ec *executionContext) _Mutation_signIn(ctx context.Context, field graphql.
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().SignIn(rctx, args["input"].(model.Oauth))
+		return ec.resolvers.Mutation().SignIn(rctx, args["input"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1222,9 +772,9 @@ func (ec *executionContext) _User_token(ctx context.Context, field graphql.Colle
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNString2ᚕstringᚄ(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_colorSchemeID(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
@@ -1256,43 +806,9 @@ func (ec *executionContext) _User_colorSchemeID(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _User_data(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "User",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Data, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.([]*model.Day)
-	fc.Result = res
-	return ec.marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐDayᚄ(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
@@ -2350,24 +1866,6 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputOauth(ctx context.Context, obj interface{}) (model.Oauth, error) {
-	var it model.Oauth
-	var asMap = obj.(map[string]interface{})
-
-	for k, v := range asMap {
-		switch k {
-		case "code":
-			var err error
-			it.Code, err = ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		}
-	}
-
-	return it, nil
-}
-
 // endregion **************************** input.gotpl *****************************
 
 // region    ************************** interface.gotpl ***************************
@@ -2375,83 +1873,6 @@ func (ec *executionContext) unmarshalInputOauth(ctx context.Context, obj interfa
 // endregion ************************** interface.gotpl ***************************
 
 // region    **************************** object.gotpl ****************************
-
-var colorSchemeImplementors = []string{"ColorScheme"}
-
-func (ec *executionContext) _ColorScheme(ctx context.Context, sel ast.SelectionSet, obj *model.ColorScheme) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, colorSchemeImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	var invalids uint32
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("ColorScheme")
-		case "id":
-			out.Values[i] = ec._ColorScheme_id(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "name":
-			out.Values[i] = ec._ColorScheme_name(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "text":
-			out.Values[i] = ec._ColorScheme_text(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "background":
-			out.Values[i] = ec._ColorScheme_background(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "primary":
-			out.Values[i] = ec._ColorScheme_primary(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "secondary":
-			out.Values[i] = ec._ColorScheme_secondary(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "muted":
-			out.Values[i] = ec._ColorScheme_muted(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "highlight":
-			out.Values[i] = ec._ColorScheme_highlight(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "gray":
-			out.Values[i] = ec._ColorScheme_gray(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "accent":
-			out.Values[i] = ec._ColorScheme_accent(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "darken":
-			out.Values[i] = ec._ColorScheme_darken(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch()
-	if invalids > 0 {
-		return graphql.Null
-	}
-	return out
-}
 
 var dayImplementors = []string{"Day"}
 
@@ -2466,6 +1887,11 @@ func (ec *executionContext) _Day(ctx context.Context, sel ast.SelectionSet, obj 
 			out.Values[i] = graphql.MarshalString("Day")
 		case "id":
 			out.Values[i] = ec._Day_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "user":
+			out.Values[i] = ec._Day_user(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -2601,11 +2027,6 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "colorSchemeID":
 			out.Values[i] = ec._User_colorSchemeID(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "data":
-			out.Values[i] = ec._User_data(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -2879,57 +2300,6 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNDay2githubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐDay(ctx context.Context, sel ast.SelectionSet, v model.Day) graphql.Marshaler {
-	return ec._Day(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐDayᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Day) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNDay2ᚖgithubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐDay(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-	return ret
-}
-
-func (ec *executionContext) marshalNDay2ᚖgithubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐDay(ctx context.Context, sel ast.SelectionSet, v *model.Day) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._Day(ctx, sel, v)
-}
-
 func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface{}) (string, error) {
 	return graphql.UnmarshalID(v)
 }
@@ -2958,10 +2328,6 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 	return res
 }
 
-func (ec *executionContext) unmarshalNOauth2githubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐOauth(ctx context.Context, v interface{}) (model.Oauth, error) {
-	return ec.unmarshalInputOauth(ctx, v)
-}
-
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
 	return graphql.UnmarshalString(v)
 }
@@ -2974,35 +2340,6 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
-}
-
-func (ec *executionContext) unmarshalNString2ᚕstringᚄ(ctx context.Context, v interface{}) ([]string, error) {
-	var vSlice []interface{}
-	if v != nil {
-		if tmp1, ok := v.([]interface{}); ok {
-			vSlice = tmp1
-		} else {
-			vSlice = []interface{}{v}
-		}
-	}
-	var err error
-	res := make([]string, len(vSlice))
-	for i := range vSlice {
-		res[i], err = ec.unmarshalNString2string(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
-}
-
-func (ec *executionContext) marshalNString2ᚕstringᚄ(ctx context.Context, sel ast.SelectionSet, v []string) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	for i := range v {
-		ret[i] = ec.marshalNString2string(ctx, sel, v[i])
-	}
-
-	return ret
 }
 
 func (ec *executionContext) unmarshalNTime2timeᚐTime(ctx context.Context, v interface{}) (time.Time, error) {

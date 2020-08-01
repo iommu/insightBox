@@ -6,34 +6,16 @@ import (
 	"time"
 )
 
-type ColorScheme struct {
-	ID         string `json:"id"`
-	Name       string `json:"name"`
-	Text       string `json:"text"`
-	Background string `json:"background"`
-	Primary    string `json:"primary"`
-	Secondary  string `json:"secondary"`
-	Muted      string `json:"muted"`
-	Highlight  string `json:"highlight"`
-	Gray       string `json:"gray"`
-	Accent     string `json:"accent"`
-	Darken     string `json:"darken"`
-}
-
 type Day struct {
 	ID     string    `json:"id"`
+	User   string    `json:"user"`
 	Date   time.Time `json:"date"`
 	Emails int       `json:"emails"`
 }
 
-type Oauth struct {
-	Code string `json:"code"`
-}
-
 type User struct {
-	ID            string   `json:"id"`
-	Name          string   `json:"name"`
-	Token         []string `json:"token"`
-	ColorSchemeID string   `json:"colorSchemeID"`
-	Data          []*Day   `json:"data"`
+	ID            string `json:"id"`
+	Name          string `json:"name"`
+	Token         string `json:"token"`
+	ColorSchemeID int    `json:"colorSchemeID"`
 }

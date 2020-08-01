@@ -12,17 +12,27 @@ import (
 	"github.com/iommu/insightBox/server/graph/model"
 )
 
-func (r *mutationResolver) SignIn(ctx context.Context, input model.Oauth) (string, error) {
+func (r *mutationResolver) SignIn(ctx context.Context, input string) (string, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
 func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
 	var user model.User
-	err := r.DB.Set("gorm:auto_preload", true).First(&user)
+	err := r.DB.Set("gorm:auto_preload", true).First(&user).Error
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
 }
 
 func (r *queryResolver) Data(ctx context.Context, start time.Time, end time.Time) ([]*model.Day, error) {
-	panic(fmt.Errorf("not implemented"))
+	userID := "123"
+	var days []*model.Day
+	err := r.DB.Set("gorm:auto_preload", true).Where("user = ? AND date BETWEEN ? AND ?", userID, start, end).Find(&days).Error
+	if err != nil {
+		return nil, err
+	}
+	return days, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

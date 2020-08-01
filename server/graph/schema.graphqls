@@ -1,38 +1,19 @@
-
-type ColorScheme {
-  id: ID!
-  name: String!
-  text: String!
-  background: String!
-  primary: String!
-  secondary: String!
-  muted: String!
-  highlight: String!
-  gray: String!
-  accent: String!
-  darken: String!
-}
-
 type User {
   id: ID!
   name: String!
-  token: [String!]!
-  colorSchemeID: ID!
-  data: [Day!]!
+  token: String!
+  colorSchemeID: Int!
 }
 
 type Day {
   id: ID!
+  user: ID!
   date: Time!
   emails: Int!
 }
 
-input Oauth {
-  code: String!
-}
-
 type Mutation {
-  signIn(input: Oauth!): String!
+  signIn(input: String!): String! #takes in oauth key, returns JWT string
 }
 
 type Query {

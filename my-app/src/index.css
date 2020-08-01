@@ -1,0 +1,12 @@
+body {
+    background: #f7f7f7;
+    font-family: arial;
+    text-align: left;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 0px;
+    height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+

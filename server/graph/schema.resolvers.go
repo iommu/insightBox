@@ -10,15 +10,30 @@ import (
 
 	"github.com/iommu/insightBox/server/graph/generated"
 	"github.com/iommu/insightBox/server/graph/model"
+	"github.com/iommu/insightBox/server/internal/auth"
+	"github.com/iommu/insightBox/server/internal/users"
+	"github.com/iommu/insightBox/server/pkg/jwt"
 )
 
-func (r *mutationResolver) SignIn(ctx context.Context, input string) (string, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *mutationResolver) SignIn(ctx context.Context, authCode string) (string, error) {
+	// get email from authcode
+	email, err := users.GetEmailFromAuthCode(authCode, r.DB)
+	if err != nil {
+		return "", nil
+	}
+	// create and serve JWT
+	token, err := jwt.GenerateToken(email)
+	if err != nil {
+		return "", err
+	}
+	return token, nil
 }
 
 func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
 	var user model.User
-	err := r.DB.Set("gorm:auto_preload", true).First(&user).Error
+	email := auth.ForContext(ctx)
+	fmt.Println(email)
+	err := r.DB.Where("id = ?", email).First(&user).Error
 	if err != nil {
 		return nil, err
 	}

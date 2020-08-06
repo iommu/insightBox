@@ -1,7 +1,14 @@
+type Token {
+  id: ID! #same as user token
+  access_token: String!
+  token_type: String!
+  refresh_token: String!
+  expiry: Time!
+}
+
 type User {
-  id: ID!
+  id: ID! #is their email
   name: String!
-  token: String!
   colorSchemeID: Int!
 }
 
@@ -13,12 +20,12 @@ type Day {
 }
 
 type Mutation {
-  signIn(input: String!): String! #takes in oauth key, returns JWT string
+  signIn(authCode: String!): String! #takes in oauth key, returns JWT string
 }
 
 type Query {
   user: User # can only query for current user info
-  data(start: Time!, end: Time!): [Day]
+  data(start: Time!, end: Time!): [Day!]!
 }
 
 scalar Time

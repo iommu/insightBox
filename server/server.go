@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 
@@ -14,6 +16,9 @@ import (
 	"github.com/iommu/insightBox/server/graph/model"
 	"github.com/iommu/insightBox/server/internal/auth"
 	"github.com/jinzhu/gorm"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
+	"google.golang.org/api/gmail/v1"
 )
 
 const defaultPort = "8000"
@@ -36,16 +41,33 @@ func initDB() {
 	db.AutoMigrate(&model.User{}, &model.Day{}, &model.Token{})
 }
 
+func printURL() {
+	// get credentials // TODO make good
+	b, err := ioutil.ReadFile("credentials.json")
+	if err != nil {
+		log.Fatalf("Unable to read client secret file: %v", err)
+	}
+	// get config with credentials
+	config, err := google.ConfigFromJSON(b, gmail.GmailReadonlyScope)
+	if err != nil {
+		log.Fatalf("Unable to parse client secret file to config: %v", err)
+	}
+	// TODO REMOVE
+	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline)
+	fmt.Printf("Go to the following link in your browser then type the "+
+		"authorization code: \n%v\n", authURL)
+}
+
 func main() {
+	// print url
+	printURL()
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
 	}
 
 	initDB()
-
-	// remove later
-	fmt.Println("Go to the following link in your browser then type the authorization code: \nhttps://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=378327381273-31vjgeqa3rcse30ltenokq7q4cu7ttdt.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.readonly&state=state-token")
 
 	router := chi.NewRouter()
 

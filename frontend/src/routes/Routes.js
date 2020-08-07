@@ -14,10 +14,10 @@ import Dashboard from '../components/dashboard/dashboard';
 const Routes = () => {
     return (
         <Switch>
-            <Route exact path="/" component={HomePage}></Route>
             <Route exact path="/about" component={AboutPage}></Route>
             <Route exact path="/privacypolicy" component={PrivacyPolicyPage}></Route>
             <Route exact path="/termsofuse" component={TermsOfUsePage}></Route>
+            <Route exact path="/" component={HomePage}></Route>
         </Switch>
     );
 }

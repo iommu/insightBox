@@ -1,13 +1,10 @@
 import React from 'react';
-import logo from '../../images/logo.png';
-import '../app/App.css';
-import Topbar from './topbar';
+import '../styles/App.css';
 
-function AboutPage() {
+function About() {
   return (
     <div>
-        <Topbar />
-        <div class="homepage-content">
+      <div class="homepage-content">
         <h1>About</h1>
         <p><b>insightBox</b> is an email analytics service that connects to a Gmail account and provides insights and statistics. The main aim of the service is to provide users with information so that they can take action upon the insights provided, and better streamline their email habits so as to improve work and scheduling habits.</p>
         <h2>Statistics and Features</h2>
@@ -16,10 +13,9 @@ function AboutPage() {
         <h2>Examples</h2>
         <p>If a user is sending less emails in response to emails received on a Wednesday, then the insight is made to allow extra time for emails on that day so as to not increase your workload for the following day.</p>
         <p>In the case that you have been receiving and sending correspondence about a particular topic, <b>insightBox</b> relays this information in a graphical format, informing the user on the topic that the user has been discussing most lately.</p>
-        
-        </div>
+      </div>
     </div>
   );
 }
 
-export default AboutPage;
+export default About;

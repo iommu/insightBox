@@ -1,12 +1,10 @@
 import React from 'react';
-import logo from '../../images/logo.png';
-import '../app/App.css';
-import Topbar from './topbar';
+import logo from '../images/logo.png';
+import '../styles/App.css';
 
-function App() {
+function PrivacyPolicy() {
   return (
     <div>
-        <Topbar />
         <div class="homepage-content">
         <h1>Privacy Policy</h1>
         <p>Last modified: 26 July 2020</p>
@@ -51,4 +49,4 @@ function App() {
   );
 }
 
-export default App;
+export default PrivacyPolicy;

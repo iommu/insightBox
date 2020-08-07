@@ -1,13 +1,10 @@
 import React from 'react';
-import logo from '../../images/logo.png';
-import '../app/App.css';
-import Topbar from './topbar';
+import logo from '../images/logo.png';
+import '../styles/App.css';
 
-function App() {
+function TermsofUse() {
   return (
-  
   <div>
-    <Topbar />
     <div class="homepage-content">
         <h1>Terms of Use</h1>
         <p>Last modified: 26 July 2020</p>
@@ -38,4 +35,4 @@ function App() {
   );
 }
 
-export default App;
+export default TermsofUse;

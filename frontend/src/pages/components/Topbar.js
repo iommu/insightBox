@@ -1,42 +1,53 @@
 import React from 'react';
 import logo from '../../images/logo.png';
 import '../../styles/App.css';
-import { Link } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 function Topbar() {
   return (
     <div className="topbar">
-      <img src={logo} alt="insightBox" width="75" />
-      <span id="logo-title"><b>insightBox</b></span>
-      <div class="topbar-links">
-        <Link to="/">
-          <a class="topbar-link-buttons">
-            Home
+      <Switch>
+        <Route path="/dashboard"></Route>
+        <Route path="/">
+          <Link to="/">
+            <img src={logo} alt="insightBox" width="75" />
+            <span id="logo-title"><b style={{color: "#000"}}>insightBox</b></span>
+          </Link>
+          <div class="topbar-links">
+            <Link to="/">
+              <a class="topbar-link-buttons">
+                Home
                 </a>
-        </Link>
+            </Link>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <Link to="/about">
-          <a class="topbar-link-buttons">
-            About
+              <a class="topbar-link-buttons">
+                About
                 </a>
-        </Link>
+            </Link>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <Link to="/privacypolicy">
-          <a class="topbar-link-buttons">
-            Privacy Policy
+              <a class="topbar-link-buttons">
+                Privacy Policy
                 </a>
-        </Link>
+            </Link>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <Link to="/termsofuse">
-          <a class="topbar-link-buttons">
-            Terms Of Use
+              <a class="topbar-link-buttons">
+                Terms Of Use
                 </a>
-        </Link>
-      </div>
-      <div id="signup-login">
-        <button onClick="location.href = '/googleauth1.html';" class="signup-button">Sign Up</button>
-        <button onClick="location.href = '/googleauth1.html';" class="login-button">Login</button>
-      </div>
+            </Link>
+          </div>
+          <div id="signup-login">
+            <button onClick="location.href = '/googleauth1.html';" class="signup-button">Sign Up</button>
+            <button onClick="location.href = '/googleauth1.html';" class="login-button">Login</button>
+          </div>
+        </Route>
+      </Switch>
     </div>
   );
 }

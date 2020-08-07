@@ -76,8 +76,8 @@ func main() {
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{
 		DB: db,
 	}}))
-	router.Handle("/", playground.Handler("Starwars", "/query"))
-	router.Handle("/query", srv)
+	router.Handle("/playground", playground.Handler("Starwars", "/api"))
+	router.Handle("/api", srv)
 
 	err := http.ListenAndServe(":"+port, router)
 	if err != nil {

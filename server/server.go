@@ -21,7 +21,7 @@ import (
 	"google.golang.org/api/gmail/v1"
 )
 
-const defaultPort = "8000"
+const defaultPort = "4000"
 
 var db *gorm.DB
 
@@ -53,7 +53,7 @@ func printURL() {
 		log.Fatalf("Unable to parse client secret file to config: %v", err)
 	}
 	// TODO REMOVE
-	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline)
+	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOnline)
 	fmt.Printf("Go to the following link in your browser then type the "+
 		"authorization code: \n%v\n", authURL)
 }

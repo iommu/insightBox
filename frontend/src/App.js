@@ -25,12 +25,12 @@ function App() {
       <BrowserRouter>
       <Topbar />
         <Switch>
-          <Route exact path="/about" component={About}></Route>
-          <Route exact path="/privacypolicy" component={PrivacyPolicy}></Route>
-          <Route exact path="/termsofuse" component={TermsOfUse}></Route>
-          <Route exact path="/termsofuse" component={TermsOfUse}></Route>
-          <Route exact path="/dashboard" component={Dashboard}></Route>
-          <Route exact path="/" component={Home}></Route>
+          <Route path="/about" component={About}></Route>
+          <Route path="/privacypolicy" component={PrivacyPolicy}></Route>
+          <Route path="/termsofuse" component={TermsOfUse}></Route>
+          <Route path="/termsofuse" component={TermsOfUse}></Route>
+          <Route path="/dashboard" component={Dashboard}></Route>
+          <Route path="/" component={Home}></Route>
         </Switch>
       </BrowserRouter>
     </div>

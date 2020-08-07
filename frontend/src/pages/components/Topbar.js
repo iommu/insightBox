@@ -11,35 +11,40 @@ function Topbar() {
   return (
     <div className="topbar">
       <Switch>
-        <Route path="/dashboard"></Route>
+        <Route path="/dashboard">
+          <Link to="/">
+            <img src={logo} alt="insightBox" width="75" />
+            <span id="logo-title"><b style={{ color: "#000" }}>insightBox</b></span>
+          </Link>
+        </Route>
         <Route path="/">
           <Link to="/">
             <img src={logo} alt="insightBox" width="75" />
-            <span id="logo-title"><b style={{color: "#000"}}>insightBox</b></span>
+            <span id="logo-title"><b style={{ color: "#000" }}>insightBox</b></span>
           </Link>
           <div class="topbar-links">
             <Link to="/">
               <a class="topbar-link-buttons">
                 Home
-                </a>
+              </a>
             </Link>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <Link to="/about">
               <a class="topbar-link-buttons">
                 About
-                </a>
+              </a>
             </Link>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <Link to="/privacypolicy">
               <a class="topbar-link-buttons">
                 Privacy Policy
-                </a>
+              </a>
             </Link>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <Link to="/termsofuse">
               <a class="topbar-link-buttons">
                 Terms Of Use
-                </a>
+              </a>
             </Link>
           </div>
           <div id="signup-login">

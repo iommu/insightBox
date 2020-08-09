@@ -1,13 +1,23 @@
 import React from 'react';
-import logo from '../images/logo.png';
+import Client from './components/Client';
+import { gql } from '@apollo/client';
 
 function Dashboard() {
+  if (localStorage.getItem('token')!=null) {
+    Client().query({
+      query: gql`
+      query {
+        user {
+          id
+        }
+      }`
+    }).then(result => document.getElementById("hello").innerHTML = document.getElementById("hello").innerHTML + result.data.user.id);
+  } // TODO goto /
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>dashboard</h1>
-        <img src={logo} className="App-logo" alt="logo" />
-      </header>
+    <div>
+      <div class="homepage-content">
+        <h1 id="hello" >Hello </h1>
+      </div>
     </div>
   );
 }

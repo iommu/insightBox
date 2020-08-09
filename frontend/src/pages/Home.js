@@ -18,7 +18,7 @@ function Home() {
         <div id="title2">insights on your inbox</div>
       </div>
       <div id="connect">
-        
+        <GoogleBtn />
       </div>
       <div id="graph2">
         <img src={graph2} width="700" />

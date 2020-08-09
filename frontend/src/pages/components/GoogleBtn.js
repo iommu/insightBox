@@ -1,67 +1,19 @@
 
-import React, { Component } from 'react'
-import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import React, { Component } from 'react';
+import '../../styles/GoogleBtn.css';
 
-
-const CLIENT_ID = '<your Client ID>';
-
-
-class GoogleBtn extends Component {
-   constructor(props) {
-    super(props);
-
-    this.state = {
-      isLogined: false,
-      accessToken: ''
-    };
-
-    this.login = this.login.bind(this);
-    this.handleLoginFailure = this.handleLoginFailure.bind(this);
-    this.logout = this.logout.bind(this);
-    this.handleLogoutFailure = this.handleLogoutFailure.bind(this);
-  }
-
-  login (response) {
-    if(response.accessToken){
-      this.setState(state => ({
-        isLogined: true,
-        accessToken: response.accessToken
-      }));
-    }
-  }
-
-  logout (response) {
-    this.setState(state => ({
-      isLogined: false,
-      accessToken: ''
-    }));
-  }
-
-
-  render() {
-    return (
-    <div>
-      { this.state.isLogined ?
-        <GoogleLogout
-          clientId={ CLIENT_ID }
-          buttonText='Logout'
-          onLogoutSuccess={ this.logout }
-          onFailure={ this.handleLogoutFailure }
-        >
-        </GoogleLogout>: <GoogleLogin
-          clientId={ CLIENT_ID }
-          buttonText='Login'
-          onSuccess={ this.login }
-          onFailure={ this.handleLoginFailure }
-          cookiePolicy={ 'single_host_origin' }
-          responseType='code,token'
-        />
-      }
-      { this.state.accessToken ? <h5>Your Access Token: <br/><br/> { this.state.accessToken }</h5> : null }
-
-    </div>
-    )
-  }
+function GoogleBtn() {
+  return (
+    <a href="https://accounts.google.com/o/oauth2/auth?access_type=online&client_id=558989367504-643ecdespr7uljki4da6vn1qfflj052a.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fsignin&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.readonly&state=state-token">
+      <div id="gSignInWrapper">
+        <span class="label">Sign in with :  </span>
+        <div id="customBtn" class="customGPlusSignIn">
+          <span class="icon"></span>
+          <span class="buttonText">Google</span>
+        </div>
+      </div>
+    </a>
+  )
 }
 
 export default GoogleBtn;

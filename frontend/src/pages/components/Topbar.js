@@ -11,7 +11,7 @@ function Topbar() {
   return (
     <div className="topbar">
       <Switch>
-        <Route path="/dashboard">
+        <Route path={["/dashboard", "/signin"]}>
           <Link to="/">
             <img src={logo} alt="insightBox" width="75" />
             <span id="logo-title"><b style={{ color: "#000" }}>insightBox</b></span>

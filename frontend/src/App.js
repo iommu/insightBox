@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './images/logo.png';
 import './styles/App.css';
 
 // import components
@@ -10,14 +9,13 @@ import {
 } from 'react-router-dom';
 import Topbar from './pages/components/Topbar'
 
-
-
 // import all pages
 import Home from './pages/Home';
 import About from './pages/About';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfUse from './pages/TermsofUse';
 import Dashboard from './pages/Dashboard';
+import SignIn from './pages/SignIn';
 
 function App() {
   return (
@@ -25,12 +23,13 @@ function App() {
       <BrowserRouter>
       <Topbar />
         <Switch>
-          <Route path="/about" component={About}></Route>
-          <Route path="/privacypolicy" component={PrivacyPolicy}></Route>
-          <Route path="/termsofuse" component={TermsOfUse}></Route>
-          <Route path="/termsofuse" component={TermsOfUse}></Route>
-          <Route path="/dashboard" component={Dashboard}></Route>
-          <Route path="/" component={Home}></Route>
+          <Route path="/about"><About/></Route>
+          <Route path="/privacypolicy"><PrivacyPolicy/></Route>
+          <Route path="/termsofuse"><TermsOfUse/></Route>
+          <Route path="/termsofuse"><TermsOfUse/></Route>
+          <Route path="/dashboard"><Dashboard/></Route>
+          <Route exact path="/signin"><SignIn/></Route>
+          <Route path="/"><Home/></Route>
         </Switch>
       </BrowserRouter>
     </div>

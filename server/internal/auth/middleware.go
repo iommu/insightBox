@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/jinzhu/gorm"
@@ -47,7 +46,6 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 			}
 
 			// put it in context
-			fmt.Println("abc")
 			ctx := context.WithValue(r.Context(), userCtxKey, &dbUser.ID)
 
 			// and call the next with our new context

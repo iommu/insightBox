@@ -16,6 +16,7 @@ import (
 	"github.com/iommu/insightBox/server/graph/model"
 	"github.com/iommu/insightBox/server/internal/auth"
 	"github.com/jinzhu/gorm"
+	"github.com/rs/cors"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/gmail/v1"
@@ -70,6 +71,15 @@ func main() {
 	initDB()
 
 	router := chi.NewRouter()
+
+	// Add CORS middleware around every request
+	// See https://github.com/rs/cors for full option listing
+	router.Use(cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedHeaders:   []string{"*"},
+		AllowCredentials: true,
+		Debug:            false,
+	}).Handler)
 
 	router.Use(auth.Middleware(db))
 

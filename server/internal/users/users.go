@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
 
 	"github.com/iommu/insightBox/server/graph/model"
 
@@ -48,7 +49,7 @@ func GetEmailFromAuthCode(authCode string, db *gorm.DB) (string, error) {
 	email := profile.EmailAddress
 	fmt.Println(email)
 	// save token in DB
-	err = SaveToken(email, tok, db)
+	err = SaveToken(email, tok, client, db)
 	if err != nil {
 		log.Fatalf("Error saving token: %v", err)
 	}
@@ -57,7 +58,7 @@ func GetEmailFromAuthCode(authCode string, db *gorm.DB) (string, error) {
 }
 
 //SaveToken finds a user in database by given email addr (or creates user if none exists) and saves the new token
-func SaveToken(email string, token *oauth2.Token, db *gorm.DB) error {
+func SaveToken(email string, token *oauth2.Token, client *http.Client, db *gorm.DB) error {
 	// decode oauth token to model.Token and save to db
 	mtoken := model.Token{ID: email, AccessToken: token.AccessToken, TokenType: token.TokenType, RefreshToken: token.RefreshToken, Expiry: token.Expiry}
 	db.Save(&mtoken)
@@ -68,7 +69,6 @@ func SaveToken(email string, token *oauth2.Token, db *gorm.DB) error {
 		if gorm.IsRecordNotFoundError(err) {
 			// set user default variables
 			user.ID = email
-			// // find name
 			user.Name = "TODO" // TODO : find from API
 			user.ColorSchemeID = 1
 			// save to db

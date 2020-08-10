@@ -36,7 +36,9 @@ class SignIn extends React.Component {
         }
       });
     } else { // if we came here by accident with no code
-      this.props.history.push("/");
+      // go to dahsboard if we're logged in
+      if (localStorage.getItem("token")) this.props.history.push("/dashboard");
+      else this.props.history.push("/");
     }
   }
 

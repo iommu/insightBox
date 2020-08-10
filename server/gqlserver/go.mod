@@ -1,4 +1,4 @@
-module github.com/iommu/insightBox/server
+module github.com/iommu/insightbox/server/gqlserver
 
 go 1.14
 

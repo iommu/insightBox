@@ -6,8 +6,8 @@ import (
 
 	"github.com/jinzhu/gorm"
 
-	"github.com/iommu/insightBox/server/graph/model"
-	"github.com/iommu/insightBox/server/pkg/jwt"
+	"github.com/iommu/insightbox/server/gqlserver/graph/model"
+	"github.com/iommu/insightbox/server/gqlserver/pkg/jwt"
 )
 
 var userCtxKey = &contextKey{"user"}

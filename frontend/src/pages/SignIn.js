@@ -16,7 +16,7 @@ class SignIn extends React.Component {
     const url = new URLSearchParams(window.location.search);
     const code = url.get('code');
     // do a check for the code and check we didn't accidentally come back to this page with same code
-    if (code != null && code == localStorage.getItem("old_code")) {
+    if (code != null && code != localStorage.getItem("old_code")) {
       localStorage.setItem("old_code", code);
       client.mutation(`
       mutation{
@@ -35,7 +35,7 @@ class SignIn extends React.Component {
           this.props.history.push("/");
         }
       });
-    } else { // if we came here by accident
+    } else { // if we came here by accident with no code
       this.props.history.push("/");
     }
   }

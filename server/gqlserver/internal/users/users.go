@@ -15,6 +15,7 @@ import (
 	"google.golang.org/api/gmail/v1"
 )
 
+//comment
 //GetEmailFromAuthCode Takes in authcode and finds username
 func GetEmailFromAuthCode(authCode string, db *gorm.DB) (string, error) {
 	// get credentials // TODO make good

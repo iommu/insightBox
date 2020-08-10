@@ -294,7 +294,7 @@ type User {
 type Day {
   id: ID!
   user: ID!
-  date: Time!
+  date: Int!
   emails: Int!
 }
 
@@ -500,9 +500,9 @@ func (ec *executionContext) _Day_date(ctx context.Context, field graphql.Collect
 		}
 		return graphql.Null
 	}
-	res := resTmp.(time.Time)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Day_emails(ctx context.Context, field graphql.CollectedField, obj *model.Day) (ret graphql.Marshaler) {

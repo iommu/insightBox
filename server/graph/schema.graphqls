@@ -15,7 +15,7 @@ type User {
 type Day {
   id: ID!
   user: ID!
-  date: Time!
+  date: Int!
   emails: Int!
 }
 

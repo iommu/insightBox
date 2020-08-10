@@ -28,7 +28,7 @@ function App() {
           <Route path="/termsofuse"><TermsOfUse/></Route>
           <Route path="/termsofuse"><TermsOfUse/></Route>
           <Route path="/dashboard"><Dashboard/></Route>
-          <Route exact path="/signin"><SignIn/></Route>
+          <Route path="/signin" component={SignIn}></Route>
           <Route path="/"><Home/></Route>
         </Switch>
       </BrowserRouter>

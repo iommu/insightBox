@@ -1,24 +1,28 @@
 import React from 'react';
-import Client from './components/Client';
-import { gql } from '@apollo/client';
+import { User } from './components/Queries';
+
+// import graphql and create client
+import { createClient, Provider } from 'urql';
+
+const client = createClient({
+  url: 'http://localhost:4000/api',
+  fetchOptions: () => {
+    const token = localStorage.getItem("token");
+    return {
+      headers: { authorization: token ? token : "" },
+    };
+  },
+});
 
 function Dashboard() {
-  if (localStorage.getItem('token')!=null) {
-    Client().query({
-      query: gql`
-      query {
-        user {
-          id
-        }
-      }`
-    }).then(result => document.getElementById("hello").innerHTML = document.getElementById("hello").innerHTML + result.data.user.id);
-  } // TODO goto /
   return (
-    <div>
-      <div class="homepage-content">
-        <h1 id="hello" >Hello </h1>
+    <Provider value={client}>
+      <div>
+        <div class="homepage-content">
+          <User/>
+        </div>
       </div>
-    </div>
+    </Provider>
   );
 }
 

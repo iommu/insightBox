@@ -16,19 +16,24 @@ class SignIn extends React.Component {
     const url = new URLSearchParams(window.location.search);
     const code = url.get('code');
     // do a check for the code and check we didn't accidentally come back to this page with same code
-    if (code != null || code == localStorage.getItem("old_code")) {
+    if (code != null && code == localStorage.getItem("old_code")) {
       localStorage.setItem("old_code", code);
       client.mutation(`
       mutation{
         signIn(authCode: "${code}")
       }`).toPromise().then(result => {
-        if (result.data.signIn) {
-          localStorage.setItem("token", result.data.signIn);
-          console.log("token saved");
+        if (result.data) {
+          if (result.data.signIn) {
+            localStorage.setItem("token", result.data.signIn);
+            console.log("token saved");
+          } else {
+            console.log("returned token blank (auth error)");
+          }
+          this.props.history.push("/dashboard");
         } else {
-          console.log("returned token blank (auth error)");
+          console.log("server aint up now is it");
+          this.props.history.push("/");
         }
-        this.props.history.push("/dashboard");
       });
     } else { // if we came here by accident
       this.props.history.push("/");
@@ -36,7 +41,13 @@ class SignIn extends React.Component {
   }
 
   render() {
-    return (<h1>Just one sec... signing you in</h1>);
+    return (
+      <div>
+        <div class="homepage-content">
+          <h1>Just one sec... signing you in</h1>
+        </div>
+      </div>
+    );
   };
 }
 

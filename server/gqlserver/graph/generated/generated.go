@@ -293,8 +293,10 @@ type User {
 }
 
 type Day {
+  # DO NOT CHANGE
   id: String!
   date: Int!
+  # DO NOT CHANGE
   emails: Int!
 }
 

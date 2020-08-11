@@ -8,8 +8,7 @@ import (
 
 type Day struct {
 	ID     string `json:"id"`
-	User   string `json:"user"`
-	Date   int    `json:"date"`
+	Date   string `json:"date"`
 	Emails int    `json:"emails"`
 }
 

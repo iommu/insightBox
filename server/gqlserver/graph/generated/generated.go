@@ -293,8 +293,8 @@ type User {
 }
 
 type Day {
-  id: ID!
-  date: ID!
+  id: String!
+  date: Int!
   emails: Int!
 }
 
@@ -435,7 +435,7 @@ func (ec *executionContext) _Day_id(ctx context.Context, field graphql.Collected
 	}
 	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Day_date(ctx context.Context, field graphql.CollectedField, obj *model.Day) (ret graphql.Marshaler) {
@@ -467,9 +467,9 @@ func (ec *executionContext) _Day_date(ctx context.Context, field graphql.Collect
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Day_emails(ctx context.Context, field graphql.CollectedField, obj *model.Day) (ret graphql.Marshaler) {

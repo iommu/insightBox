@@ -13,8 +13,8 @@ type User {
 }
 
 type Day {
-  id: ID!
-  date: ID!
+  id: String!
+  date: Int!
   emails: Int!
 }
 

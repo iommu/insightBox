@@ -6,7 +6,7 @@ import { createClient } from 'urql';
 
 // create custom client for this page where no token should exist
 const client = createClient({
-  url: 'http://localhost:4000/api',
+  url: 'http://insightbox.xyz:4000/api',
 });
 
 class SignIn extends React.Component {

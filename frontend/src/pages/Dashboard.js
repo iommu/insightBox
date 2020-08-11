@@ -5,7 +5,7 @@ import { User } from './components/Queries';
 import { createClient, Provider } from 'urql';
 
 const client = createClient({
-  url: 'http://localhost:4000/api',
+  url: 'http://insightbox.xyz/api',
   fetchOptions: () => {
     const token = localStorage.getItem("token");
     return {

@@ -39,7 +39,7 @@ func initDB() {
 	db.LogMode(true)
 
 	// Migration to create tables for User, Day and Token schema
-	db.AutoMigrate(&model.User{}, &model.Day{}, &model.Token{})
+	db.AutoMigrate(&model.User{}, &model.Day{}, &oauth2.Token{})
 }
 
 func printURL() {

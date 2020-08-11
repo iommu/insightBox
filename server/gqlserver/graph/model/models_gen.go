@@ -2,23 +2,11 @@
 
 package model
 
-import (
-	"time"
-)
-
 type Day struct {
 	ID     string `json:"id"`
 	User   string `json:"user"`
 	Date   int    `json:"date"`
 	Emails int    `json:"emails"`
-}
-
-type Token struct {
-	ID           string    `json:"id"`
-	AccessToken  string    `json:"access_token"`
-	TokenType    string    `json:"token_type"`
-	RefreshToken string    `json:"refresh_token"`
-	Expiry       time.Time `json:"expiry"`
 }
 
 type User struct {

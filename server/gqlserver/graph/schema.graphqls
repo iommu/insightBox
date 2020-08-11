@@ -1,3 +1,11 @@
+type Token {
+  id: ID! #same as user token
+  access_token: String!
+  token_type: String!
+  refresh_token: String!
+  expiry: Time!
+}
+
 type User {
   id: ID! #is their email
   name: String!

@@ -52,7 +52,8 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		SignIn func(childComplexity int, authCode string) int
+		Refresh func(childComplexity int) int
+		SignIn  func(childComplexity int, authCode string) int
 	}
 
 	Query struct {
@@ -76,6 +77,7 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
+	Refresh(ctx context.Context) (bool, error)
 	SignIn(ctx context.Context, authCode string) (string, error)
 }
 type QueryResolver interface {
@@ -125,6 +127,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Day.User(childComplexity), true
+
+	case "Mutation.refresh":
+		if e.complexity.Mutation.Refresh == nil {
+			break
+		}
+
+		return e.complexity.Mutation.Refresh(childComplexity), true
 
 	case "Mutation.signIn":
 		if e.complexity.Mutation.SignIn == nil {
@@ -299,6 +308,7 @@ type Day {
 }
 
 type Mutation {
+  refresh: Boolean! #tells server to request more data
   signIn(authCode: String!): String! #takes in oauth key, returns JWT string
 }
 
@@ -539,6 +549,40 @@ func (ec *executionContext) _Day_emails(ctx context.Context, field graphql.Colle
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Mutation_refresh(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().Refresh(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Mutation_signIn(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -608,7 +652,7 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖgithubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_data(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -649,7 +693,7 @@ func (ec *executionContext) _Query_data(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.([]*model.Day)
 	fc.Result = res
-	return ec.marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐDayᚄ(ctx, field.Selections, res)
+	return ec.marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐDayᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2113,6 +2157,11 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Mutation")
+		case "refresh":
+			out.Values[i] = ec._Mutation_refresh(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "signIn":
 			out.Values[i] = ec._Mutation_signIn(ctx, field)
 			if out.Values[i] == graphql.Null {
@@ -2527,11 +2576,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNDay2githubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐDay(ctx context.Context, sel ast.SelectionSet, v model.Day) graphql.Marshaler {
+func (ec *executionContext) marshalNDay2githubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐDay(ctx context.Context, sel ast.SelectionSet, v model.Day) graphql.Marshaler {
 	return ec._Day(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐDayᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Day) graphql.Marshaler {
+func (ec *executionContext) marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐDayᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Day) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2555,7 +2604,7 @@ func (ec *executionContext) marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightBox�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNDay2ᚖgithubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐDay(ctx, sel, v[i])
+			ret[i] = ec.marshalNDay2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐDay(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2568,7 +2617,7 @@ func (ec *executionContext) marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightBox�
 	return ret
 }
 
-func (ec *executionContext) marshalNDay2ᚖgithubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐDay(ctx context.Context, sel ast.SelectionSet, v *model.Day) graphql.Marshaler {
+func (ec *executionContext) marshalNDay2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐDay(ctx context.Context, sel ast.SelectionSet, v *model.Day) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2906,11 +2955,11 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	return ec.marshalOString2string(ctx, sel, *v)
 }
 
-func (ec *executionContext) marshalOUser2githubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2githubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋiommuᚋinsightBoxᚋserverᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

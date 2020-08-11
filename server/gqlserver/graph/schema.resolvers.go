@@ -15,11 +15,6 @@ import (
 	"github.com/iommu/insightbox/server/gqlserver/pkg/jwt"
 )
 
-func (r *mutationResolver) Refresh(ctx context.Context) (bool, error) {
-	fmt.Println("Refresh(" + *auth.ForContext(ctx) + ") : not implemented")
-	return true, nil
-}
-
 func (r *mutationResolver) SignIn(ctx context.Context, authCode string) (string, error) {
 	// get email from authcode
 	email, err := users.GetEmailFromAuthCode(authCode, r.DB)

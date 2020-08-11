@@ -21,7 +21,6 @@ type Day {
 }
 
 type Mutation {
-  refresh: Boolean! #tells server to request more data
   signIn(authCode: String!): String! #takes in oauth key, returns JWT string
 }
 

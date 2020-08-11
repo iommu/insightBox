@@ -51,8 +51,7 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		Refresh func(childComplexity int) int
-		SignIn  func(childComplexity int, authCode string) int
+		SignIn func(childComplexity int, authCode string) int
 	}
 
 	Query struct {
@@ -76,7 +75,6 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	Refresh(ctx context.Context) (bool, error)
 	SignIn(ctx context.Context, authCode string) (string, error)
 }
 type QueryResolver interface {
@@ -119,13 +117,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Day.ID(childComplexity), true
-
-	case "Mutation.refresh":
-		if e.complexity.Mutation.Refresh == nil {
-			break
-		}
-
-		return e.complexity.Mutation.Refresh(childComplexity), true
 
 	case "Mutation.signIn":
 		if e.complexity.Mutation.SignIn == nil {
@@ -301,7 +292,6 @@ type Day {
 }
 
 type Mutation {
-  refresh: Boolean! #tells server to request more data
   signIn(authCode: String!): String! #takes in oauth key, returns JWT string
 }
 
@@ -506,40 +496,6 @@ func (ec *executionContext) _Day_emails(ctx context.Context, field graphql.Colle
 	res := resTmp.(int)
 	fc.Result = res
 	return ec.marshalNInt2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Mutation_refresh(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "Mutation",
-		Field:    field,
-		Args:     nil,
-		IsMethod: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().Refresh(rctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(bool)
-	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_signIn(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2111,11 +2067,6 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Mutation")
-		case "refresh":
-			out.Values[i] = ec._Mutation_refresh(ctx, field)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
 		case "signIn":
 			out.Values[i] = ec._Mutation_signIn(ctx, field)
 			if out.Values[i] == graphql.Null {

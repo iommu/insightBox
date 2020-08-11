@@ -6,6 +6,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import * as Consts from './Consts';
 
 function Topbar() {
   return (
@@ -48,8 +49,10 @@ function Topbar() {
             </Link>
           </div>
           <div id="signup-login">
-            <button onClick="location.href = '/googleauth1.html';" class="signup-button">Sign Up</button>
-            <button onClick="location.href = '/googleauth1.html';" class="login-button">Login</button>
+            <a href={Consts.OAUTHLINK}>
+              <button class="signup-button">Sign Up</button>
+              <button class="login-button">Login</button>
+            </a>
           </div>
         </Route>
       </Switch>

@@ -74,7 +74,7 @@ func binarySearchEmail(endTime int64, srv *gmail.Service) (emailIndex int, messa
 			if err != nil {
 				log.Fatalf("Unable to retrieve message: %v", err)
 			}
-			//if the last email in the list is after the given end time, then load the next 128 emails
+			//if endTime is before the last email, then load the next 128 emails
 			if endTime < mail.InternalDate {
 				messages, err = srv.Users.Messages.List("me").PageToken(messages.NextPageToken).MaxResults(128).Do()
 			} else {
@@ -138,36 +138,45 @@ func ProcessDailyMail(email string, db *gorm.DB) {
 
 	emailCount := 0
 
-	//get emails, read horizontally, remember they will be from newest to oldest
-	for {
-		if emailIndex < len(messages.Messages) {
-			//load the next email
-			mail, err := srv.Users.Messages.Get("me", messages.Messages[emailIndex].Id).Format("metadata").Do()
-			if err != nil {
-				log.Fatalf("Unable to retrieve message: %v", err)
-			}
-			//if loaded email was sent before begin time, break the loop,the email is not the correct days
-			if mail.InternalDate < beginTime {
-				break
-			}
-			//do stats stuff here
-			emailCount++
-			fmt.Println(mail.Snippet)
-			emailIndex++
-		} else {
-			if messages.NextPageToken != "" {
-				//there are more emails, load the next 128 and reset the index
-				messages, err := srv.Users.Messages.List("me").PageToken(messages.NextPageToken).MaxResults(128).Do()
+	//if no email index was found, then processing stops
+	if emailIndex >= 0 {
+
+		//get emails, read horizontally, remember they will be from newest to oldest
+		for {
+			if emailIndex < len(messages.Messages) {
+				//load the next email
+				mail, err := srv.Users.Messages.Get("me", messages.Messages[emailIndex].Id).Format("metadata").Do()
 				if err != nil {
-					log.Fatalf("Unable to retrieve messages: %v", err)
+					log.Fatalf("Unable to retrieve message: %v", err)
 				}
-				emailIndex = 0
+				//if loaded email was sent before begin time, break the loop,the email is not the correct days
+				if mail.InternalDate < beginTime {
+					break
+				}
+				//do stats stuff here
+				emailCount++
+				emailIndex++
 			} else {
-				//end of emails, break
-				break
+				if messages.NextPageToken != "" {
+					//there are more emails, load the next 128 and reset the index
+					var err error
+					messages, err = srv.Users.Messages.List("me").PageToken(messages.NextPageToken).MaxResults(128).Do()
+					if err != nil {
+						log.Fatalf("Unable to retrieve messages: %v", err)
+					}
+					emailIndex = 0
+				} else {
+					//end of emails, break
+					break
+				}
 			}
 		}
+
+		//store stats processing in db
+		day := model.Day{ID: email, Date: int(beginTime), Emails: emailCount}
+		db.Create(&day)
 	}
+
 }
 
 // Takes the users email service and date range, downloads emails in that range and stores data into
@@ -184,17 +193,6 @@ func getMailDataRange(srv *gmail.Service, beginTime int64, endTime int64) {
 	beginTime = endTime - 7*24*60*60*1000
 
 	//END OF DUMMY CODE
-
-	//code for when there are no emails
-	if endID < 0 {
-		fmt.Println("Oldest email is outside of date range")
-	} else {
-		mail, err := srv.Users.Messages.Get("me", messages.Messages[endID].Id).Format("minimal").Do()
-		if err != nil {
-			log.Fatalf("Unable to retrieve message: %v", err)
-		}
-		fmt.Println("Time: ", mail.InternalDate, "Snippet: ", mail.Snippet)
-	}
 
 	//there are emails, read them sequentially and store data into days in database
 }

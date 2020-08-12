@@ -21,10 +21,10 @@ function Home() {
         <GoogleBtn />
       </div>
       <div id="graph2">
-        <img src={graph2} width="700" />
+        <img src={graph2} alt="example graph" width="700" />
       </div>
       <div id="graph1">
-        <img src={graph1} width="650" />
+        <img src={graph1} alt="example graph" width="650" />
       </div>
     </div>
   );

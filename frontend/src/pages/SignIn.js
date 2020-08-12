@@ -16,7 +16,7 @@ class SignIn extends React.Component {
     const url = new URLSearchParams(window.location.search);
     const code = url.get('code');
     // do a check for the code and check we didn't accidentally come back to this page with same code
-    if (code != null && code != localStorage.getItem("old_code")) {
+    if (code != null && code !== localStorage.getItem("old_code")) {
       localStorage.setItem("old_code", code);
       client.mutation(`
       mutation{

@@ -25,27 +25,19 @@ function Topbar() {
           </Link>
           <div class="topbar-links">
             <Link to="/">
-              <a class="topbar-link-buttons">
-                Home
-              </a>
+              Home
             </Link>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <Link to="/about">
-              <a class="topbar-link-buttons">
-                About
-              </a>
+              About
             </Link>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <Link to="/privacypolicy">
-              <a class="topbar-link-buttons">
-                Privacy Policy
-              </a>
+              Privacy Policy
             </Link>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <Link to="/termsofuse">
-              <a class="topbar-link-buttons">
-                Terms Of Use
-              </a>
+              Terms Of Use
             </Link>
           </div>
           <div id="signup-login">

@@ -20,7 +20,6 @@ export const User = () => {
   );
 
   if (error) {
-    localStorage.removeItem("token");
     return (
       <p> Error getting user data </p>
     );

@@ -1,16 +1,76 @@
 package dayprocess
 
 import (
+	"context"
 	"fmt"
+	"insightBox/insightBox/server/gqlserver/graph/model"
+	"io/ioutil"
 	"log"
 	"time"
 
+	"github.com/jinzhu/gorm"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
 	"google.golang.org/api/gmail/v1"
 )
 
+//authenticate and connect to gmail
+func authenticate(email string, db *gorm.DB) *gmail.Service {
+	//get token from database
+	var tokendb model.Token
+	err := db.Where("id = ?", email).First(&tokendb)
+	//error handling
+	if err != nil {
+		log.Fatalf("Unable to load db: %v", err)
+	}
+
+	//reconstruct token
+	tok := &oauth2.Token{}
+	tok.AccessToken = tokendb.AccessToken
+	tok.TokenType = tokendb.TokenType
+	tok.RefreshToken = tokendb.RefreshToken
+	tok.Expiry = tokendb.Expiry
+
+	//connect to gmail and get service
+	b, e := ioutil.ReadFile("credentials.json")
+	if e != nil {
+		log.Fatalf("Unable to read client secret file: %v", e)
+	}
+	config, e := google.ConfigFromJSON(b, gmail.GmailReadonlyScope)
+	if e != nil {
+		log.Fatalf("Unable to parse client secret file to config: %v", e)
+	}
+	client := config.Client(context.Background(), tok)
+	srv, e := gmail.New(client)
+	if e != nil {
+		log.Fatalf("Unable to retrieve Gmail client: %v", e)
+	}
+
+	//return the service to be used
+	return srv
+}
+
+//ProcessDailyMail takes an email and the database that contains their token, connects
+//to gmail, and the previous days email. This should be run every night.
+func ProcessDailyMail(email string, db *gorm.DB) {
+	srv := authenticate(email, db)
+	//download 100 emails, client said some people will receive 100 emails/day, can be changed
+	messages, err := srv.Users.Messages.List("me").MaxResults(100).Do()
+	if err != nil {
+		log.Fatalf("Unable to retrieve messages: %v", err)
+	}
+	//get midnight of the previous day
+	today := time.Now()
+	year, month, day := today.Date()
+	//11:59:59PM of the previous day
+	endTime := time.Date(year, month, day, 0, 0, -1, 0, today.Location()).Unix() * 1000
+	//12:00:00AM of the previous day
+	beginTime := time.Date(year, month, day-1, 0, 0, 0, 0, today.Location()).Unix() * 1000
+}
+
 // Takes the users email service and date range, downloads emails in that range and stores data into
 // grouped days in the database.
-func getMailData(srv *gmail.Service, beginTime int64, endTime int64) {
+func getMailDataRange(srv *gmail.Service, beginTime int64, endTime int64) {
 	//timeframes currently forced, CHANGE ONCE FRONTEND IS COMPLETE
 	//the beginning parameter to fetch emails, for now it is set at when it's run
 	//multiply by 1000 because that is how google stores it

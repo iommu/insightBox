@@ -11,7 +11,6 @@ const client = createClient({
 
 class SignIn extends React.Component {
   constructor(props) {
-    window.close();
     super(props);
     // check if we have a auth code in URL
     const url = new URLSearchParams(window.location.search);

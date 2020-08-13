@@ -1,7 +1,7 @@
 
 import React from 'react';
 import '../../styles/GoogleBtn.css';
-import AuthButton from './Oauth'
+import AuthButton from './Oauth';
 
 function GoogleBtn() {
   return (

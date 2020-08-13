@@ -1,19 +1,19 @@
 
 import React from 'react';
 import '../../styles/GoogleBtn.css';
-import * as Consts from './Consts';
+import AuthButton from './Oauth'
 
 function GoogleBtn() {
   return (
-    <a href={Consts.OAUTHLINK}>
+    <AuthButton>
       <div id="gSignInWrapper">
         <span class="label">Sign in with :  </span>
-        <div id="customBtn" class="customGPlusSignIn">
+        <button id="customBtn" class="customGPlusSignIn" >
           <span class="icon"></span>
           <span class="buttonText">Google</span>
-        </div>
+        </button>
       </div>
-    </a>
+    </AuthButton>
   )
 }
 

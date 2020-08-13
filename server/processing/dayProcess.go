@@ -175,6 +175,7 @@ func ProcessDailyMail(email string, db *gorm.DB) {
 		//store stats processing in db
 		day := model.Day{ID: email, Date: int(beginTime), Emails: emailCount}
 		db.Create(&day)
+
 	}
 
 }

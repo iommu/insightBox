@@ -22,19 +22,17 @@ class SignIn extends React.Component {
       mutation{
         signIn(authCode: "${code}")
       }`).toPromise().then(result => {
-        var error = true;
         if (result.data) {
           if (result.data.signIn) {
             localStorage.setItem("token", result.data.signIn);
             console.log("token saved");
-            error = false;
           } else {
             console.log("returned token blank (auth error)");
           }
         } else {
           console.log("server aint up now is it");
         }
-        if(error) document.getElementById("signin-text").innerHTML = "Error signing in. Please close this page and try again";
+        window.close();
       });
     }
   }

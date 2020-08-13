@@ -15,7 +15,7 @@ class AuthButton extends React.Component {
       that._oauthInterval = window.setInterval(function () {
         // wait till token changed or we closed the window
         if(token !== localStorage.getItem("token") || that._oauthWindow.closed){
-          window.close();
+          window.clearInterval(that._oauthInterval);
           that.props.history.push("/dashboard");
         }
       }, 500);

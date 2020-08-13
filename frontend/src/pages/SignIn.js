@@ -35,7 +35,6 @@ class SignIn extends React.Component {
         }
       });
     }
-    localStorage.removeItem("loggingin");
     this.props.history.push("/");
   }
 

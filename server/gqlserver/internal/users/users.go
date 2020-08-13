@@ -62,7 +62,7 @@ func GetEmailFromAuthCode(authCode string, db *gorm.DB) (string, error) {
 func SaveToken(email string, token *oauth2.Token, client *http.Client, db *gorm.DB) error {
 	// decode oauth token to model.Token and save to db
 	mtoken := model.Token{ID: email, AccessToken: token.AccessToken, TokenType: token.TokenType, RefreshToken: token.RefreshToken, Expiry: token.Expiry}
-	db.Save(&mtoken)
+	db.Create(&mtoken)
 	// find user and create if can't
 	var user model.User
 	err := db.Where("id = ?", email).First(&user).Error

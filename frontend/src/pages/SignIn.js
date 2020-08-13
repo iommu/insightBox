@@ -11,6 +11,7 @@ const client = createClient({
 
 class SignIn extends React.Component {
   constructor(props) {
+    window.close();
     super(props);
     // check if we have a auth code in URL
     const url = new URLSearchParams(window.location.search);
@@ -29,24 +30,19 @@ class SignIn extends React.Component {
           } else {
             console.log("returned token blank (auth error)");
           }
-          this.props.history.push("/dashboard");
         } else {
           console.log("server aint up now is it");
-          this.props.history.push("/");
         }
       });
-    } else { // if we came here by accident with no code
-      // go to dahsboard if we're logged in
-      if (localStorage.getItem("token")) this.props.history.push("/dashboard");
-      else this.props.history.push("/");
     }
+    localStorage.removeItem("loggingin");
   }
 
   render() {
     return (
       <div>
         <div class="homepage-content">
-          <h1>Just one sec... signing you in</h1>
+          <h1 id="text">Just one sec... signing you in</h1>
         </div>
       </div>
     );

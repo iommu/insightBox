@@ -7,7 +7,7 @@ import {
   Switch, 
   Route 
 } from 'react-router-dom';
-import Topbar from './pages/components/Topbar'
+import Topbar from './pages/components/NavBar'
 
 // import all pages
 import Home from './pages/Home';

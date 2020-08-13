@@ -3,13 +3,11 @@ import logo from '../images/logo.png';
 import graph1 from '../images/graph1.png';
 import graph2 from '../images/graph2.png';
 import '../styles/App.css';
-import Topbar from './components/Topbar';
 import GoogleBtn from './components/GoogleBtn';
 
 function Home() {
   return (
     <div>
-      <Topbar />
       <div id="home-icon">
         <img src={logo} alt="insightBox" width="260" />
       </div>

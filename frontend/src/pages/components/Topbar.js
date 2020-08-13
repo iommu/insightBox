@@ -6,7 +6,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import * as Consts from './Consts';
+import AuthButton from './Oauth'
 
 function Topbar() {
   return (
@@ -41,10 +41,10 @@ function Topbar() {
             </Link>
           </div>
           <div id="signup-login">
-            <a href={Consts.OAUTHLINK}>
+            <AuthButton> 
               <button class="signup-button">Sign Up</button>
               <button class="login-button">Login</button>
-            </a>
+            </AuthButton>
           </div>
         </Route>
       </Switch>

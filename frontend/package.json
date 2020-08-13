@@ -15,6 +15,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "rebass": "^4.0.7",
     "urql": "^1.10.0"
   },
   "scripts": {

@@ -10,11 +10,11 @@ class AuthButton extends React.Component {
       var windowName = 'ConnectWithOAuth'; // should not include space for IE
       var windowOptions = 'location=0,status=0,width=800,height=400';
       that._oauthWindow = window.open(Consts.OAUTHLINK, windowName, windowOptions);
-      // set loggingin token true
+      // get rid of old token
       var token = localStorage.getItem("token");
       that._oauthInterval = window.setInterval(function () {
         // wait till token changed or we closed the window
-        if(token !== localStorage.getItem("token" || that._oauthWindow.closed)){
+        if(token !== localStorage.getItem("token") || that._oauthWindow.closed){
           window.close();
           that.props.history.push("/dashboard");
         }

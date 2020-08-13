@@ -10,10 +10,12 @@
     "graphql.macro": "^1.4.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-feather": "^2.0.8",
     "react-google-login": "^5.1.21",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "rebass": "^4.0.7",
     "urql": "^1.10.0"
   },
   "scripts": {
@@ -37,5 +39,4 @@
       "last 1 safari version"
     ]
   }
-  
 }

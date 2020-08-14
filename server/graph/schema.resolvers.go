@@ -41,9 +41,9 @@ func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
 }
 
 func (r *queryResolver) Data(ctx context.Context, start time.Time, end time.Time) ([]*model.Day, error) {
-	userID := "123"
+	email := auth.ForContext(ctx)
 	var days []*model.Day
-	err := r.DB.Set("gorm:auto_preload", true).Where("user = ? AND date BETWEEN ? AND ?", userID, start, end).Find(&days).Error
+	err := r.DB.Set("gorm:auto_preload", true).Where("id = ? AND date BETWEEN ? AND ?", email, start, end).Find(&days).Error
 	if err != nil {
 		return nil, err
 	}

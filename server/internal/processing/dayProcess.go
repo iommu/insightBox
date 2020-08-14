@@ -178,7 +178,8 @@ func ProcessDailyMail(email string, db *gorm.DB) {
 		}
 
 		//store stats processing in db
-		day := model.Day{ID: email, Date: int(beginTime), Emails: emailCount}
+		date := time.Unix(beginTime/1000, 0)
+		day := model.Day{ID: email, Date: date, Emails: emailCount}
 		db.Create(&day)
 
 	}
@@ -220,7 +221,8 @@ func ProcessMailSignup(email string, db *gorm.DB) {
 					//if loaded email was sent before begin time, break the loop,the email is not the correct days
 					if mail.InternalDate < beginTime {
 						//end of day, store a Day into the db
-						day := model.Day{ID: email, Date: int(beginTime), Emails: emailCount}
+						date := time.Unix(beginTime/1000, 0)
+						day := model.Day{ID: email, Date: date, Emails: emailCount}
 						db.Create(&day)
 
 						//reset email count

@@ -136,7 +136,11 @@ func ProcessDailyMail(email string, db *gorm.DB) {
 	//find the most recent mail before endTime
 	emailIndex, messages := binarySearchEmail(endTime, srv)
 
+	//counting the number of emails every day
 	emailCount := 0
+
+	//counting the words used in email subject
+	words := make(map[string]int)
 
 	//if no email index was found, then processing stops
 	if emailIndex >= 0 {
@@ -196,7 +200,9 @@ func ProcessMailSignup(email string, db *gorm.DB) {
 	//find the last email of the previous day
 	emailIndex, messages := binarySearchEmail(endTime, srv)
 
+	//counting the number of emails every day
 	emailCount := 0
+
 	//create a Day in the database in the past week for every day in the past week
 	for i := 0; i < 7; i++ {
 		//if no email index was found, then processing stops
@@ -212,6 +218,13 @@ func ProcessMailSignup(email string, db *gorm.DB) {
 					}
 					//if loaded email was sent before begin time, break the loop,the email is not the correct days
 					if mail.InternalDate < beginTime {
+						//end of day, store a Day into the db
+						day := model.Day{ID: email, Date: int(beginTime), Emails: emailCount}
+						db.Create(&day)
+
+						//reset email count
+						emailCount = 0
+
 						break
 					}
 					//do stats stuff here
@@ -234,13 +247,9 @@ func ProcessMailSignup(email string, db *gorm.DB) {
 			}
 		}
 
-		//store stats processing in db
-		day := model.Day{ID: email, Date: int(beginTime), Emails: emailCount}
-		db.Create(&day)
-
 		//subtract 1 day(24 hours * 60 minutes * 60 seconds * 1000 milliseconds)
-		endTime -= 8640000
-		beginTime -= 8640000
+		endTime -= 86400000
+		beginTime -= 86400000
 	}
 
 }

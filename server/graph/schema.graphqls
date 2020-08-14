@@ -15,7 +15,7 @@ type User {
 type Day {
   # DO NOT CHANGE
   id: String!
-  date: Int!
+  date: Time!
   # DO NOT CHANGE
   emails: Int!
 }

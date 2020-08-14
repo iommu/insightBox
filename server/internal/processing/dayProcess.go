@@ -3,7 +3,7 @@ package processing
 import (
 	"context"
 	"fmt"
-	"insightBox/insightBox/server/gqlserver/graph/model"
+	"insightBox/insightBox/server/graph/model"
 	"io/ioutil"
 	"log"
 	"time"

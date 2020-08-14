@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/iommu/insightbox/server/gqlserver/graph/generated"
-	"github.com/iommu/insightbox/server/gqlserver/graph/model"
-	"github.com/iommu/insightbox/server/gqlserver/internal/auth"
-	"github.com/iommu/insightbox/server/gqlserver/internal/users"
-	"github.com/iommu/insightbox/server/gqlserver/pkg/jwt"
+	"github.com/iommu/insightbox/server/graph/generated"
+	"github.com/iommu/insightbox/server/graph/model"
+	"github.com/iommu/insightbox/server/internal/auth"
+	"github.com/iommu/insightbox/server/internal/users"
+	"github.com/iommu/insightbox/server/pkg/jwt"
 )
 
 func (r *mutationResolver) SignIn(ctx context.Context, authCode string) (string, error) {

@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/iommu/insightbox/server/gqlserver/graph/model"
+	"github.com/iommu/insightbox/server/graph/model"
 
 	"github.com/jinzhu/gorm"
 	"golang.org/x/net/context"

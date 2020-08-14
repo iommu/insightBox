@@ -30,11 +30,11 @@ export const User = () => {
   );
 }
 
-export const User = () => {
+export const Day = () => {
   const [result, getDayData] = useQuery({
     query: `
     query {
-      data(start:"2020-08-07 00:00:00", end:"2020-08-07 00:00:00") {
+      data(start:"2006-01-02T15:04:05Z07:00", end:"2006-01-02T15:04:05Z07:00") {
         id,
         date
       }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { User } from './components/Queries';
+import { User, Day } from './components/Queries';
 
 // import graphql and create client
 import { createClient, Provider } from 'urql';
@@ -20,6 +20,7 @@ function Dashboard() {
       <div>
         <div class="homepage-content">
           <User/>
+          <Day/>
         </div>
       </div>
     </Provider>

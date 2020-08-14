@@ -18,6 +18,7 @@ class TopBar extends React.Component {
     return (
       <Flex
         px={2}
+        py={2}
         color='black'
         bg='white'
         alignItems='center'

@@ -248,8 +248,8 @@ func ProcessMailSignup(email string, db *gorm.DB) {
 		}
 
 		//subtract 1 day(24 hours * 60 minutes * 60 seconds * 1000 milliseconds)
-		endTime -= 8640000
-		beginTime -= 8640000
+		endTime -= 86400000
+		beginTime -= 86400000
 	}
 
 }

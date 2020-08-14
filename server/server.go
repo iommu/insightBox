@@ -39,6 +39,7 @@ func initDB() {
 	db.LogMode(true)
 
 	// Migration to create tables for User, Day and Token schema
+	// gorm:"primary_key"
 	db.AutoMigrate(&model.User{}, &model.Day{}, &model.Token{})
 }
 

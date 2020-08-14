@@ -7,9 +7,9 @@ import (
 )
 
 type Day struct {
-	ID     string `json:"id"`
-	Date   int    `json:"date"`
-	Emails int    `json:"emails"`
+	ID     string    `json:"id"`
+	Date   time.Time `json:"date"`
+	Emails int       `json:"emails"`
 }
 
 type Token struct {

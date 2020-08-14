@@ -286,7 +286,7 @@ type User {
 type Day {
   # DO NOT CHANGE
   id: String!
-  date: Int!
+  date: Time!
   # DO NOT CHANGE
   emails: Int!
 }
@@ -459,9 +459,9 @@ func (ec *executionContext) _Day_date(ctx context.Context, field graphql.Collect
 		}
 		return graphql.Null
 	}
-	res := resTmp.(int)
+	res := resTmp.(time.Time)
 	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Day_emails(ctx context.Context, field graphql.CollectedField, obj *model.Day) (ret graphql.Marshaler) {
@@ -567,7 +567,7 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_data(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -608,7 +608,7 @@ func (ec *executionContext) _Query_data(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.([]*model.Day)
 	fc.Result = res
-	return ec.marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐDayᚄ(ctx, field.Selections, res)
+	return ec.marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐDayᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2481,11 +2481,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNDay2githubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐDay(ctx context.Context, sel ast.SelectionSet, v model.Day) graphql.Marshaler {
+func (ec *executionContext) marshalNDay2githubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐDay(ctx context.Context, sel ast.SelectionSet, v model.Day) graphql.Marshaler {
 	return ec._Day(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐDayᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Day) graphql.Marshaler {
+func (ec *executionContext) marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐDayᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Day) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2509,7 +2509,7 @@ func (ec *executionContext) marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightbox�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNDay2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐDay(ctx, sel, v[i])
+			ret[i] = ec.marshalNDay2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐDay(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2522,7 +2522,7 @@ func (ec *executionContext) marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightbox�
 	return ret
 }
 
-func (ec *executionContext) marshalNDay2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐDay(ctx context.Context, sel ast.SelectionSet, v *model.Day) graphql.Marshaler {
+func (ec *executionContext) marshalNDay2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐDay(ctx context.Context, sel ast.SelectionSet, v *model.Day) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2860,11 +2860,11 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	return ec.marshalOString2string(ctx, sel, *v)
 }
 
-func (ec *executionContext) marshalOUser2githubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2githubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgqlserverᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/iommu/insightBox/server/graph/model"
+	"github.com/iommu/insightbox/server/graph/model"
 
 	"github.com/jinzhu/gorm"
 	"golang.org/x/oauth2"
@@ -141,7 +141,7 @@ func ProcessDailyMail(email string, db *gorm.DB) {
 	emailCount := 0
 
 	//counting the words used in email subject
-	words := make(map[string]int)
+	//words := make(map[string]int)
 
 	//if no email index was found, then processing stops
 	if emailIndex >= 0 {

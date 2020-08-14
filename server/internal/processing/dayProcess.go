@@ -19,7 +19,7 @@ import (
 func authenticate(email string, db *gorm.DB) *gmail.Service {
 	//get token from database
 	var tokendb model.Token
-	err := db.Where("id = ?", email).First(&tokendb)
+	err := db.Where("id = ?", email).First(&tokendb).Error
 	//error handling
 	if err != nil {
 		log.Fatalf("Unable to load db: %v", err)

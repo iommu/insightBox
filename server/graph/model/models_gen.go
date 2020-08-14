@@ -7,8 +7,8 @@ import (
 )
 
 type Day struct {
-	ID     string    `json:"id" gorm:"primary_key"`
-	Date   time.Time `json:"date" gorm:"primary_key"`
+	ID     string    `gorm:"primary_key" json:"id"`
+	Date   time.Time `gorm:"primary_key" json:"date"`
 	Emails int       `json:"emails"`
 }
 

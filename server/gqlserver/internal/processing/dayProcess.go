@@ -1,4 +1,4 @@
-package dayprocess
+package processing
 
 import (
 	"context"

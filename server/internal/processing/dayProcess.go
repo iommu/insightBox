@@ -3,10 +3,11 @@ package processing
 import (
 	"context"
 	"fmt"
-	"insightBox/insightBox/server/graph/model"
 	"io/ioutil"
 	"log"
 	"time"
+
+	"github.com/iommu/insightBox/server/graph/model"
 
 	"github.com/jinzhu/gorm"
 	"golang.org/x/oauth2"

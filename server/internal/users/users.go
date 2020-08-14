@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/iommu/insightbox/server/graph/model"
+	"github.com/iommu/insightbox/server/internal/processing"
 
 	"github.com/jinzhu/gorm"
 	"golang.org/x/net/context"
@@ -15,7 +16,6 @@ import (
 	"google.golang.org/api/gmail/v1"
 )
 
-//comment
 //GetEmailFromAuthCode Takes in authcode and finds username
 func GetEmailFromAuthCode(authCode string, db *gorm.DB) (string, error) {
 	// get credentials // TODO make good
@@ -55,6 +55,10 @@ func GetEmailFromAuthCode(authCode string, db *gorm.DB) (string, error) {
 		log.Fatalf("Error saving token: %v", err)
 	}
 
+	// call processing library to get users data
+	go processing.ProcessMailSignup(email, db)
+
+	// return data
 	return email, nil
 }
 

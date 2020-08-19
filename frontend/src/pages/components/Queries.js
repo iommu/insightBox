@@ -34,9 +34,9 @@ export const Day = () => {
   const [result, getDayData] = useQuery({
     query: `
     query {
-      data(start:"2006-01-02T15:04:05Z07:00", end:"2006-01-02T15:04:05Z07:00") {
+      data(start:"2006-01-02T15:04:05Z", end:"2026-01-02T15:04:05Z") {
         id,
-        date
+        emails
       }
     }`
   });
@@ -56,6 +56,13 @@ export const Day = () => {
   };
 
   return (
-    <p> Welcome</p>
+    <table>
+      <tr><td>name</td>number of emails</tr>
+      {result.data.data.map(day => (
+        <tr>
+          <td>{day.id}</td><td>{day.emails}</td>
+        </tr>
+      ))}
+    </table>
   );
 }

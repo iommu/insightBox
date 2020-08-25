@@ -20,9 +20,10 @@ type contextKey struct {
 func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// get "Authorization" key from request header
 			header := r.Header.Get("Authorization")
 
-			// allow unauthenticated users in
+			// allow unauthenticated users in but without ability to request private data
 			if header == "" {
 				next.ServeHTTP(w, r)
 				return
@@ -36,16 +37,15 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 				return
 			}
 
-			// create user and check if user exists in db
+			// check if user exists in db
 			var dbUser model.User
 			err = db.Where("id = ?", email).First(&dbUser).Error
 			if err != nil {
 				http.Error(w, "User does not exist", http.StatusForbidden)
-				//next.ServeHTTP(w, r) old
 				return
 			}
 
-			// put it in context
+			// put it in context for use in gorm queries
 			ctx := context.WithValue(r.Context(), userCtxKey, &dbUser.ID)
 
 			// and call the next with our new context

@@ -35,7 +35,7 @@ export const Day = () => {
     query: `
     query {
       data(start:"2006-01-02T15:04:05Z", end:"2026-01-02T15:04:05Z") {
-        id,
+        date,
         emails
       }
     }`
@@ -60,7 +60,7 @@ export const Day = () => {
       <tr><td>name</td>number of emails</tr>
       {result.data.data.map(day => (
         <tr>
-          <td>{day.id}</td><td>{day.emails}</td>
+          <td>{day.date}</td><td>{day.emails}</td>
         </tr>
       ))}
     </table>

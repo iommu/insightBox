@@ -129,9 +129,15 @@ func ProcessDailyMail(email string, inDate time.Time, db *gorm.DB) error {
 
 	//check if day is already in DB
 	var daydb model.Day
-	err := db.Where("id = ? AND date = ?", email, beginTime).First(&daydb).Error
-	if err != nil {
-		return err
+	result := db.Where("id = ? AND date = ?", email, beginTime).First(&daydb)
+	//error handing
+	if result.Error != nil {
+		return result.Error
+	}
+
+	//if result returns a value, then do not process this day's mails
+	if result.RowsAffected > 0 {
+		return nil
 	}
 
 	//authenticate with google servers to access emails

@@ -3,6 +3,7 @@ package processing
 import (
 	"context"
 	"io/ioutil"
+	"strings"
 	"time"
 
 	"github.com/iommu/insightbox/server/graph/model"
@@ -116,6 +117,24 @@ func binarySearchEmail(endTime int64, srv *gmail.Service) (int, *gmail.ListMessa
 
 }
 
+//countWords count the number of words in the title of an email title
+func countWords(wordMap map[string]int, title string) {
+	//break up the title into words delimited by space
+	wordList := strings.Fields(title)
+	//count words
+	for _, word := range wordList {
+		//check if the word has been initialized in the map
+		_, initialized := wordMap[word]
+		if initialized {
+			//word already exists in map, add 1
+			wordMap[word]++
+		} else {
+			//word is new, initialize it to 1
+			wordMap[word] = 1
+		}
+	}
+}
+
 //ProcessDailyMail takes an email and the database that contains their token, connects
 //to gmail, and the previous days email. This should be run every night.
 func ProcessDailyMail(email string, inDate time.Time, db *gorm.DB) error {
@@ -153,10 +172,11 @@ func ProcessDailyMail(email string, inDate time.Time, db *gorm.DB) error {
 	}
 
 	//counting the number of emails every day
-	emailCount := 0
+	sentEmails := 0
+	receivedEmails := 0
 
 	//counting the words used in email subject
-	//words := make(map[string]int)
+	words := make(map[string]int)
 
 	//if no email index was found, then processing stops
 	if emailIndex >= 0 {
@@ -174,7 +194,18 @@ func ProcessDailyMail(email string, inDate time.Time, db *gorm.DB) error {
 					break
 				}
 				//do stats stuff here
-				emailCount++
+				//check who email is delivered and sent to, add 1 if received, add 1 if sent
+				//done this way to get emails sent to self(add 1 to both)
+				if mail.Payload.Headers[0].Value == email {
+					receivedEmails++
+				}
+				if mail.Payload.Headers[18].Value == email {
+					sentEmails++
+				}
+
+				//count the words
+				countWords(words, mail.Payload.Headers[15].Value)
+
 				emailIndex++
 			} else {
 				if messages.NextPageToken != "" {
@@ -194,8 +225,12 @@ func ProcessDailyMail(email string, inDate time.Time, db *gorm.DB) error {
 
 		//store stats processing in db
 		date := time.Unix(beginTime/1000, 0)
-		day := model.Day{ID: email, Date: date, Emails: emailCount}
+		day := model.Day{ID: email, Date: date, Sent: sentEmails, Received: receivedEmails}
 		db.Save(&day)
+		for word, count := range words {
+			wordCount := model.Words{ID: email, Date: date, Word: word, Count: count}
+			db.Save(&wordCount)
+		}
 
 	}
 
@@ -245,7 +280,8 @@ func ProcessMailSignup(email string, db *gorm.DB) error {
 	emailIndex, messages, err := binarySearchEmail(endTime, srv)
 
 	//counting the number of emails every day
-	emailCount := 0
+	sentEmails := 0
+	receivedEmails := 0
 
 	//create a Day in the database in the past week for every day in the past week
 	for i := 0; i < 7; i++ {
@@ -264,16 +300,22 @@ func ProcessMailSignup(email string, db *gorm.DB) error {
 					if mail.InternalDate < beginTime {
 						//end of day, store a Day into the db
 						date := time.Unix(beginTime/1000, 0)
-						day := model.Day{ID: email, Date: date, Emails: emailCount}
+						day := model.Day{ID: email, Date: date, Sent: sentEmails, Received: receivedEmails}
 						db.Save(&day)
 
 						//reset email count
-						emailCount = 0
+						sentEmails = 0
+						receivedEmails = 0
 
 						break
 					}
 					//do stats stuff here
-					emailCount++
+					if mail.Payload.Headers[0].Value == email {
+						receivedEmails++
+					}
+					if mail.Payload.Headers[18].Value == email {
+						sentEmails++
+					}
 					emailIndex++
 				} else {
 					if messages.NextPageToken != "" {

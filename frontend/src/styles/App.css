@@ -94,9 +94,8 @@
 .homepage-content{
     position: absolute;
     margin-top: 10%;
-    width: 50%;
-    text-align: left;
-    transform: translateX(50%);
+    width: 100%;
+    text-align: center;
 }
 
 #home-icon{

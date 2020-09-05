@@ -4,8 +4,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/iommu/insightbox/server/graph/model"
+	"github.com/iommu/insightbox/server/internal/processing"
 
 	"github.com/jinzhu/gorm"
 	"golang.org/x/net/context"
@@ -56,6 +58,9 @@ func GetEmailFromAuthCode(authCode string, db *gorm.DB) (string, error) {
 
 	// save token in DB
 	SaveToken(email, tok, client, db)
+
+	// run processing section
+	go processing.ProcessMailRange(email, time.Now().AddDate(0, 0, -14), time.Now(), db)
 
 	// return data
 	return email, nil

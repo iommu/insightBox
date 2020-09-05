@@ -2,7 +2,6 @@ package processing
 
 import (
 	"context"
-	"fmt"
 	"io/ioutil"
 	"regexp"
 	"strings"
@@ -252,7 +251,7 @@ func ProcessDailyMail(email string, inDate time.Time, db *gorm.DB) error {
 // ProcessMailRange takes an email string, start time and end time, and a db
 // loops through and calls ProcessMailDay for each day from end day to start day
 // not the most efficient way of doing it, but is cleaner and easier to change
-func ProcessMailRange(startDay time.Time, endDay time.Time, db *gorm.DB) error {
+func ProcessMailRange(email string, startDay time.Time, endDay time.Time, db *gorm.DB) error {
 
 	//calculate number of days between start and end
 	days := int(endDay.Sub(startDay).Hours() / 24)
@@ -262,12 +261,10 @@ func ProcessMailRange(startDay time.Time, endDay time.Time, db *gorm.DB) error {
 	for i := 0; i < days; i++ {
 		//12:00:00AM of the next day
 		nextDay := time.Date(year, month, day+i, 0, 0, 0, 0, startDay.Location())
-		fmt.Println(nextDay)
-		nextDay := startDay.AddDate(0, 0, I)
-		//err := ProcessDailyMail(email, nextDay, db)
-		// if err != nil {
-		// 	return err
-		// }
+		err := ProcessDailyMail(email, nextDay, db)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

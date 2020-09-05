@@ -22,8 +22,6 @@ import (
 	"google.golang.org/api/gmail/v1"
 )
 
-const defaultPort = "4000"
-
 var db *gorm.DB
 
 func initDB() {
@@ -61,20 +59,16 @@ func printURL() {
 }
 
 func main() {
-	// print url
+	// Print OAuth URL
 	printURL()
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = defaultPort
-	}
-
+	// connect to DB with GORM
 	initDB()
 
+	// create router
 	router := chi.NewRouter()
 
-	// Add CORS middleware around every request
-	// See https://github.com/rs/cors for full option listing
+	// add CORS middleware around every request
 	router.Use(cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedHeaders:   []string{"*"},
@@ -82,22 +76,25 @@ func main() {
 		Debug:            false,
 	}).Handler)
 
+	// connect our middleware script for JWT generation/Authentication
 	router.Use(auth.Middleware(db))
 
+	// setup GraphQL server
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{
 		DB: db,
 	}}))
 	router.Handle("/playground", playground.Handler("Starwars", "/api"))
 	router.Handle("/api", srv)
 
+	// find port using input environment variable (defualt 4000)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "4000"
+	}
+
+	// start listening on {port}
 	err := http.ListenAndServe(":"+port, router)
 	if err != nil {
 		panic(err)
 	}
-
-	// old
-	// http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	// http.Handle("/query", srv)
-	// log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	// log.Fatal(http.ListenAndServe(":"+port, nil))
 }

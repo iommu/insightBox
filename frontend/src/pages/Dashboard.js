@@ -9,7 +9,7 @@ import {
 } from 'rebass';
 
 const client = createClient({
-  url: 'http://insightbox.xyz/api',
+  url: 'https://insightbox.xyz/api',
   fetchOptions: () => {
     const token = localStorage.getItem("token");
     return {

@@ -45,9 +45,10 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Day struct {
-		Date   func(childComplexity int) int
-		Emails func(childComplexity int) int
-		ID     func(childComplexity int) int
+		Date     func(childComplexity int) int
+		ID       func(childComplexity int) int
+		Received func(childComplexity int) int
+		Sent     func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -71,6 +72,13 @@ type ComplexityRoot struct {
 		ColorSchemeID func(childComplexity int) int
 		ID            func(childComplexity int) int
 		Name          func(childComplexity int) int
+	}
+
+	Words struct {
+		Count func(childComplexity int) int
+		Date  func(childComplexity int) int
+		ID    func(childComplexity int) int
+		Word  func(childComplexity int) int
 	}
 }
 
@@ -104,19 +112,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Day.Date(childComplexity), true
 
-	case "Day.emails":
-		if e.complexity.Day.Emails == nil {
-			break
-		}
-
-		return e.complexity.Day.Emails(childComplexity), true
-
 	case "Day.id":
 		if e.complexity.Day.ID == nil {
 			break
 		}
 
 		return e.complexity.Day.ID(childComplexity), true
+
+	case "Day.received":
+		if e.complexity.Day.Received == nil {
+			break
+		}
+
+		return e.complexity.Day.Received(childComplexity), true
+
+	case "Day.sent":
+		if e.complexity.Day.Sent == nil {
+			break
+		}
+
+		return e.complexity.Day.Sent(childComplexity), true
 
 	case "Mutation.signIn":
 		if e.complexity.Mutation.SignIn == nil {
@@ -205,6 +220,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Name(childComplexity), true
 
+	case "Words.count":
+		if e.complexity.Words.Count == nil {
+			break
+		}
+
+		return e.complexity.Words.Count(childComplexity), true
+
+	case "Words.date":
+		if e.complexity.Words.Date == nil {
+			break
+		}
+
+		return e.complexity.Words.Date(childComplexity), true
+
+	case "Words.id":
+		if e.complexity.Words.ID == nil {
+			break
+		}
+
+		return e.complexity.Words.ID(childComplexity), true
+
+	case "Words.word":
+		if e.complexity.Words.Word == nil {
+			break
+		}
+
+		return e.complexity.Words.Word(childComplexity), true
+
 	}
 	return 0, false
 }
@@ -288,8 +331,19 @@ type Day {
   id: String!
   date: Time!
   # DO NOT CHANGE
-  emails: Int!
+  sent: Int!
+  received: Int!
 }
+
+type Words {
+  # DO NOT CHANGE
+  id: String!
+  date: Time!
+  # DO NOT CHANGE
+  word: String!
+  count: Int!
+}
+
 
 type Mutation {
   signIn(authCode: String!): String! #takes in oauth key, returns JWT string
@@ -464,7 +518,7 @@ func (ec *executionContext) _Day_date(ctx context.Context, field graphql.Collect
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Day_emails(ctx context.Context, field graphql.CollectedField, obj *model.Day) (ret graphql.Marshaler) {
+func (ec *executionContext) _Day_sent(ctx context.Context, field graphql.CollectedField, obj *model.Day) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -481,7 +535,41 @@ func (ec *executionContext) _Day_emails(ctx context.Context, field graphql.Colle
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Emails, nil
+		return obj.Sent, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Day_received(ctx context.Context, field graphql.CollectedField, obj *model.Day) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Day",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Received, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -936,6 +1024,142 @@ func (ec *executionContext) _User_colorSchemeID(ctx context.Context, field graph
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return obj.ColorSchemeID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Words_id(ctx context.Context, field graphql.CollectedField, obj *model.Words) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Words",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Words_date(ctx context.Context, field graphql.CollectedField, obj *model.Words) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Words",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Date, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Words_word(ctx context.Context, field graphql.CollectedField, obj *model.Words) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Words",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Word, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Words_count(ctx context.Context, field graphql.CollectedField, obj *model.Words) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Words",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Count, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2036,8 +2260,13 @@ func (ec *executionContext) _Day(ctx context.Context, sel ast.SelectionSet, obj 
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "emails":
-			out.Values[i] = ec._Day_emails(ctx, field, obj)
+		case "sent":
+			out.Values[i] = ec._Day_sent(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "received":
+			out.Values[i] = ec._Day_received(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -2208,6 +2437,48 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "colorSchemeID":
 			out.Values[i] = ec._User_colorSchemeID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var wordsImplementors = []string{"Words"}
+
+func (ec *executionContext) _Words(ctx context.Context, sel ast.SelectionSet, obj *model.Words) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, wordsImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Words")
+		case "id":
+			out.Values[i] = ec._Words_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "date":
+			out.Values[i] = ec._Words_date(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "word":
+			out.Values[i] = ec._Words_word(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "count":
+			out.Values[i] = ec._Words_count(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}

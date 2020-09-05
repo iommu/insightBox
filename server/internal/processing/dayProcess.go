@@ -2,9 +2,9 @@ package processing
 
 import (
 	"context"
-	"fmt"
 	"io/ioutil"
-	"log"
+	"regexp"
+	"strings"
 	"time"
 
 	"github.com/iommu/insightbox/server/graph/model"
@@ -16,13 +16,13 @@ import (
 )
 
 //authenticate and connect to gmail
-func authenticate(email string, db *gorm.DB) *gmail.Service {
+func authenticate(email string, db *gorm.DB) (*gmail.Service, error) {
 	//get token from database
 	var tokendb model.Token
 	err := db.Where("id = ?", email).First(&tokendb).Error
 	//error handling
 	if err != nil {
-		log.Fatalf("Unable to load db: %v", err)
+		return nil, err
 	}
 
 	//reconstruct token
@@ -35,37 +35,37 @@ func authenticate(email string, db *gorm.DB) *gmail.Service {
 	//connect to gmail and get service
 	b, e := ioutil.ReadFile("credentials.json")
 	if e != nil {
-		log.Fatalf("Unable to read client secret file: %v", e)
+		return nil, e
 	}
 	config, e := google.ConfigFromJSON(b, gmail.GmailReadonlyScope)
 	if e != nil {
-		log.Fatalf("Unable to parse client secret file to config: %v", e)
+		return nil, e
 	}
 	client := config.Client(context.Background(), tok)
 	srv, e := gmail.New(client)
 	if e != nil {
-		log.Fatalf("Unable to retrieve Gmail client: %v", e)
+		return nil, e
 	}
 
 	//return the service to be used
-	return srv
+	return srv, nil
 }
 
-func binarySearchEmail(endTime int64, srv *gmail.Service) (emailIndex int, messages *gmail.ListMessagesResponse) {
+func binarySearchEmail(endTime int64, srv *gmail.Service) (int, *gmail.ListMessagesResponse, error) {
 	//retrieve 128 email IDs. The maximum is 500, can be changed if needed
 	//128 is a nice number for binary search
 	messages, err := srv.Users.Messages.List("me").MaxResults(128).Do()
 	if err != nil {
-		log.Fatalf("Unable to retrieve messages: %v", err)
+		return -1, nil, err
 	}
 
 	//get the newest email in the list, only get minimal data since we only want the time received for now
-	emailIndex = -1
+	emailIndex := -1
 	//loop until we run out of emails or we find the index
 	for {
 		mail, err := srv.Users.Messages.Get("me", messages.Messages[0].Id).Format("minimal").Do()
 		if err != nil {
-			log.Fatalf("Unable to retrieve message: %v", err)
+			return -1, nil, err
 		}
 
 		//if endTime is before the first email, then check the last email
@@ -73,7 +73,7 @@ func binarySearchEmail(endTime int64, srv *gmail.Service) (emailIndex int, messa
 			//get the last email in the list
 			mail, err = srv.Users.Messages.Get("me", messages.Messages[len(messages.Messages)-1].Id).Format("minimal").Do()
 			if err != nil {
-				log.Fatalf("Unable to retrieve message: %v", err)
+				return -1, nil, err
 			}
 			//if endTime is before the last email, then load the next 128 emails
 			if endTime < mail.InternalDate {
@@ -83,18 +83,14 @@ func binarySearchEmail(endTime int64, srv *gmail.Service) (emailIndex int, messa
 				begin := 0
 				end := len(messages.Messages) - 1
 				middle := (begin + end) / 2
-				fmt.Println("B: ", begin, "E: ", end, "M: ", middle)
 				for {
 					//get the middle email
 					mail, err = srv.Users.Messages.Get("me", messages.Messages[middle].Id).Format("minimal").Do()
 					if err != nil {
-						log.Fatalf("Unable to retrieve message: %v", err)
+						return -1, nil, err
 					}
-					fmt.Println("email retrieved")
-					fmt.Println("target: ", endTime, "current: ", mail.InternalDate)
 					//found an email at that exact time, found the latest email, break
 					if endTime == mail.InternalDate || begin == middle {
-						fmt.Println("found")
 						emailIndex = middle
 						break
 					} else if endTime > mail.InternalDate {
@@ -105,7 +101,6 @@ func binarySearchEmail(endTime int64, srv *gmail.Service) (emailIndex int, messa
 						begin = middle
 					}
 					middle = (begin + end) / 2
-					fmt.Println("B: ", begin, "E: ", end, "M: ", middle)
 				}
 
 			}
@@ -119,29 +114,84 @@ func binarySearchEmail(endTime int64, srv *gmail.Service) (emailIndex int, messa
 		}
 	}
 
-	return emailIndex, messages
+	return emailIndex, messages, nil
 
+}
+
+//countWords count the number of words in the title of an email title
+func countWords(wordMap map[string]int, title string) error {
+	//change all letters to lower case
+	title = strings.ToLower(title)
+
+	//remove symbols
+	re, err := regexp.Compile(`[^\w]`)
+	if err != nil {
+		return err
+	}
+	title = re.ReplaceAllString(title, " ")
+
+	//break up the title into words delimited by space
+	wordList := strings.Fields(title)
+
+	//count words
+	for _, word := range wordList {
+
+		//check if the word has been initialized in the map
+		_, initialized := wordMap[word]
+		if initialized {
+			//word already exists in map, add 1
+			wordMap[word]++
+		} else {
+			//word is new, initialize it to 1
+			wordMap[word] = 1
+		}
+	}
+
+	return nil
 }
 
 //ProcessDailyMail takes an email and the database that contains their token, connects
 //to gmail, and the previous days email. This should be run every night.
-func ProcessDailyMail(email string, db *gorm.DB) {
-	srv := authenticate(email, db)
-	today := time.Now()
-	year, month, day := today.Date()
-	//11:59:59PM of the previous day
-	endTime := time.Date(year, month, day, 0, 0, -1, 0, today.Location()).Unix() * 1000
-	//12:00:00AM of the previous day
-	beginTime := time.Date(year, month, day-1, 0, 0, 0, 0, today.Location()).Unix() * 1000
+func ProcessDailyMail(email string, inDate time.Time, db *gorm.DB) error {
+
+	//setup time
+	year, month, day := inDate.Date()
+	//11:59:59PM of the input date
+	endTime := time.Date(year, month, day, 0, 0, -1, 0, inDate.Location()).Unix() * 1000
+	//12:00:00AM of the input date
+	beginTime := time.Date(year, month, day-1, 0, 0, 0, 0, inDate.Location()).Unix() * 1000
+
+	//check if day is already in DB
+	var daydb model.Day
+	result := db.Where("id = ? AND date = ?", email, beginTime).First(&daydb)
+	//error handing
+	if result.Error != nil {
+		return result.Error
+	}
+
+	//if result returns a value, then do not process this day's mails
+	if result.RowsAffected > 0 {
+		return nil
+	}
+
+	//authenticate with google servers to access emails
+	srv, err := authenticate(email, db)
+	if err != nil {
+		return err
+	}
 
 	//find the most recent mail before endTime
-	emailIndex, messages := binarySearchEmail(endTime, srv)
+	emailIndex, messages, err := binarySearchEmail(endTime, srv)
+	if err != nil {
+		return err
+	}
 
 	//counting the number of emails every day
-	emailCount := 0
+	sentEmails := 0
+	receivedEmails := 0
 
 	//counting the words used in email subject
-	//words := make(map[string]int)
+	words := make(map[string]int)
 
 	//if no email index was found, then processing stops
 	if emailIndex >= 0 {
@@ -152,14 +202,25 @@ func ProcessDailyMail(email string, db *gorm.DB) {
 				//load the next email
 				mail, err := srv.Users.Messages.Get("me", messages.Messages[emailIndex].Id).Format("metadata").Do()
 				if err != nil {
-					log.Fatalf("Unable to retrieve message: %v", err)
+					return err
 				}
 				//if loaded email was sent before begin time, break the loop,the email is not the correct days
 				if mail.InternalDate < beginTime {
 					break
 				}
 				//do stats stuff here
-				emailCount++
+				//check who email is delivered and sent to, add 1 if received, add 1 if sent
+				//done this way to get emails sent to self(add 1 to both)
+				if mail.Payload.Headers[0].Value == email {
+					receivedEmails++
+				}
+				if mail.Payload.Headers[18].Value == email {
+					sentEmails++
+				}
+
+				//count the words
+				countWords(words, mail.Payload.Headers[15].Value)
+
 				emailIndex++
 			} else {
 				if messages.NextPageToken != "" {
@@ -167,7 +228,7 @@ func ProcessDailyMail(email string, db *gorm.DB) {
 					var err error
 					messages, err = srv.Users.Messages.List("me").PageToken(messages.NextPageToken).MaxResults(128).Do()
 					if err != nil {
-						log.Fatalf("Unable to retrieve messages: %v", err)
+						return err
 					}
 					emailIndex = 0
 				} else {
@@ -179,18 +240,49 @@ func ProcessDailyMail(email string, db *gorm.DB) {
 
 		//store stats processing in db
 		date := time.Unix(beginTime/1000, 0)
-		day := model.Day{ID: email, Date: date, Emails: emailCount}
+		day := model.Day{ID: email, Date: date, Sent: sentEmails, Received: receivedEmails}
 		db.Save(&day)
+		for word, count := range words {
+			wordCount := model.Words{ID: email, Date: date, Word: word, Count: count}
+			db.Save(&wordCount)
+		}
 
 	}
 
+	return nil
+
+}
+
+// ProcessMailRange takes an email string, start time and end time, and a db
+// loops through and calls ProcessMailDay for each day from end day to start day
+// not the most efficient way of doing it, but is cleaner and easier to change
+func ProcessMailRange(email string, startDay time.Time, endDay time.Time, db *gorm.DB) error {
+
+	//calculate number of days between start and end
+	days := int(endDay.Sub(startDay).Hours() / 24)
+	year, month, day := startDay.Date()
+
+	//for every day from beginning to end, call ProcessDailyMail
+	for i := 0; i < days; i++ {
+		//12:00:00AM of the next day
+		nextDay := time.Date(year, month, day+i, 0, 0, 0, 0, startDay.Location())
+		err := ProcessDailyMail(email, nextDay, db)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // ProcessMailSignup takes an email string, and a database
 // Downloads emails of the past week, processes them and stores the days in the database.
 // Used for when a user initially signs up
-func ProcessMailSignup(email string, db *gorm.DB) {
-	srv := authenticate(email, db)
+// DEPRECATED CODE, left just in case
+func ProcessMailSignup(email string, db *gorm.DB) error {
+	srv, err := authenticate(email, db)
+	if err != nil {
+		return err
+	}
 
 	today := time.Now()
 	year, month, day := today.Date()
@@ -200,10 +292,11 @@ func ProcessMailSignup(email string, db *gorm.DB) {
 	beginTime := time.Date(year, month, day-1, 0, 0, 0, 0, today.Location()).Unix() * 1000
 
 	//find the last email of the previous day
-	emailIndex, messages := binarySearchEmail(endTime, srv)
+	emailIndex, messages, err := binarySearchEmail(endTime, srv)
 
 	//counting the number of emails every day
-	emailCount := 0
+	sentEmails := 0
+	receivedEmails := 0
 
 	//create a Day in the database in the past week for every day in the past week
 	for i := 0; i < 7; i++ {
@@ -216,22 +309,28 @@ func ProcessMailSignup(email string, db *gorm.DB) {
 					//load the next email
 					mail, err := srv.Users.Messages.Get("me", messages.Messages[emailIndex].Id).Format("metadata").Do()
 					if err != nil {
-						log.Fatalf("Unable to retrieve message: %v", err)
+						return err
 					}
 					//if loaded email was sent before begin time, break the loop,the email is not the correct days
 					if mail.InternalDate < beginTime {
 						//end of day, store a Day into the db
 						date := time.Unix(beginTime/1000, 0)
-						day := model.Day{ID: email, Date: date, Emails: emailCount}
+						day := model.Day{ID: email, Date: date, Sent: sentEmails, Received: receivedEmails}
 						db.Save(&day)
 
 						//reset email count
-						emailCount = 0
+						sentEmails = 0
+						receivedEmails = 0
 
 						break
 					}
 					//do stats stuff here
-					emailCount++
+					if mail.Payload.Headers[0].Value == email {
+						receivedEmails++
+					}
+					if mail.Payload.Headers[18].Value == email {
+						sentEmails++
+					}
 					emailIndex++
 				} else {
 					if messages.NextPageToken != "" {
@@ -239,7 +338,7 @@ func ProcessMailSignup(email string, db *gorm.DB) {
 						var err error
 						messages, err = srv.Users.Messages.List("me").PageToken(messages.NextPageToken).MaxResults(128).Do()
 						if err != nil {
-							log.Fatalf("Unable to retrieve messages: %v", err)
+							return err
 						}
 						emailIndex = 0
 					} else {
@@ -254,5 +353,7 @@ func ProcessMailSignup(email string, db *gorm.DB) {
 		endTime -= 86400000
 		beginTime -= 86400000
 	}
+
+	return nil
 
 }

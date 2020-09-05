@@ -2,6 +2,7 @@ package processing
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"regexp"
 	"strings"
@@ -161,17 +162,12 @@ func ProcessDailyMail(email string, inDate time.Time, db *gorm.DB) error {
 	//12:00:00AM of the input date
 	beginTime := time.Date(year, month, day-1, 0, 0, 0, 0, inDate.Location()).Unix() * 1000
 
-	//check if day is already in DB
+	// check if day is already in DB
 	var daydb model.Day
-	result := db.Where("id = ? AND date = ?", email, beginTime).First(&daydb)
-	//error handing
-	if result.Error != nil {
-		return result.Error
-	}
-
-	//if result returns a value, then do not process this day's mails
-	if result.RowsAffected > 0 {
-		return nil
+	err := db.Where("id = ? AND date = ?", email, beginTime).First(&daydb).Error
+	// error handing
+	if !gorm.IsRecordNotFoundError(err) {
+		return err // will return err or nil (if err is nil)
 	}
 
 	//authenticate with google servers to access emails
@@ -256,7 +252,7 @@ func ProcessDailyMail(email string, inDate time.Time, db *gorm.DB) error {
 // ProcessMailRange takes an email string, start time and end time, and a db
 // loops through and calls ProcessMailDay for each day from end day to start day
 // not the most efficient way of doing it, but is cleaner and easier to change
-func ProcessMailRange(email string, startDay time.Time, endDay time.Time, db *gorm.DB) error {
+func ProcessMailRange(startDay time.Time, endDay time.Time, db *gorm.DB) error {
 
 	//calculate number of days between start and end
 	days := int(endDay.Sub(startDay).Hours() / 24)
@@ -266,10 +262,12 @@ func ProcessMailRange(email string, startDay time.Time, endDay time.Time, db *go
 	for i := 0; i < days; i++ {
 		//12:00:00AM of the next day
 		nextDay := time.Date(year, month, day+i, 0, 0, 0, 0, startDay.Location())
-		err := ProcessDailyMail(email, nextDay, db)
-		if err != nil {
-			return err
-		}
+		fmt.Println(nextDay)
+		nextDay := startDay.AddDate(0, 0, I)
+		//err := ProcessDailyMail(email, nextDay, db)
+		// if err != nil {
+		// 	return err
+		// }
 	}
 	return nil
 }

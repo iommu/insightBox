@@ -22,7 +22,7 @@ function Dashboard() {
   return (
     <Provider value={client}>
       <div>
-        <div class="homepage-content">
+        <div class="dashboard-content">
           <Flex flexWrap='wrap' m={20} >
             <Box 
               sx={{textAlign: 'center', borderWidth: '1px',borderStyle: 'solid',borderColor: 'black', backgroundColor: 'white'}}

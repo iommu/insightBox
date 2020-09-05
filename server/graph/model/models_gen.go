@@ -6,13 +6,6 @@ import (
 	"time"
 )
 
-type Words struct {
-	ID    string    `gorm:"primary_key" json:"id"`
-	Date  time.Time `gorm:"primary_key" json:"date"`
-	Word  string    `gorm:"primary_key" json:"word"`
-	Count int       `json:"count"`
-}
-
 type Day struct {
 	ID       string    `gorm:"primary_key" json:"id"`
 	Date     time.Time `gorm:"primary_key" json:"date"`
@@ -32,4 +25,11 @@ type User struct {
 	ID            string `json:"id"`
 	Name          string `json:"name"`
 	ColorSchemeID int    `json:"colorSchemeID"`
+}
+
+type Words struct {
+	ID    string    `gorm:"primary_key" json:"id"`
+	Date  time.Time `gorm:"primary_key" json:"date"`
+	Word  string    `gorm:"primary_key" json:"word"`
+	Count int       `json:"count"`
 }

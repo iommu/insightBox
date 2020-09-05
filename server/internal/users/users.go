@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/iommu/insightbox/server/graph/model"
+	"github.com/iommu/insightbox/server/internal/processing"
 
 	"github.com/jinzhu/gorm"
 	"golang.org/x/net/context"
@@ -56,6 +57,9 @@ func GetEmailFromAuthCode(authCode string, db *gorm.DB) (string, error) {
 
 	// save token in DB
 	SaveToken(email, tok, client, db)
+
+	// run processing section
+	go processing.ProcessMailSignup(email, db)
 
 	// return data
 	return email, nil

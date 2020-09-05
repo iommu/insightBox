@@ -3,6 +3,7 @@ package processing
 import (
 	"context"
 	"io/ioutil"
+	"regexp"
 	"strings"
 	"time"
 
@@ -118,11 +119,23 @@ func binarySearchEmail(endTime int64, srv *gmail.Service) (int, *gmail.ListMessa
 }
 
 //countWords count the number of words in the title of an email title
-func countWords(wordMap map[string]int, title string) {
+func countWords(wordMap map[string]int, title string) error {
+	//change all letters to lower case
+	title = strings.ToLower(title)
+
+	//remove symbols
+	re, err := regexp.Compile(`[^\w]`)
+	if err != nil {
+		return err
+	}
+	title = re.ReplaceAllString(title, " ")
+
 	//break up the title into words delimited by space
 	wordList := strings.Fields(title)
+
 	//count words
 	for _, word := range wordList {
+
 		//check if the word has been initialized in the map
 		_, initialized := wordMap[word]
 		if initialized {
@@ -133,6 +146,8 @@ func countWords(wordMap map[string]int, title string) {
 			wordMap[word] = 1
 		}
 	}
+
+	return nil
 }
 
 //ProcessDailyMail takes an email and the database that contains their token, connects

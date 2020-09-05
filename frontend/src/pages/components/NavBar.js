@@ -22,7 +22,7 @@ class TopBar extends React.Component {
         color='black'
         bg='white'
         alignItems='center'
-        sx={{borderBottom: '3px solid', borderImage: 'linear-gradient(to right, #5036ff 20%, #57a9ec 20%, #57a9ec 40%, #65AD50 40%, #65AD50 60%, #FFD151 60%, #FFD151 80%, #e01b1b 80%, #e01b1b 100%) 5'}}>
+        sx={{borderBottom: '3px solid', borderImage: 'linear-gradient(to right, #9636ff 20%, #40a1f1 20%, #40a1f1 40%, #65AD50 40%, #65AD50 60%, #FFD151 60%, #FFD151 80%, #f13333 80%, #f13333 100%) 5'}}>
         <Link to="/">
           <Flex
             color='black'

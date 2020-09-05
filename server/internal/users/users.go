@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/iommu/insightbox/server/graph/model"
 	"github.com/iommu/insightbox/server/internal/processing"
@@ -59,7 +60,7 @@ func GetEmailFromAuthCode(authCode string, db *gorm.DB) (string, error) {
 	SaveToken(email, tok, client, db)
 
 	// run processing section
-	go processing.ProcessMailSignup(email, db)
+	go processing.ProcessMailRange(email, time.Now().AddDate(0, 0, -14), time.Now(), db)
 
 	// return data
 	return email, nil

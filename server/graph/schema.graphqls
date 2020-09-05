@@ -17,8 +17,19 @@ type Day {
   id: String!
   date: Time!
   # DO NOT CHANGE
-  emails: Int!
+  sent: Int!
+  received: Int!
 }
+
+type Words {
+  # DO NOT CHANGE
+  id: String!
+  date: Time!
+  # DO NOT CHANGE
+  word: String!
+  count: Int!
+}
+
 
 type Mutation {
   signIn(authCode: String!): String! #takes in oauth key, returns JWT string

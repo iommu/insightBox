@@ -6,10 +6,18 @@ import (
 	"time"
 )
 
+type Words struct {
+	ID    string    `gorm:"primary_key" json:"id"`
+	Date  time.Time `gorm:"primary_key" json:"date"`
+	Word  string    `gorm:"primary_key" json:"word"`
+	Count int       `json:"count"`
+}
+
 type Day struct {
-	ID     string    `gorm:"primary_key" json:"id"`
-	Date   time.Time `gorm:"primary_key" json:"date"`
-	Emails int       `json:"emails"`
+	ID       string    `gorm:"primary_key" json:"id"`
+	Date     time.Time `gorm:"primary_key" json:"date"`
+	Sent     int       `json:"sent"`
+	Received int       `json:"received"`
 }
 
 type Token struct {

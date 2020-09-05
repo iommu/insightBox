@@ -36,7 +36,7 @@ export const Day = () => {
     query {
       data(start:"2006-01-02T15:04:05Z", end:"2026-01-02T15:04:05Z") {
         date,
-        emails
+        received
       }
     }`
   });
@@ -57,7 +57,7 @@ export const Day = () => {
 
   return (
     <table>
-      <tr><td>date</td>number of emails</tr>
+      <tr><td>date</td>number of emails recv</tr>
       {result.data.data.map(day => (
         <tr>
           <td>{day.date}</td><td>{day.received}</td>

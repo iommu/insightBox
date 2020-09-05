@@ -57,10 +57,10 @@ export const Day = () => {
 
   return (
     <table>
-      <tr><td>name</td>number of emails</tr>
+      <tr><td>date</td>number of emails</tr>
       {result.data.data.map(day => (
         <tr>
-          <td>{day.date}</td><td>{day.emails}</td>
+          <td>{day.date}</td><td>{day.received}</td>
         </tr>
       ))}
     </table>

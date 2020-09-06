@@ -8,7 +8,7 @@ function PrivacyPolicy() {
         <div class="pptos">
         <h1>Privacy Policy</h1>
         <p>Last modified: 6 September 2020</p>
-        <p>Our email analytics service at <b>insightbox.xyz</b> is committed to the privacy and security of the information that we collect, process, analyse and store from our users when using our application. This policy outlines what data we collect from our users, how we use it and any security concerns.</p>
+        <p>Our email analytics service at <b>insightbox.xyz</b> is committed to the privacy and security of the information that we collect, process, analyse and store from our users when using our application. This policy outlines what data we collect from our users, how we use it and the current security of the site.</p>
         <p>We may change this policy over time, ensure to check back every now and again.</p>
         <h2>What data we collect</h2>
         <p>We collect a user's Google account information to sign up and create an account on the system for the user.</p>
@@ -28,7 +28,7 @@ function PrivacyPolicy() {
         <h2>Disclosure of information</h2>
         <p>We do not disclose your information to any external third parties.</p>
         <h2>Security</h2>
-        <p>This website is still currently under development so we can't currently guarantee the confidentiality of the information that you provide.</p>
+        <p>This website is still under development so we can't currently guarantee the confidentiality of the information that you provide.</p>
         <h2>Contact</h2>
         <p>insightbox.analytics@gmail.com</p>
         <br/>

@@ -18,7 +18,7 @@ function TermsofUse() {
         <h2>Intellectual Property</h2>
         <p>The entire website and its contents (apart from the data you provided) is solely and wholly owned by the company <b>insightbox.xyz</b>.</p>
         <h2>Prohibited Uses</h2>
-        <p>You must not use this site or its services for any unlawful purposes. This includes anything that violates any applicable federal, state, local or international laws. You additionally agree not to damage, break or attempt to disable the website by any means.</p>
+        <p>You must not use this site or its services for any unlawful purposes. This includes anything that violates any applicable federal, state, local or international laws. You additionally agree not to damage, break or attempt to disable the website.</p>
         <h2>Termination</h2>
         <p>We retain the right to terminate the user's account and prevent them from making another one. Upon termination any and all data relating to that user is deleted.</p>
         <h2>Liability</h2>

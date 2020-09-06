@@ -98,13 +98,6 @@
     text-align: left;
 }
 
-.dashboard-content{
-    position: absolute;
-    margin-top: 10%;
-    width: 100%;
-    text-align: center;
-}
-
 #home-icon{
     display: inline-block;
     position: fixed;
@@ -194,4 +187,26 @@
     position: fixed;
     bottom: 25px;
     right: -5px;
+}
+
+.dashboard-content{
+    margin: auto;
+    margin-top: 10px;
+    width: 95%;
+    text-align: center;
+    border: 1px solid black;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.stat-container{
+    border: 1px solid black;
+    background-color: white;
+    width: 200px;
+    height: 250px;
+    text-align: left;
+    padding: 10px;
+    margin: 1.5%;
 }

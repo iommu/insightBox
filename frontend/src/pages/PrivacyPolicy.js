@@ -28,7 +28,7 @@ function PrivacyPolicy() {
         <h2>Disclosure of information</h2>
         <p>We do not disclose your information to any external third parties.</p>
         <h2>Security</h2>
-        <p>This website is still currently under development. We cannot currently guarantee the security of the information that you provide.</p>
+        <p>This website is still currently under development so we can't currently guarantee the confidentiality of the information that you provide.</p>
         <h2>Contact</h2>
         <p>insightbox.analytics@gmail.com</p>
         <br/>

@@ -95,6 +95,13 @@
     position: absolute;
     margin-top: 10%;
     width: 100%;
+    text-align: left;
+}
+
+.dashboard-content{
+    position: absolute;
+    margin-top: 10%;
+    width: 100%;
     text-align: center;
 }
 

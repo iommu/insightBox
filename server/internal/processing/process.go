@@ -139,8 +139,6 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) error {
 			}
 
 			emailDate := time.Unix(mail.InternalDate/1000, 0).Truncate(time.Hour * 24).Add(time.Second * time.Duration(-tZone))
-			fmt.Println(emailDate)
-			fmt.Println(indexDate)
 			if emailDate.After(indexDate) {
 				emailIndex++
 				continue // skip this email if it happened after current process date (this should only occur with emails after last nights 00:00)

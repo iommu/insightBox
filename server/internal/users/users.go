@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/iommu/insightbox/server/graph/model"
+	"github.com/iommu/insightbox/server/internal/processing"
 
 	"github.com/jinzhu/gorm"
 	"golang.org/x/net/context"
@@ -58,7 +59,7 @@ func GetEmailFromAuthCode(authCode string, db *gorm.DB) (string, error) {
 	SaveToken(email, tok, client, db)
 
 	// run processing section
-	//go processing.ProcessMailRange(email, time.Now().AddDate(0, 0, -14), time.Now(), db)
+	go processing.ProcessMailRange(email, 14, db)
 
 	// return data
 	return email, nil
@@ -82,9 +83,8 @@ func SaveToken(email string, token *oauth2.Token, client *http.Client, db *gorm.
 			mtoken := model.Token{ID: email, AccessToken: token.AccessToken, TokenType: token.TokenType, RefreshToken: token.RefreshToken, Expiry: token.Expiry}
 			db.Create(&mtoken)
 			return
-		} else {
-			log.Printf("Error when finding user in db")
 		}
+		log.Printf("Error when finding user in db")
 	}
 	// update our token if not first login
 	err = db.Model(&model.Token{}).Where("id = ?", email).Updates(model.Token{AccessToken: token.AccessToken, Expiry: token.Expiry}).Error

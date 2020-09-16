@@ -149,16 +149,20 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) error {
 
 			// ---------- process email
 
-			if mail.Payload.Headers[0].Value == email {
-				receivedEmails++
+			switch len := len(mail.Payload.Headers); {
+			case len > 18:
+				if mail.Payload.Headers[18].Value == email {
+					sentEmails++
+				}
+				fallthrough
+			case len > 15:
+				countWords(words, mail.Payload.Headers[15].Value)
+				fallthrough
+			default:
+				if mail.Payload.Headers[0].Value == email {
+					receivedEmails++
+				}
 			}
-
-			if mail.Payload.Headers[18].Value == email {
-				sentEmails++
-			}
-
-			//count the words
-			countWords(words, mail.Payload.Headers[15].Value)
 
 			// ---------- end process email
 

@@ -26,8 +26,9 @@ import (
 var db *gorm.DB
 
 func initDB() {
+	var err error
 	dataSourceName := "group:isit321@(localhost)/insightbox?charset=utf8&parseTime=True&loc=Local"
-	db, err := gorm.Open("mysql", dataSourceName)
+	db, err = gorm.Open("mysql", dataSourceName)
 	if err != nil {
 		fmt.Println(err)
 		panic("failed to connect database")

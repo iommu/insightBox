@@ -70,10 +70,12 @@ export const Day = () => {
 export const ID = () => {
   const [result, getDayData] = useQuery({
     query: `
-    user {
-      given_name,
-      family_name,
-      picture  
+    query {
+      user {
+        given_name,
+        family_name,
+        picture  
+      }
     }`
   });
 

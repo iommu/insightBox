@@ -80,10 +80,10 @@ type ComplexityRoot struct {
 	}
 
 	Word struct {
-		Count func(childComplexity int) int
 		Date  func(childComplexity int) int
 		ID    func(childComplexity int) int
-		Word  func(childComplexity int) int
+		Text  func(childComplexity int) int
+		Value func(childComplexity int) int
 	}
 }
 
@@ -260,13 +260,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Picture(childComplexity), true
 
-	case "Word.count":
-		if e.complexity.Word.Count == nil {
-			break
-		}
-
-		return e.complexity.Word.Count(childComplexity), true
-
 	case "Word.date":
 		if e.complexity.Word.Date == nil {
 			break
@@ -281,12 +274,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Word.ID(childComplexity), true
 
-	case "Word.word":
-		if e.complexity.Word.Word == nil {
+	case "Word.text":
+		if e.complexity.Word.Text == nil {
 			break
 		}
 
-		return e.complexity.Word.Word(childComplexity), true
+		return e.complexity.Word.Text(childComplexity), true
+
+	case "Word.value":
+		if e.complexity.Word.Value == nil {
+			break
+		}
+
+		return e.complexity.Word.Value(childComplexity), true
 
 	}
 	return 0, false
@@ -381,12 +381,10 @@ type Day {
 }
 
 type Word {
-  # vvv DO NOT CHANGE
   id: ID!
   date: Time!
-  word: String!
-  # ^^^ DO NOT CHANGE
-  count: Int!
+  text: String!
+  value: Int!
 }
 
 
@@ -1323,7 +1321,7 @@ func (ec *executionContext) _Word_date(ctx context.Context, field graphql.Collec
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Word_word(ctx context.Context, field graphql.CollectedField, obj *model.Word) (ret graphql.Marshaler) {
+func (ec *executionContext) _Word_text(ctx context.Context, field graphql.CollectedField, obj *model.Word) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1340,7 +1338,7 @@ func (ec *executionContext) _Word_word(ctx context.Context, field graphql.Collec
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Word, nil
+		return obj.Text, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1357,7 +1355,7 @@ func (ec *executionContext) _Word_word(ctx context.Context, field graphql.Collec
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Word_count(ctx context.Context, field graphql.CollectedField, obj *model.Word) (ret graphql.Marshaler) {
+func (ec *executionContext) _Word_value(ctx context.Context, field graphql.CollectedField, obj *model.Word) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1374,7 +1372,7 @@ func (ec *executionContext) _Word_count(ctx context.Context, field graphql.Colle
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Count, nil
+		return obj.Value, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2712,13 +2710,13 @@ func (ec *executionContext) _Word(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "word":
-			out.Values[i] = ec._Word_word(ctx, field, obj)
+		case "text":
+			out.Values[i] = ec._Word_text(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "count":
-			out.Values[i] = ec._Word_count(ctx, field, obj)
+		case "value":
+			out.Values[i] = ec._Word_value(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}

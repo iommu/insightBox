@@ -35,6 +35,6 @@ type User struct {
 type Word struct {
 	ID    string    `json:"id" gorm:"primary_key"`
 	Date  time.Time `json:"date" gorm:"primary_key"`
-	Word  string    `json:"word" gorm:"primary_key"`
-	Count int       `json:"count"`
+	Text  string    `json:"text" gorm:"primary_key"`
+	Value int       `json:"value"`
 }

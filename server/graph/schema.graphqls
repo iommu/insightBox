@@ -27,12 +27,10 @@ type Day {
 }
 
 type Word {
-  # vvv DO NOT CHANGE
   id: ID!
   date: Time!
-  word: String!
-  # ^^^ DO NOT CHANGE
-  count: Int!
+  text: String!
+  value: Int!
 }
 
 

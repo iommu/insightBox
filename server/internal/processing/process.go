@@ -173,7 +173,7 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) error {
 		day = model.Day{ID: email, Date: indexDate, Sent: sentEmails, Received: receivedEmails}
 		db.Create(&day)
 		for word, count := range words {
-			wordCount := model.Word{ID: email, Date: indexDate, Word: word, Count: count}
+			wordCount := model.Word{ID: email, Date: indexDate, Text: word, Value: count}
 			db.Create(&wordCount)
 		}
 	}

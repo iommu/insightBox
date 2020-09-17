@@ -12,7 +12,6 @@ type User {
   family_name: String!
   picture: String!
   locale: String! 
-  name: String!
   colorSchemeID: Int!
 }
 

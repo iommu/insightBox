@@ -2,6 +2,7 @@ package users
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 
@@ -95,6 +96,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	}
 
 	// run processing section
+	fmt.Println("processing user, ", user.ID)
 	go processing.ProcessMailRange(user.ID, 14, db)
 
 	return user.ID, nil

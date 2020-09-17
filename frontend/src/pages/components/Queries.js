@@ -94,6 +94,6 @@ export const ID = () => {
   };
 
   return (
-  <div>Hello {data.user.given_name} {data.user.family_name} <img src="{data.user.picture}" /></div>
+  <div>Hello {data.user.given_name} {data.user.family_name} <img width="30px" src={data.user.picture} /></div>
   );
 }

@@ -110,7 +110,7 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 
 		// TODO fix this
 		// // check if day already exists in db
-		// var day model.Day
+		var day model.Day
 		// err := db.Where("id = ? AND date = ?", email, indexDate).First(&day).Error
 		// // error handing if nil error or error other the not found return {err}
 		// // caution : this means the function cannot fill gaps in day objs unless expressly asked because it will quit at first found day obj

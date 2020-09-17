@@ -49,6 +49,7 @@ type ComplexityRoot struct {
 		ID       func(childComplexity int) int
 		Received func(childComplexity int) int
 		Sent     func(childComplexity int) int
+		Words    func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -78,7 +79,7 @@ type ComplexityRoot struct {
 		Picture       func(childComplexity int) int
 	}
 
-	Words struct {
+	Word struct {
 		Count func(childComplexity int) int
 		Date  func(childComplexity int) int
 		ID    func(childComplexity int) int
@@ -136,6 +137,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Day.Sent(childComplexity), true
+
+	case "Day.words":
+		if e.complexity.Day.Words == nil {
+			break
+		}
+
+		return e.complexity.Day.Words(childComplexity), true
 
 	case "Mutation.signIn":
 		if e.complexity.Mutation.SignIn == nil {
@@ -252,33 +260,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Picture(childComplexity), true
 
-	case "Words.count":
-		if e.complexity.Words.Count == nil {
+	case "Word.count":
+		if e.complexity.Word.Count == nil {
 			break
 		}
 
-		return e.complexity.Words.Count(childComplexity), true
+		return e.complexity.Word.Count(childComplexity), true
 
-	case "Words.date":
-		if e.complexity.Words.Date == nil {
+	case "Word.date":
+		if e.complexity.Word.Date == nil {
 			break
 		}
 
-		return e.complexity.Words.Date(childComplexity), true
+		return e.complexity.Word.Date(childComplexity), true
 
-	case "Words.id":
-		if e.complexity.Words.ID == nil {
+	case "Word.id":
+		if e.complexity.Word.ID == nil {
 			break
 		}
 
-		return e.complexity.Words.ID(childComplexity), true
+		return e.complexity.Word.ID(childComplexity), true
 
-	case "Words.word":
-		if e.complexity.Words.Word == nil {
+	case "Word.word":
+		if e.complexity.Word.Word == nil {
 			break
 		}
 
-		return e.complexity.Words.Word(childComplexity), true
+		return e.complexity.Word.Word(childComplexity), true
 
 	}
 	return 0, false
@@ -363,19 +371,20 @@ type User {
 }
 
 type Day {
-  # DO NOT CHANGE
-  id: String!
+  # vvv DO NOT CHANGE
+  id: ID!
   date: Time!
-  # DO NOT CHANGE
+  # ^^^ DO NOT CHANGE
   sent: Int!
   received: Int!
+  words: [Word!]!
 }
 
-type Words {
-  # DO NOT CHANGE
-  id: String!
+type Word {
+  # vvv DO NOT CHANGE
+  id: ID!
   date: Time!
-  # DO NOT CHANGE
+  # ^^^ DO NOT CHANGE
   word: String!
   count: Int!
 }
@@ -517,7 +526,7 @@ func (ec *executionContext) _Day_id(ctx context.Context, field graphql.Collected
 	}
 	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Day_date(ctx context.Context, field graphql.CollectedField, obj *model.Day) (ret graphql.Marshaler) {
@@ -620,6 +629,40 @@ func (ec *executionContext) _Day_received(ctx context.Context, field graphql.Col
 	res := resTmp.(int)
 	fc.Result = res
 	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Day_words(ctx context.Context, field graphql.CollectedField, obj *model.Day) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Day",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Words, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Word)
+	fc.Result = res
+	return ec.marshalNWord2ᚕᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐWordᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_signIn(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1212,7 +1255,7 @@ func (ec *executionContext) _User_colorSchemeID(ctx context.Context, field graph
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Words_id(ctx context.Context, field graphql.CollectedField, obj *model.Words) (ret graphql.Marshaler) {
+func (ec *executionContext) _Word_id(ctx context.Context, field graphql.CollectedField, obj *model.Word) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1220,7 +1263,7 @@ func (ec *executionContext) _Words_id(ctx context.Context, field graphql.Collect
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "Words",
+		Object:   "Word",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -1243,10 +1286,10 @@ func (ec *executionContext) _Words_id(ctx context.Context, field graphql.Collect
 	}
 	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Words_date(ctx context.Context, field graphql.CollectedField, obj *model.Words) (ret graphql.Marshaler) {
+func (ec *executionContext) _Word_date(ctx context.Context, field graphql.CollectedField, obj *model.Word) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1254,7 +1297,7 @@ func (ec *executionContext) _Words_date(ctx context.Context, field graphql.Colle
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "Words",
+		Object:   "Word",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -1280,7 +1323,7 @@ func (ec *executionContext) _Words_date(ctx context.Context, field graphql.Colle
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Words_word(ctx context.Context, field graphql.CollectedField, obj *model.Words) (ret graphql.Marshaler) {
+func (ec *executionContext) _Word_word(ctx context.Context, field graphql.CollectedField, obj *model.Word) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1288,7 +1331,7 @@ func (ec *executionContext) _Words_word(ctx context.Context, field graphql.Colle
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "Words",
+		Object:   "Word",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -1314,7 +1357,7 @@ func (ec *executionContext) _Words_word(ctx context.Context, field graphql.Colle
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Words_count(ctx context.Context, field graphql.CollectedField, obj *model.Words) (ret graphql.Marshaler) {
+func (ec *executionContext) _Word_count(ctx context.Context, field graphql.CollectedField, obj *model.Word) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1322,7 +1365,7 @@ func (ec *executionContext) _Words_count(ctx context.Context, field graphql.Coll
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "Words",
+		Object:   "Word",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -2442,6 +2485,11 @@ func (ec *executionContext) _Day(ctx context.Context, sel ast.SelectionSet, obj 
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "words":
+			out.Values[i] = ec._Day_words(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -2643,34 +2691,34 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 	return out
 }
 
-var wordsImplementors = []string{"Words"}
+var wordImplementors = []string{"Word"}
 
-func (ec *executionContext) _Words(ctx context.Context, sel ast.SelectionSet, obj *model.Words) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, wordsImplementors)
+func (ec *executionContext) _Word(ctx context.Context, sel ast.SelectionSet, obj *model.Word) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, wordImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	var invalids uint32
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("Words")
+			out.Values[i] = graphql.MarshalString("Word")
 		case "id":
-			out.Values[i] = ec._Words_id(ctx, field, obj)
+			out.Values[i] = ec._Word_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
 		case "date":
-			out.Values[i] = ec._Words_date(ctx, field, obj)
+			out.Values[i] = ec._Word_date(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
 		case "word":
-			out.Values[i] = ec._Words_word(ctx, field, obj)
+			out.Values[i] = ec._Word_word(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
 		case "count":
-			out.Values[i] = ec._Words_count(ctx, field, obj)
+			out.Values[i] = ec._Word_count(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -3049,6 +3097,57 @@ func (ec *executionContext) marshalNTime2timeᚐTime(ctx context.Context, sel as
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNWord2githubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐWord(ctx context.Context, sel ast.SelectionSet, v model.Word) graphql.Marshaler {
+	return ec._Word(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNWord2ᚕᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐWordᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Word) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNWord2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐWord(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalNWord2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐWord(ctx context.Context, sel ast.SelectionSet, v *model.Word) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Word(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {

@@ -109,6 +109,7 @@ github.com/iommu/insightbox v0.0.0-20200811112745-6395693213fc h1:z/hOTjqZxmuGbx
 github.com/iommu/insightbox v0.0.0-20200814043447-2136e9aeaecc h1:Npr8ak+f54pCFDXSZiEjFJe5Ch67c8nmd0rSkLvEwzE=
 github.com/iommu/insightbox v0.0.0-20200905074847-c6729e38677b h1:Fq0nknV7gs5esri6ZqihwWd0av2YP/0CG3MBJ5Wus3c=
 github.com/iommu/insightbox v0.0.0-20200910063244-3f5a8aee9796 h1:uz2glp0xdE7aImwU2ir6y13v0dKv9vGWAgsoOi3Fhxg=
+github.com/iommu/insightbox v0.0.0-20200917043336-dfa3b2c1c818 h1:Aixzxei328xeesgLxfgr8/vwmTDqtvB77ryE5Ngvcf0=
 github.com/jinzhu/gorm v1.9.14 h1:Kg3ShyTPcM6nzVo148fRrcMO6MNKuqtOUwnzqMgVniM=
 github.com/jinzhu/gorm v1.9.14/go.mod h1:G3LB3wezTOWM2ITLzPxEXgSkOXAntiLHS7UdBefADcs=
 github.com/jinzhu/inflection v1.0.0 h1:K317FqzuhWc8YvSVlFMCCUb36O/S9MCKRDI7QkRKD/E=

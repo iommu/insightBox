@@ -11,6 +11,7 @@ type Day struct {
 	Date     time.Time `json:"date" gorm:"primary_key"`
 	Sent     int       `json:"sent"`
 	Received int       `json:"received"`
+	Words    []*Word   `json:"words"`
 }
 
 type Token struct {
@@ -31,9 +32,9 @@ type User struct {
 	ColorSchemeID int    `json:"colorSchemeID"`
 }
 
-type Words struct {
-	ID    string    `json:"id" gorm:"primary_key"`
-	Date  time.Time `json:"date" gorm:"primary_key"`
-	Word  string    `json:"word" gorm:"primary_key"`
+type Word struct {
+	ID    string    `json:"id"`
+	Date  time.Time `json:"date"`
+	Word  string    `json:"word"`
 	Count int       `json:"count"`
 }

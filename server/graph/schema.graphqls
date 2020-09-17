@@ -17,19 +17,20 @@ type User {
 }
 
 type Day {
-  # DO NOT CHANGE
-  id: String!
+  # vvv DO NOT CHANGE
+  id: ID!
   date: Time!
-  # DO NOT CHANGE
+  # ^^^ DO NOT CHANGE
   sent: Int!
   received: Int!
+  words: [Word!]!
 }
 
-type Words {
-  # DO NOT CHANGE
-  id: String!
+type Word {
+  # vvv DO NOT CHANGE
+  id: ID!
   date: Time!
-  # DO NOT CHANGE
+  # ^^^ DO NOT CHANGE
   word: String!
   count: Int!
 }

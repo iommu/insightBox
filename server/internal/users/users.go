@@ -51,6 +51,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 		log.Println("Error, no content in user profile request body ", err)
 		return "", err
 	}
+	fmt.Println(string(body))
 	var user model.User
 	err = json.Unmarshal(body, &user)
 	if err != nil {
@@ -77,7 +78,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	// by this point we have User{id, picture, locale, given_name, family_name}
 
 	// find user and create if can't
-	if !db.NewRecord(&user) { // if no current user with PK
+	if !db.NewRecord(user) { // if no current user with PK
 		log.Printf("User with email addr %s not found, creating", user.ID)
 		// set user default variables for user
 		user.ColorSchemeID = 1
@@ -91,7 +92,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 
 	// update our token if not first login
 	token := model.Token{ID: user.ID, AccessToken: tok.AccessToken, TokenType: tok.TokenType, RefreshToken: tok.RefreshToken, Expiry: tok.Expiry}
-	if !db.NewRecord(&token) {
+	if !db.NewRecord(token) {
 		db.Save(&token)
 	}
 

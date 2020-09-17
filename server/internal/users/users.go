@@ -1,94 +1,101 @@
 package users
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"log"
-	"net/http"
 
 	"github.com/iommu/insightbox/server/graph/model"
 	"github.com/iommu/insightbox/server/internal/processing"
 
 	"github.com/jinzhu/gorm"
 	"golang.org/x/net/context"
-	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/gmail/v1"
+	"google.golang.org/api/people/v1"
 )
 
-//GetEmailFromAuthCode Takes in authcode and finds email addr
-func GetEmailFromAuthCode(authCode string, db *gorm.DB) (string, error) {
+//SignIn gets new token for user and saves/updates user account, returns Email (and error)
+func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	// get credentials // TODO store google.Config in place of credentials.json
 	b, err := ioutil.ReadFile("credentials.json")
 	if err != nil {
 		log.Fatalf("Unable to read client secret file: %v", err)
 	}
-
 	// get config with credentials
-	config, err := google.ConfigFromJSON(b, gmail.GmailReadonlyScope)
+	config, err := google.ConfigFromJSON(b, gmail.GmailReadonlyScope, people.UserinfoProfileScope)
 	if err != nil {
 		log.Fatalf("Unable to parse client secret file to config: %v", err)
 	}
-
 	// get token from authCode
 	tok, err := config.Exchange(context.TODO(), authCode)
 	if err != nil {
 		log.Printf("Unable to retrieve token from web: %v", err)
 		return "", err
 	}
-
 	// get client with config and auth token
 	client := config.Client(context.Background(), tok)
 
+	// connect to People API
+	res, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo")
+	if err != nil {
+		log.Println("Error requesting user profile ", err)
+		return "", err
+	}
+	if res.Body != nil {
+		defer res.Body.Close()
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Println("Error, no content in user profile request body ", err)
+		return "", err
+	}
+	var user model.User
+	err = json.Unmarshal(body, &user)
+	if err != nil {
+		log.Println("Error, unmarshaling json for user info ", err)
+		return "", err
+	}
 	// connect to Gmail API
 	srv, err := gmail.New(client)
 	if err != nil {
 		log.Printf("Unable to retrieve Gmail client: %v", err)
 		return "", err
 	}
-
 	// get user email as string
-	user := ""
-	profile, err := srv.Users.GetProfile(user).Do()
+	srvUser := ""
+	profile, err := srv.Users.GetProfile(srvUser).Do()
 	if err != nil {
 		log.Printf("Unable to retrieve email addr: %v", err)
 		return "", err
 	}
-	email := profile.EmailAddress
 
-	// save token in DB
-	SaveToken(email, tok, client, db)
+	// add email(id) from gmail API to user data
+	user.ID = profile.EmailAddress
+
+	// by this point we have User{id, picture, locale, given_name, family_name}
+
+	// find user and create if can't
+	if db.NewRecord(&user) { // if no current user with PK
+		log.Printf("User with email addr %s not found, creating", user.ID)
+		// set user default variables for user
+		user.ColorSchemeID = 1
+	}
+	// Save(Create/Update) user to db
+	err = db.Save(&user).Error
+	if err != nil {
+		log.Printf("Error saving user to database: %v", err)
+		return "", err
+	}
+
+	// update our token if not first login
+	token := model.Token{ID: user.ID, AccessToken: tok.AccessToken, TokenType: tok.TokenType, RefreshToken: tok.RefreshToken, Expiry: tok.Expiry}
+	if db.NewRecord(&token) {
+		db.Save(&token)
+	}
 
 	// run processing section
-	go processing.ProcessMailRange(email, 14, db)
+	go processing.ProcessMailRange(user.ID, 14, db)
 
-	// return data
-	return email, nil
-}
-
-//SaveToken finds a user in database by given email addr (or creates user if none exists) and saves the new token
-func SaveToken(email string, token *oauth2.Token, client *http.Client, db *gorm.DB) {
-	// find user and create if can't
-	var user model.User
-	err := db.Model(&user).Where("id = ?", email).First(&user).Error
-	if err != nil {
-		if gorm.IsRecordNotFoundError(err) {
-			log.Printf("User with email addr %s not found, creating", email)
-			// set user default variables
-			user.ID = email
-			user.Name = "TODO" // TODO : find from API
-			user.ColorSchemeID = 1
-			// save to db
-			db.Create(&user)
-			// save our token if first login
-			mtoken := model.Token{ID: email, AccessToken: token.AccessToken, TokenType: token.TokenType, RefreshToken: token.RefreshToken, Expiry: token.Expiry}
-			db.Create(&mtoken)
-			return
-		}
-		log.Printf("Error when finding user in db")
-	}
-	// update our token if not first login
-	err = db.Model(&model.Token{}).Where("id = ?", email).Updates(model.Token{AccessToken: token.AccessToken, Expiry: token.Expiry}).Error
-	if err != nil {
-		log.Printf("Error when updating token in db")
-	}
+	return user.ID, nil
 }

@@ -17,7 +17,7 @@ import (
 
 func (r *mutationResolver) SignIn(ctx context.Context, authCode string) (string, error) {
 	// get email from authcode
-	email, err := users.GetEmailFromAuthCode(authCode, r.DB)
+	email, err := users.SignIn(authCode, r.DB)
 	if err != nil {
 		return "", nil
 	}

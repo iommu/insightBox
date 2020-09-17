@@ -78,8 +78,9 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	// by this point we have User{id, picture, locale, given_name, family_name}
 
 	// find user and create if can't
-	err = db.Model(&user).Where("id = ?", user.ID).Error
-	if !gorm.IsRecordNotFoundError(err) { // if no current user with PK
+	var tempUser model.User
+	err = db.Model(&tempUser).Where("id = ?", user.ID).First(&tempUser).Error
+	if gorm.IsRecordNotFoundError(err) { // if no current user with PK
 		log.Printf("User with email addr %s not found, creating", user.ID)
 		// set user default variables for user
 		user.ColorSchemeID = 1
@@ -94,10 +95,21 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	}
 
 	// update our token if not first login
-	token := model.Token{ID: user.ID, AccessToken: tok.AccessToken, TokenType: tok.TokenType, RefreshToken: tok.RefreshToken, Expiry: tok.Expiry}
-	if db.NewRecord(&token) {
-		db.Save(&token)
+	var token model.Token
+	err = db.Model(&token).Where("id = ?", user.ID).First(&token).Error
+	if gorm.IsRecordNotFoundError(err) { // if no current user with PK
+		log.Printf("Token for email addr %s not found, creating", user.ID)
+		// set user default variables for user
+		token.ID = user.ID
+		token.RefreshToken = tok.RefreshToken
+	} else if err != nil {
+		log.Fatalf("Error : GORM error connecting to db : %v", err)
 	}
+
+	token.AccessToken = tok.AccessToken
+	token.TokenType = tok.TokenType
+	token.Expiry = tok.Expiry
+	db.Save(&token)
 
 	// run processing section
 	fmt.Println("processing user, ", user.ID)

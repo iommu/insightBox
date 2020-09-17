@@ -225,3 +225,7 @@
     margin: 1.5%;
     overflow-y: scroll;
 }
+
+.profile-pic{
+    border-radius: 50%;
+}

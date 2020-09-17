@@ -26,10 +26,8 @@ import (
 var db *gorm.DB
 
 func initDB() {
-	var err error
 	dataSourceName := "group:isit321@(localhost)/insightbox?charset=utf8&parseTime=True&loc=Local"
-	db, err = gorm.Open("mysql", dataSourceName)
-
+	db, err := gorm.Open("mysql", dataSourceName)
 	if err != nil {
 		fmt.Println(err)
 		panic("failed to connect database")
@@ -37,8 +35,7 @@ func initDB() {
 
 	db.LogMode(true)
 
-	// Migration to create tables for User, Day and Token schema
-	// gorm:"primary_key"
+	// Migration to create tables for User, Day and Token and Word schema
 	db.AutoMigrate(&model.User{}, &model.Day{}, &model.Token{}, &model.Word{})
 }
 
@@ -60,7 +57,7 @@ func printURL() {
 }
 
 func main() {
-	// Print OAuth URL
+	// print OAuth URL
 	printURL()
 
 	// connect to DB with GORM
@@ -84,7 +81,7 @@ func main() {
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{
 		DB: db,
 	}}))
-	router.Handle("/playground", playground.Handler("Starwars", "/api"))
+	router.Handle("/playground", playground.Handler("insightBox", "/api"))
 	router.Handle("/api", srv)
 
 	// find port using input environment variable (defualt 4000)

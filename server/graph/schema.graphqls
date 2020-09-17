@@ -33,7 +33,6 @@ type Word {
   value: Int!
 }
 
-
 type Mutation {
   signIn(authCode: String!): String! #takes in oauth key, returns JWT string
 }

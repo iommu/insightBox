@@ -108,14 +108,15 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 		// jump back {i} days
 		indexDate := startDay.Add(time.Hour * -24 * time.Duration(i))
 
-		// check if day already exists in db
-		var day model.Day
-		err := db.Where("id = ? AND date = ?", email, indexDate).First(&day).Error
-		// error handing if nil error or error other the not found return {err}
-		// caution : this means the function cannot fill gaps in day objs unless expressly asked because it will quit at first found day obj
-		if !gorm.IsRecordNotFoundError(err) {
-			log.Printf("Error: GORM error checking for existing day rows : %v", err)
-		}
+		// TODO fix this
+		// // check if day already exists in db
+		// var day model.Day
+		// err := db.Where("id = ? AND date = ?", email, indexDate).First(&day).Error
+		// // error handing if nil error or error other the not found return {err}
+		// // caution : this means the function cannot fill gaps in day objs unless expressly asked because it will quit at first found day obj
+		// if !gorm.IsRecordNotFoundError(err) {
+		// 	log.Printf("Error: GORM error checking for existing day rows : %v", err)
+		// }
 
 		// setup saved variables
 		receivedEmails := 0

@@ -92,7 +92,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 
 	// update our token if not first login
 	token := model.Token{ID: user.ID, AccessToken: tok.AccessToken, TokenType: tok.TokenType, RefreshToken: tok.RefreshToken, Expiry: tok.Expiry}
-	if !db.NewRecord(token) {
+	if !db.NewRecord(&token) {
 		db.Save(&token)
 	}
 

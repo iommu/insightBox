@@ -384,8 +384,8 @@ type Word {
   # vvv DO NOT CHANGE
   id: ID!
   date: Time!
-  # ^^^ DO NOT CHANGE
   word: String!
+  # ^^^ DO NOT CHANGE
   count: Int!
 }
 

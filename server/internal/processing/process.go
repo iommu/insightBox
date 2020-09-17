@@ -34,18 +34,18 @@ func authenticate(email string, db *gorm.DB) (*gmail.Service, error) {
 	tok.Expiry = tokendb.Expiry
 
 	//connect to gmail and get service
-	b, e := ioutil.ReadFile("credentials.json")
+	b, err := ioutil.ReadFile("credentials.json")
 	if e != nil {
-		return nil, e
+		return nil, err
 	}
 	config, e := google.ConfigFromJSON(b, gmail.GmailReadonlyScope)
 	if e != nil {
-		return nil, e
+		return nil, err
 	}
 	client := config.Client(context.Background(), tok)
 	srv, e := gmail.New(client)
 	if e != nil {
-		return nil, e
+		return nil, err
 	}
 
 	//return the service to be used

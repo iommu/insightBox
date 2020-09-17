@@ -66,3 +66,32 @@ export const Day = () => {
     </table>
   );
 }
+
+export const User = () => {
+  const [result, getDayData] = useQuery({
+    query: `
+    user {
+      given_name,
+      family_name,
+      picture  
+    }`
+  });
+
+  console.log(result);
+
+  const { data, fetching, error } = result;
+
+  if (fetching) return (
+    <p> Loading user data </p>
+  );
+
+  if (error) {
+    return (
+      <p> Error getting user data </p>
+    );
+  };
+
+  return (
+  <div>Hello {data.user.given_name} {data.user.family_name} <img src="{data.user.picture}" /></div>
+  );
+}

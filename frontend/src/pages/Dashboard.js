@@ -32,6 +32,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <Provider value={client}>
+        <User/>
         <div>
           <div class="dashboard-content">
             <div class="stat-container">

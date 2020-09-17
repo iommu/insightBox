@@ -67,7 +67,7 @@ export const Day = () => {
   );
 }
 
-export const User = () => {
+export const ID = () => {
   const [result, getDayData] = useQuery({
     query: `
     user {

@@ -78,10 +78,13 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	// by this point we have User{id, picture, locale, given_name, family_name}
 
 	// find user and create if can't
-	if db.NewRecord(user) { // if no current user with PK
+	err = db.Model(&user).Where("id = ?", user.ID).Error
+	if !gorm.IsRecordNotFoundError(err) { // if no current user with PK
 		log.Printf("User with email addr %s not found, creating", user.ID)
 		// set user default variables for user
 		user.ColorSchemeID = 1
+	} else if err != nil {
+		log.Fatalf("Error : GORM error connecting to db : %v", err)
 	}
 	// Save(Create/Update) user to db
 	err = db.Save(&user).Error

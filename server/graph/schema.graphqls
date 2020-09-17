@@ -8,6 +8,10 @@ type Token {
 
 type User {
   id: ID! #is their email
+  given_name: String!
+  family_name: String!
+  picture: String!
+  locale: String! 
   name: String!
   colorSchemeID: Int!
 }
@@ -42,4 +46,4 @@ type Query {
 
 scalar Time
 
-# go run github.com/99designs/gqlgen generate
+# make generate

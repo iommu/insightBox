@@ -1,6 +1,7 @@
 import React from 'react';
 import { User, Day } from './components/Queries';
 import { withRouter } from 'react-router-dom';
+import Graph1 from './components/Graph1';
 
 // import graphql and create client
 import { createClient, Provider } from 'urql';
@@ -43,7 +44,7 @@ class Dashboard extends React.Component {
               Graph
             </div>
             <div class="stat-container">
-              Graph
+              <Graph1 />
             </div>
             <div class="stat-container">
               Graph

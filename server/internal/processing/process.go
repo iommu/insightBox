@@ -2,8 +2,8 @@ package processing
 
 import (
 	"context"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"regexp"
 	"strings"
 	"time"
@@ -85,7 +85,7 @@ func countWords(wordMap map[string]int, title string) error {
 }
 
 //ProcessMailRange takes PK email addr, number of days to process from yesterday backwards and db
-func ProcessMailRange(email string, countBack int, db *gorm.DB) error {
+func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 	// calculate last 00:00 time (with respect to UTC)
 	_, tZone := time.Now().Zone()
 	startDay := time.Now().Truncate(time.Hour * 24).Add(time.Second * time.Duration(-tZone))
@@ -93,13 +93,13 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) error {
 	// authenticate with google servers to access emails
 	srv, err := authenticate(email, db)
 	if err != nil {
-		return err
+		log.Printf("Error: could not auth with Google servers : %v", err)
 	}
 
 	// retrieve intial set of emails (countBack * 20) where 20 is rough avgerage emails per day
 	messages, err := srv.Users.Messages.List("me").MaxResults(int64(countBack * 20)).Do()
 	if err != nil {
-		return err
+		log.Printf("Error: could not retrieve intial set : %v", err)
 	}
 
 	// run for loop jumping back through date range
@@ -107,7 +107,6 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) error {
 	for i := 1; i <= countBack; i++ {
 		// jump back {i} days
 		indexDate := startDay.Add(time.Hour * -24 * time.Duration(i))
-		fmt.Println("hello")
 
 		// check if day already exists in db
 		var day model.Day
@@ -115,7 +114,7 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) error {
 		// error handing if nil error or error other the not found return {err}
 		// caution : this means the function cannot fill gaps in day objs unless expressly asked because it will quit at first found day obj
 		if !gorm.IsRecordNotFoundError(err) {
-			return err
+			log.Printf("Error: GORM error checking for existing day rows : %v", err)
 		}
 
 		// setup saved variables
@@ -135,7 +134,7 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) error {
 
 			mail, err := srv.Users.Messages.Get("me", messages.Messages[emailIndex].Id).Format("metadata").Do()
 			if err != nil {
-				return err
+				log.Printf("Error: could not get email metadata : %v", err)
 			}
 
 			emailDate := time.Unix(mail.InternalDate/1000, 0).Truncate(time.Hour * 24).Add(time.Second * time.Duration(-tZone))
@@ -177,7 +176,7 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) error {
 			db.Create(&wordCount)
 		}
 	}
-	return nil
+	return
 }
 
 // func binarySearchEmail(endTime int64, srv *gmail.Service) (int, *gmail.ListMessagesResponse, error) {

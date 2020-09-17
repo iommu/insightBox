@@ -111,6 +111,6 @@ export const ID = () => {
   };
 
   return (
-  <div>Hello {data.user.given_name} {data.user.family_name} <img width="30px" src={data.user.picture} /></div>
+  <div>Hello, {data.user.given_name} {data.user.family_name} <img style="border-radius: 50%;" width="30px" src={data.user.picture} /></div>
   );
 }

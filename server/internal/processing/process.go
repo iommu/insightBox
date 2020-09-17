@@ -35,16 +35,16 @@ func authenticate(email string, db *gorm.DB) (*gmail.Service, error) {
 
 	//connect to gmail and get service
 	b, err := ioutil.ReadFile("credentials.json")
-	if e != nil {
+	if err != nil {
 		return nil, err
 	}
-	config, e := google.ConfigFromJSON(b, gmail.GmailReadonlyScope)
-	if e != nil {
+	config, err := google.ConfigFromJSON(b, gmail.GmailReadonlyScope)
+	if err != nil {
 		return nil, err
 	}
 	client := config.Client(context.Background(), tok)
-	srv, e := gmail.New(client)
-	if e != nil {
+	srv, err := gmail.New(client)
+	if err != nil {
 		return nil, err
 	}
 

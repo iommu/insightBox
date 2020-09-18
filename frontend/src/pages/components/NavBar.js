@@ -8,20 +8,6 @@ import {
 import AuthButton from './Oauth';
 import { LogOut } from 'react-feather';
 import logo from '../../images/logo.png';
-import { ID } from './Queries';
-
-// import graphql and create client
-import { createClient, Provider } from 'urql';
-
-const client = createClient({
-  url: 'https://insightbox.xyz/api',
-  fetchOptions: () => {
-    const token = localStorage.getItem("token");
-    return {
-      headers: { authorization: token ? token : "" },
-    };
-  },
-});
 
 class TopBar extends React.Component {
   render() {
@@ -47,15 +33,12 @@ class TopBar extends React.Component {
         </Link>
         <Switch>
           <Route path="/signin"></Route>
-          <Provider value={client}>
           <Route path="/dashboard">
             <Box mx='auto' />
-            <ID/>
             <button onClick={() => { LogOutFunc(this) }}>
               <LogOut />
             </button>
           </Route>
-          </Provider>
           <Route path="/">
             <Box mx='auto' />
             <Box>

@@ -6,9 +6,6 @@ import Graph1 from './components/Graph1';
 // import graphql and create client
 import { createClient, Provider } from 'urql';
 
-import {
-  Flex, Button, Box, Text
-} from 'rebass';
 
 const client = createClient({
   url: 'https://insightbox.xyz/api',
@@ -32,7 +29,6 @@ class Dashboard extends React.Component {
   render() {
     return (
       <Provider value={client}>
-        <ID/>
         <div>
           <div class="dashboard-content">
             <div class="stat-container">

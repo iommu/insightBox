@@ -4,6 +4,10 @@ import { useQuery } from 'urql';
 import down from '../../images/down.png';
 
 
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
+
+
+
 function LogOutFunc(that) {
   localStorage.removeItem("token");
   that.props.history.push("/");
@@ -62,34 +66,31 @@ export const Day = () => {
     );
   };
 
+  // do computation here
+  var graphdata = [];
+  var rlen = result.data.data.length;
+  var days = ["S", "M", "T", "W", "T", "F", "S"];
+  for (var i = rlen-7; i < rlen; i++) {
+    var date = new Date(result.data.data[i].date);
+    var day = date.getDay(date);
+    var received = result.data.data[i].received;
+    var value = {name: days[day], Total: received, pv: 2400, amt: 2400};
+    graphdata.push(value);
+    console.log(i);
+  }
   return (
-    <table>
-      <tr><td><b>Date</b></td><b>Total Emails</b></tr>
-      {result.data.data.map(day => (
-        <tr>
-          <td>{day.date}</td><td align='right'>{day.received}</td>
-        </tr>
-      ))}
-    </table>
+      <div>
+      <div className="graph-title">Emails per Day</div>
+      <BarChart width={450} height={200} data={graphdata} px={500}>
+        <XAxis dataKey="name" stroke="#47494d" />
+        <YAxis />
+        <Tooltip />
+        <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+        <Bar dataKey="Total" fill="#40a1f1" barSize={30} />
+      </BarChart>
+      </div>
   );
 }
-/*
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
-const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}, ...];
-
-const renderBarChart = (
-  <BarChart width={600} height={200} data={data}>
-    <XAxis dataKey="name" stroke="#8884d8" />
-    <YAxis />
-    <Tooltip />
-    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-    <Bar dataKey="uv" fill="#8884d8" barSize={30} />
-  </BarChart>
-);
-*/
-
-
-
 
 export const ID = () => {
   const [result, getDayData] = useQuery({
@@ -119,10 +120,8 @@ export const ID = () => {
 
   return ( 
 
-  <div class="dropdown">
-            <button class="dropbtn">
-                
-                
+  <div className="dropdown">
+            <button className="dropbtn">
                 <div>
                     <img id="down-img" alt="dropdown arrow" src={down} width="25"/>
                 </div>
@@ -134,7 +133,7 @@ export const ID = () => {
                     <img id="profile-img" alt="user profile pic" src={data.user.picture} width="30"/>
                 </div>
             </button>
-            <div class="dropdown-content">
+            <div className="dropdown-content">
                 <a href="/dashboard">Settings</a>
                 <a href="/" onClick={() => { LogOutFunc(this) }}>Logout</a>
             </div>

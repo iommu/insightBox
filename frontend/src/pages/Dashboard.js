@@ -2,6 +2,7 @@ import React from 'react';
 import { User, Day } from './components/Queries';
 import { withRouter } from 'react-router-dom';
 import Graph1 from './components/Graph1';
+import Graph2 from './components/Graph2';
 
 // import graphql and create client
 import { createClient, Provider } from 'urql';
@@ -30,50 +31,50 @@ class Dashboard extends React.Component {
     return (
       <Provider value={client}>
         <div>
-          <div class="dashboard-content">
-            <div class="stat-container">
-              <User />
+          <div className="dashboard-content">
+            <div className="stat-container">
+              <Graph2 />
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               <Day />
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               Graph
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               <Graph1 />
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               Graph
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               Graph
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               Graph
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               Graph
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               Graph
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               Graph
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               Graph
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               Graph
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               Graph
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               Graph
             </div>
-            <div class="stat-container">
+            <div className="stat-container">
               Graph
             </div>
   

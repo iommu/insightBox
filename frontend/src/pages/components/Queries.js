@@ -1,6 +1,25 @@
 import React from 'react'; 
 // import graphql and create client
 import { useQuery } from 'urql';
+import down from '../../images/down.png';
+
+// import graphql and create client
+import { createClient, Provider } from 'urql';
+
+const client = createClient({
+  url: 'https://insightbox.xyz/api',
+  fetchOptions: () => {
+    const token = localStorage.getItem("token");
+    return {
+      headers: { authorization: token ? token : "" },
+    };
+  },
+});
+
+  function LogOutFunc(that) {
+    localStorage.removeItem("token");
+    that.props.history.push("/");
+  }
 
 // create queries
 export const User = () => {
@@ -110,7 +129,24 @@ export const ID = () => {
     );
   };
 
-  return (
-  <div>Hello, {data.user.given_name} {data.user.family_name} <img className="profile-pic" width="30px" src={data.user.picture} /></div>
+  return ( 
+
+  <div class="dropdown">
+            <button class="dropbtn">
+                <div>
+                    <img id="profile-img" src={data.user.picture} width="30"/>
+                </div>
+                <div id="text-profile">
+                    Hello,&nbsp; {data.user.given_name}
+                </div>
+                <div>
+                    <img id="down-img" src={down} width="25"/>
+                </div>
+            </button>
+            <div class="dropdown-content">
+                <a href="/settings.html">Settings</a>
+                <a href="/" onClick={() => { LogOutFunc(this) }}>Logout</a>
+            </div>
+        </div>
   );
 }

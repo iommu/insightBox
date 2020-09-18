@@ -6,7 +6,6 @@ import {
   Switch, Route, Link, withRouter
 } from "react-router-dom";
 import AuthButton from './Oauth';
-import { LogOut } from 'react-feather';
 import logo from '../../images/logo.png';
 
 import { ID } from './Queries';
@@ -53,9 +52,6 @@ class TopBar extends React.Component {
           <Provider value={client}>
             <Box mx='auto' />
             <ID/>
-            <button onClick={() => { LogOutFunc(this) }}>
-              <LogOut />
-            </button>
             </Provider>
           </Route>
           

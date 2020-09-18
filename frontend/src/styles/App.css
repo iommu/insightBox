@@ -226,22 +226,27 @@
     overflow-y: scroll;
 }
 
-#profile-img{
-    border-radius: 50%;
-    float: left;
+#down-img{
+    margin-left: 15px;
+    float: right;
+    margin-top: 3px;
+    
 }
 
 #text-profile{
     margin-top: 8px;
-    margin-left: 10px;
-    float: left;
+    margin-left: 15px;
+    float: right;
 }
 
-#down-img{
-    margin-left: 10px;
-    float: left;
-    
+#profile-img{
+    border-radius: 50%;
+    float: right;
 }
+
+
+
+
 
 .dropbtn {
     background-color: white;
@@ -251,7 +256,7 @@
     border: none;
     cursor: pointer;
     display: inline-block;
-    width: 210px;
+    width: 280px;
     vertical-align: middle;
     margin-right: 30px;
 }

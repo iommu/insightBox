@@ -133,14 +133,17 @@ export const ID = () => {
 
   <div class="dropdown">
             <button class="dropbtn">
-                <div>
-                    <img id="profile-img" src={data.user.picture} width="30"/>
-                </div>
-                <div id="text-profile">
-                    Hello,&nbsp; {data.user.given_name}
-                </div>
+                
+                
                 <div>
                     <img id="down-img" src={down} width="25"/>
+                </div>
+                
+                <div id="text-profile">
+                    Hello, {data.user.given_name}
+                </div>
+                <div>
+                    <img id="profile-img" src={data.user.picture} width="30"/>
                 </div>
             </button>
             <div class="dropdown-content">

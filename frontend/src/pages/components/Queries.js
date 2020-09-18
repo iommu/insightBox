@@ -3,23 +3,11 @@ import React from 'react';
 import { useQuery } from 'urql';
 import down from '../../images/down.png';
 
-// import graphql and create client
-import { createClient, Provider } from 'urql';
 
-const client = createClient({
-  url: 'https://insightbox.xyz/api',
-  fetchOptions: () => {
-    const token = localStorage.getItem("token");
-    return {
-      headers: { authorization: token ? token : "" },
-    };
-  },
-});
-
-  function LogOutFunc(that) {
-    localStorage.removeItem("token");
-    that.props.history.push("/");
-  }
+function LogOutFunc(that) {
+  localStorage.removeItem("token");
+  that.props.history.push("/");
+}
 
 // create queries
 export const User = () => {
@@ -76,10 +64,10 @@ export const Day = () => {
 
   return (
     <table>
-      <tr><td>date</td>number of emails recv</tr>
+      <tr><td><b>Date</b></td><b>Total Emails</b></tr>
       {result.data.data.map(day => (
         <tr>
-          <td>{day.date}</td><td>{day.received}</td>
+          <td>{day.date}</td><td align='right'>{day.received}</td>
         </tr>
       ))}
     </table>
@@ -136,14 +124,14 @@ export const ID = () => {
                 
                 
                 <div>
-                    <img id="down-img" src={down} width="25"/>
+                    <img id="down-img" alt="dropdown arrow" src={down} width="25"/>
                 </div>
                 
                 <div id="text-profile">
                     Hello, {data.user.given_name}
                 </div>
                 <div>
-                    <img id="profile-img" src={data.user.picture} width="30"/>
+                    <img id="profile-img" alt="user profile pic" src={data.user.picture} width="30"/>
                 </div>
             </button>
             <div class="dropdown-content">

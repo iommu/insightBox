@@ -25,10 +25,6 @@ const client = createClient({
 
 class TopBar extends React.Component {
   render() {
-    function LogOutFunc(that) {
-      localStorage.removeItem("token");
-      that.props.history.push("/");
-    }
     return (
       <Flex
         px={2}

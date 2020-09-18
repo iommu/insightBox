@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Day, ID } from './components/Queries';
+import { User, Day } from './components/Queries';
 import { withRouter } from 'react-router-dom';
 import Graph1 from './components/Graph1';
 

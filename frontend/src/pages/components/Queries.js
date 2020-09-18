@@ -147,7 +147,7 @@ export const ID = () => {
                 </div>
             </button>
             <div class="dropdown-content">
-                <a href="/settings.html">Settings</a>
+                <a href="/dashboard">Settings</a>
                 <a href="/" onClick={() => { LogOutFunc(this) }}>Logout</a>
             </div>
         </div>

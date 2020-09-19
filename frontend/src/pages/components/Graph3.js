@@ -36,19 +36,28 @@ export const Graph3 = () => {
     }
     avg_day = total/14.0;
     avg_week = total/2.0;
+
+    if(!Number.isInteger(avg_day)){
+        avg_day = avg_day.toFixed(2);
+    }
+
+    if(!Number.isInteger(avg_week)){
+        avg_week = avg_day.toFixed(2);
+    }
+
     return (
         <div id="graph3">
-        <br/>
+        <br />
+        
         <div className="graph-title">Total over 2 Weeks</div>
-            {total}
-        <br/>
-        <br/>
+            <div className="numbers">{total}</div>
+        
         <div className="graph-title">Average per Day</div>
-            {avg_day}
-        <br/>
+        <div className="numbers">{avg_day}</div>
+        
         <div className="graph-title">Average per Week</div>
-            {avg_week}
-        <br/>
+        <div className="numbers">{avg_week}</div>
+        
         </div>
     );
   }

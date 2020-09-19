@@ -300,8 +300,9 @@
 
 .graph-title{
     text-align: center;
-    font-weight: bold;
+    font-size: 16px;
     padding: 10px;
+    color: #333333;
 }
 
 #topbar-fixed{
@@ -317,4 +318,9 @@
 
 #graph3{
     text-align: center;
+}
+
+.numbers{
+    font-size: 28px;
+    font-weight: bold;
 }

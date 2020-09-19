@@ -9,9 +9,12 @@ const data = [
   { name: 'Group B', value: 300 },
   { name: 'Group C', value: 300 },
   { name: 'Group D', value: 200 },
+  { name: 'Group E', value: 100 },
+  { name: 'Group F', value: 200 },
+  { name: 'Group G', value: 50 },
 ];
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ['#40a1f1', '#65AD50', '#FFD151', '#FF8042', '#f13333', '#9636ff', '#3461d1'];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({

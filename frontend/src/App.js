@@ -10,7 +10,7 @@ import {
 import { createClient, Provider } from 'urql';
 
 // import all components
-import Topbar from './pages/components/NavBar'
+import NavBar from './pages/components/NavBar'
 
 // import all pages
 import Home from './pages/Home';
@@ -35,7 +35,7 @@ function App() {
     <div className="App">
       <Provider value={client}>
         <BrowserRouter>
-          <Topbar />
+          <NavBar />
           <Switch>
             <Route path="/about"><About /></Route>
             <Route path="/privacypolicy"><PrivacyPolicy /></Route>

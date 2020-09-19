@@ -4,20 +4,6 @@ import { withRouter } from 'react-router-dom';
 import Graph1 from './components/Graph1';
 import Graph2 from './components/Graph2';
 
-// import graphql and create client
-import { createClient, Provider } from 'urql';
-
-
-const client = createClient({
-  url: 'https://insightbox.xyz/api',
-  fetchOptions: () => {
-    const token = localStorage.getItem("token");
-    return {
-      headers: { authorization: token ? token : "" },
-    };
-  },
-});
-
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +15,6 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-      <Provider value={client}>
         <div>
           <div className="dashboard-content">
             <div className="stat-container">
@@ -80,7 +65,6 @@ class Dashboard extends React.Component {
   
           </div>
         </div>
-      </Provider>
     );
   };
 }

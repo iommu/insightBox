@@ -1,12 +1,15 @@
 import React from 'react';
 import './styles/App.css';
 
-// import components
-import { 
-  BrowserRouter, 
-  Switch, 
-  Route 
+// import modules
+import {
+  BrowserRouter,
+  Switch,
+  Route
 } from 'react-router-dom';
+import { createClient, Provider } from 'urql';
+
+// import all components
 import Topbar from './pages/components/NavBar'
 
 // import all pages
@@ -17,21 +20,33 @@ import TermsOfUse from './pages/TermsofUse';
 import Dashboard from './pages/Dashboard';
 import SignIn from './pages/SignIn';
 
+const client = createClient({
+  url: 'https://insightbox.xyz/api',
+  fetchOptions: () => {
+    const token = localStorage.getItem("token");
+    return {
+      headers: { authorization: token ? token : "" },
+    };
+  },
+});
+
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-      <Topbar />
-        <Switch>
-          <Route path="/about"><About/></Route>
-          <Route path="/privacypolicy"><PrivacyPolicy/></Route>
-          <Route path="/termsofuse"><TermsOfUse/></Route>
-          <Route path="/termsofuse"><TermsOfUse/></Route>
-          <Route path="/dashboard"><Dashboard/></Route>
-          <Route path="/signin" component={SignIn}></Route>
-          <Route path="/"><Home/></Route>
-        </Switch>
-      </BrowserRouter>
+      <Provider value={client}>
+        <BrowserRouter>
+          <Topbar />
+          <Switch>
+            <Route path="/about"><About /></Route>
+            <Route path="/privacypolicy"><PrivacyPolicy /></Route>
+            <Route path="/termsofuse"><TermsOfUse /></Route>
+            <Route path="/termsofuse"><TermsOfUse /></Route>
+            <Route path="/dashboard"><Dashboard /></Route>
+            <Route path="/signin" component={SignIn}></Route>
+            <Route path="/"><Home /></Route>
+          </Switch>
+        </BrowserRouter>
+      </Provider>
     </div>
   );
 }

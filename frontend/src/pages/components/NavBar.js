@@ -26,13 +26,14 @@ const client = createClient({
 class TopBar extends React.Component {
   render() {
     return (
+      <div id="topbar-fixed">
       <Flex
         px={2}
         py={2}
         color='black'
         bg='white'
         alignItems='center'
-        sx={{borderBottom: '3px solid', borderImage: 'linear-gradient(to right, #9636ff 20%, #40a1f1 20%, #40a1f1 40%, #65AD50 40%, #65AD50 60%, #FFD151 60%, #FFD151 80%, #f13333 80%, #f13333 100%) 5'}}>
+        sx={{position:'static', borderBottom: '3px solid', borderImage: 'linear-gradient(to right, #9636ff 20%, #40a1f1 20%, #40a1f1 40%, #65AD50 40%, #65AD50 60%, #FFD151 60%, #FFD151 80%, #f13333 80%, #f13333 100%) 5'}}>
         <Link to="/">
           <Flex
             color='black'
@@ -71,6 +72,7 @@ class TopBar extends React.Component {
           </Route>
         </Switch>
       </Flex>
+      </div>
     )
   }
 }

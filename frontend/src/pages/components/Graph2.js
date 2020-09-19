@@ -1,17 +1,17 @@
 
 import React, { PureComponent } from 'react';
 import {
-  PieChart, Pie, Sector, Cell,
+  PieChart, Pie, Sector, Cell, Tooltip
 } from 'recharts';
 
 const data = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
-  { name: 'Group E', value: 100 },
-  { name: 'Group F', value: 200 },
-  { name: 'Group G', value: 50 },
+  { name: 'Monday', value: 400 },
+  { name: 'Tuesday', value: 300 },
+  { name: 'Wednesday', value: 300 },
+  { name: 'Thursday', value: 200 },
+  { name: 'Friday', value: 100 },
+  { name: 'Saturday', value: 200 },
+  { name: 'Sunday', value: 50 },
 ];
 
 const COLORS = ['#40a1f1', '#65AD50', '#FFD151', '#FF8042', '#f13333', '#9636ff', '#3461d1'];
@@ -35,7 +35,7 @@ function Graph2() {
     return (
         <div>
         <div className="graph-title">Email % Day of the Week</div>
-        <PieChart width={300} height={250}>
+        <PieChart width={300} height={210}>
         <Pie
           data={data}
           cx={150}
@@ -50,6 +50,7 @@ function Graph2() {
             data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
           }
         </Pie>
+        <Tooltip wrapperStyle={{ backgroundColor: '#ccc' }}/>
       </PieChart>
       </div>
     )

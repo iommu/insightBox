@@ -30,7 +30,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <Provider value={client}>
-        <div>
+        <div id="dash-container">
           <div className="dashboard-content">
             <div className="stat-container">
               <Graph2 />

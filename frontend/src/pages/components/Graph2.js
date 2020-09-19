@@ -1,59 +1,54 @@
+import React from 'react'; 
+import { useQuery } from 'urql';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
-import React, { PureComponent } from 'react';
-import {
-  PieChart, Pie, Sector, Cell, Tooltip
-} from 'recharts';
+export const Graph2 = () => {
+    const [result] = useQuery({
+      query: `
+      query {
+        data(start:"2006-01-02T15:04:05Z", end:"2026-01-02T15:04:05Z") {
+          date,
+          received
+        }
+      }`
+    });
 
-const data = [
-  { name: 'Monday', value: 400 },
-  { name: 'Tuesday', value: 300 },
-  { name: 'Wednesday', value: 300 },
-  { name: 'Thursday', value: 200 },
-  { name: 'Friday', value: 100 },
-  { name: 'Saturday', value: 200 },
-  { name: 'Sunday', value: 50 },
-];
-
-const COLORS = ['#40a1f1', '#65AD50', '#FFD151', '#FF8042', '#f13333', '#9636ff', '#3461d1'];
-
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({
-  cx, cy, midAngle, innerRadius, outerRadius, percent, index,
-}) => {
-   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
-
-function Graph2() {
+    console.log(result);
+  
+    const { fetching, error } = result;
+  
+    if (fetching) return (
+      <p> Loading user data </p>
+    );
+  
+    if (error) {
+      return (
+        <p> Error getting user data </p>
+      );
+    };
+  
+    // do computation here
+    var graphdata = [];
+    var rlen = result.data.data.length;
+    var days = ["S", "M", "T", "W", "T", "F", "S"];
+    for (var i = rlen-7; i < rlen; i++) {
+      var date = new Date(result.data.data[i].date);
+      var day = date.getDay(date);
+      var received = result.data.data[i].received;
+      var value = {name: days[day], Total: received, pv: 2400, amt: 2400};
+      graphdata.push(value);
+      console.log(i);
+    }
     return (
         <div>
-        <div className="graph-title">Email % Day of the Week</div>
-        <PieChart width={300} height={210}>
-        <Pie
-          data={data}
-          cx={150}
-          cy={100}
-          labelLine={false}
-          label={renderCustomizedLabel}
-          outerRadius={90}
-          fill="#8884d8"
-          dataKey="value"
-        >
-          {
-            data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
-          }
-        </Pie>
-        <Tooltip wrapperStyle={{ backgroundColor: '#ccc' }}/>
-      </PieChart>
-      </div>
-    )
+        <div className="graph-title">Emails per Day</div>
+        <BarChart width={450} height={200} data={graphdata} px={500}>
+          <XAxis dataKey="name" stroke="#47494d" />
+          <YAxis />
+          <Tooltip />
+          <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+          <Bar dataKey="Total" fill="#40a1f1" barSize={30} />
+        </BarChart>
+        </div>
+    );
   }
-
-export default Graph2;

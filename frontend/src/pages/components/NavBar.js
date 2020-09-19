@@ -8,7 +8,7 @@ import {
 import AuthButton from './Oauth';
 import logo from '../../images/logo.png';
 
-import { ID } from './Queries';
+import { ProfileDropDown } from './ProfileDropDown';
 
 class TopBar extends React.Component {
   render() {
@@ -33,7 +33,7 @@ class TopBar extends React.Component {
           <Route path="/signin"></Route>
           <Route path="/dashboard">
             <Box mx='auto' />
-            <ID />
+            <ProfileDropDown />
           </Route>
           <Route path="/">
             <Box mx='auto' />

@@ -221,8 +221,8 @@
     width: auto;
     height: 250px;
     text-align: left;
-    padding: 10px;
-    margin: 1.5%;
+    padding: 10px 18px;
+    margin: 10px 10px;
     overflow-y: scroll;
 }
 
@@ -312,5 +312,5 @@
 }
 
 #dash-container{
-    margin-top: 150px;
+    margin-top: 85px;
 }

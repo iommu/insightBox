@@ -10,19 +10,6 @@ import logo from '../../images/logo.png';
 
 import { ID } from './Queries';
 
-// import graphql and create client
-import { createClient, Provider } from 'urql';
-
-const client = createClient({
-  url: 'https://insightbox.xyz/api',
-  fetchOptions: () => {
-    const token = localStorage.getItem("token");
-    return {
-      headers: { authorization: token ? token : "" },
-    };
-  },
-});
-
 class TopBar extends React.Component {
   render() {
     return (
@@ -32,7 +19,7 @@ class TopBar extends React.Component {
         color='black'
         bg='white'
         alignItems='center'
-        sx={{borderBottom: '3px solid', borderImage: 'linear-gradient(to right, #9636ff 20%, #40a1f1 20%, #40a1f1 40%, #65AD50 40%, #65AD50 60%, #FFD151 60%, #FFD151 80%, #f13333 80%, #f13333 100%) 5'}}>
+        sx={{ borderBottom: '3px solid', borderImage: 'linear-gradient(to right, #9636ff 20%, #40a1f1 20%, #40a1f1 40%, #65AD50 40%, #65AD50 60%, #FFD151 60%, #FFD151 80%, #f13333 80%, #f13333 100%) 5' }}>
         <Link to="/">
           <Flex
             color='black'
@@ -43,14 +30,10 @@ class TopBar extends React.Component {
         </Link>
         <Switch>
           <Route path="/signin"></Route>
-          
           <Route path="/dashboard">
-          <Provider value={client}>
             <Box mx='auto' />
-            <ID/>
-            </Provider>
+            <ID />
           </Route>
-          
           <Route path="/">
             <Box mx='auto' />
             <Box>

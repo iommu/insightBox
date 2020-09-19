@@ -1,18 +1,66 @@
 
-import React from 'react';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
+import React from 'react'; 
+import { useQuery } from 'urql';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
 
-const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}, {name: 'Page B', uv: 500, pv: 3400, amt: 3000}, {name: 'Page C', uv: 600, pv: 4000, amt: 4000}];
+export const Graph4 = () => {
+    const [result] = useQuery({
+      query: `
+      query {
+        data(start:"2006-01-02T15:04:05Z", end:"2026-01-02T15:04:05Z") {
+          date,
+          received,
+          sent
+        }
+      }`
+    });
 
-function Graph4() {
+    console.log(result);
+  
+    const { fetching, error } = result;
+  
+    if (fetching) return (
+      <p> Loading user data </p>
+    );
+  
+    if (error) {
+      return (
+        <p> Error getting user data </p>
+      );
+    };
+  
+    // do computation here
+    var graphdata = [];
+    var rlen = result.data.data.length;
+    var days = ["S", "M", "T", "W", "T", "F", "S"];
+    for (var i = rlen-7; i < rlen; i++) {
+      var date = new Date(result.data.data[i].date);
+      var day = date.getDay(date);
+      var received = result.data.data[i].received;
+      var sent = result.data.data[i].sent;
+      var value = {name: days[day], Received: received, Sent: sent, amt: 2400};
+      graphdata.push(value);
+      console.log(i);
+    }
     return (
-        <LineChart width={500} height={200} data={data}>
-            <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-            <CartesianGrid stroke="#ccc" />
+        <div>
+        <div className="graph-title">Sent vs Received</div>
+            <LineChart
+            width={470}
+            height={190}
+            data={graphdata}
+            margin={{
+            top: 5, right: 30, left: 20, bottom: 5,
+            }}
+            >
+            <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
-        </LineChart>
-    )
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="Sent" stroke="#9636ff"  />
+            <Line type="monotone" dataKey="Received" stroke="#FF8042" activeDot={{ r: 8 }}/>
+            </LineChart>
+        </div>
+    );
   }
-
-export default Graph4;

@@ -1,9 +1,10 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import Graph1 from './components/Graph1';
+import { Graph1 } from './components/Graph1';
 import { Graph2 } from './components/Graph2';
-import Graph4 from './components/Graph4';
+import { Graph3 } from './components/Graph3';
+import { Graph4 } from './components/Graph4';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class Dashboard extends React.Component {
               <Graph2 />
             </div>
             <div className="stat-container">
-              Graph
+              <Graph3 />
             </div>
             <div className="stat-container">
               <Graph4 />

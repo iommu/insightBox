@@ -224,6 +224,7 @@
     padding: 10px 18px;
     margin: 16px 16px;
     overflow-y: scroll;
+    position: relative;
 }
 
 #down-img{
@@ -323,4 +324,15 @@
 .numbers{
     font-size: 28px;
     font-weight: bold;
+}
+
+.info{
+    position: absolute;
+    bottom: 3px;
+    right: 7px;
+}
+
+.info-img{
+    width: 18px;
+    opacity: 0.6;
 }

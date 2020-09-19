@@ -58,8 +58,8 @@ export const Graph4 = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="Sent" stroke="#65AD50"  />
             <Line type="monotone" dataKey="Received" stroke="#40a1f1" activeDot={{ r: 8 }}/>
+            <Line type="monotone" dataKey="Sent" stroke="#65AD50"  />
             </LineChart>
         </div>
     );

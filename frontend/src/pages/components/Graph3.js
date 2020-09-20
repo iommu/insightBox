@@ -42,7 +42,7 @@ export const Graph3 = () => {
     }
 
     if(!Number.isInteger(avg_week)){
-        avg_week = avg_day.toFixed(2);
+        avg_week = avg_week.toFixed(2);
     }
 
     return (

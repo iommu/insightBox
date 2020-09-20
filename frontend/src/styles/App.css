@@ -224,6 +224,7 @@
     padding: 10px 18px;
     margin: 16px 16px;
     overflow-y: scroll;
+    overflow-x: hidden;
     position: relative;
 }
 

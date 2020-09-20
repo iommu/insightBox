@@ -1,10 +1,10 @@
 
 import React from 'react'; 
 import { useQuery } from 'urql';
+// eslint-disable-next-line
 import { PureComponent } from 'react';
-import {
-  PieChart, Pie, Sector, Cell, Tooltip
-} from 'recharts';
+// eslint-disable-next-line
+import { PieChart, Pie, Sector, Cell, Tooltip } from 'recharts';
 
 
 export const Graph1 = () => {

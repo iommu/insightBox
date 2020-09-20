@@ -1,6 +1,7 @@
 
 import React from 'react'; 
 import { useQuery } from 'urql';
+// eslint-disable-next-line
 import { PureComponent } from 'react';
 import { RadialBarChart, RadialBar, Tooltip } from 'recharts';
 
@@ -41,16 +42,9 @@ export const Graph4 = () => {
       var date = new Date(result.data.data[i].date);
       var day = date.getDay(date);
       var received = result.data.data[i].received;
-      var sent = result.data.data[i].sent;
       var value = {name: days[day], Received: received, fill: colours[7-counter++]};
       graphdata.push(value);
     }
-
-    const style = {
-      top: 0,
-      left: 350,
-      lineHeight: '24px',
-    };
 
     return (
         <div>

@@ -53,21 +53,23 @@ func authenticate(email string, db *gorm.DB) (*gmail.Service, error) {
 }
 
 //countWords count the number of words in the title of an email title
-func countWords(wordMap map[string]int, title string) error {
-	//change all letters to lower case
+func countWords(template model.Word, title string, db *gorm.DB) {
+	// change all letters to lower case
 	title = strings.ToLower(title)
 
-	//remove symbols
+	// remove symbols
 	re, err := regexp.Compile(`[^\w]`)
 	if err != nil {
-		return err
+		log.Fatalf("Error : Error parsing regex for removing symbols : %v", err)
 	}
 	title = re.ReplaceAllString(title, " ")
 
-	//break up the title into words delimited by space
+	// break up the title into words delimited by space
 	wordList := strings.Fields(title)
 
-	//count words
+	wordMap := make(map[string]int)
+
+	// count words
 	for _, word := range wordList {
 
 		//check if the word has been initialized in the map
@@ -81,41 +83,41 @@ func countWords(wordMap map[string]int, title string) error {
 		}
 	}
 
-	return nil
+	// save all words to db
+	for word, count := range wordMap {
+		template.Text = word
+		template.Value = count
+		db.Create(&template)
+	}
 }
 
 //processDataArray takes in array of gmail.MessageParts and a partially complete model.Day
-func processDataArray(dataArray []*gmail.MessagePart, day model.Day, db *gorm.DB) {
+func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *gorm.DB) {
 	// setup saved variables
 	receivedEmails := 0
 	sentEmails := 0
-	words := make(map[string]int)
 	// interate through all payloads in array
 	for _, payload := range dataArray {
 		switch len := len(payload.Headers); {
 		case len > 18:
-			if payload.Headers[18].Value == day.ID {
+			if payload.Headers[18].Value == template.ID {
 				sentEmails++
 			}
 			fallthrough
 		case len > 15:
-			countWords(words, payload.Headers[15].Value)
+			countWords(model.Word{ID: template.ID, Date: template.Date}, payload.Headers[15].Value, db)
 			fallthrough
 		default:
-			if payload.Headers[0].Value == day.ID {
+			if payload.Headers[0].Value == template.ID {
 				receivedEmails++
 			}
 		}
 	}
 	// fill in data
-	day.Sent = sentEmails
-	day.Received = receivedEmails
+	template.Sent = sentEmails
+	template.Received = receivedEmails
 	// save to database
-	db.Create(&day)
-	for word, count := range words {
-		wordCount := model.Word{ID: day.ID, Date: day.Date, Text: word, Value: count}
-		db.Create(&wordCount)
-	}
+	db.Create(&template)
 }
 
 //ProcessMailRange takes PK email addr, number of days to process from yesterday backwards and db
@@ -186,9 +188,8 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 		}
 
 		// parallel process the data
-		go processDataArray(dayEmailData, model.Day{ID: email, Date: indexDate}, db)
+		go processDataArray(model.Day{ID: email, Date: indexDate}, dayEmailData, db)
 	}
-	return
 }
 
 // func binarySearchEmail(endTime int64, srv *gmail.Service) (int, *gmail.ListMessagesResponse, error) {

@@ -13,7 +13,7 @@ export const Graph1 = () => {
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
     cx, cy, midAngle, innerRadius, outerRadius, percent, index,
-  }) => {
+    }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -63,10 +63,10 @@ export const Graph1 = () => {
     return (
       <div>
       <div className="graph-title">Email % Day of the Week</div>
-      <PieChart width={300} height={210}>
+      <PieChart width={250} height={210}>
       <Pie
         data={graphdata}
-        cx={150}
+        cx={120}
         cy={100}
         labelLine={false}
         label={renderCustomizedLabel}

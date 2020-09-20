@@ -1,7 +1,9 @@
 
 import React from 'react'; 
 import { useQuery } from 'urql';
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
+import { PureComponent } from 'react';
+import { RadialBarChart, RadialBar, Tooltip } from 'recharts';
+
 
 export const Graph4 = () => {
     const [result] = useQuery({
@@ -32,35 +34,31 @@ export const Graph4 = () => {
     // do computation here
     var graphdata = [];
     var rlen = result.data.data.length;
-    var days = ["S", "M", "T", "W", "T", "F", "S"];
+    var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Sunday"];
+    var colours = ["#3461d1", "#40a1f1", "#65AD50", "#FFD151", "#FF8042", "#f13333", "#9636ff"];
+    var counter = 0;
     for (var i = rlen-7; i < rlen; i++) {
       var date = new Date(result.data.data[i].date);
       var day = date.getDay(date);
       var received = result.data.data[i].received;
       var sent = result.data.data[i].sent;
-      var value = {name: days[day], Received: received, Sent: sent, amt: 2400};
+      var value = {name: days[day], Received: received, fill: colours[7-counter++]};
       graphdata.push(value);
-      console.log(i);
     }
+
+    const style = {
+      top: 0,
+      left: 350,
+      lineHeight: '24px',
+    };
+
     return (
         <div>
-        <div className="graph-title">Sent vs Received</div>
-            <LineChart
-            width={470}
-            height={190}
-            data={graphdata}
-            margin={{
-            top: 5, right: 30, left: 20, bottom: 5,
-            }}
-            >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
+        <div className="graph-title">Emails per Week Day</div>
+          <RadialBarChart width={240} height={210} cx={120} cy={100} innerRadius={10} outerRadius={100} barSize={8} data={graphdata}>
+            <RadialBar minAngle={15} label={{ position: 'insideStart', fill: '#fff' }} background clockWise dataKey="Received" />
             <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="Received" stroke="#40a1f1" activeDot={{ r: 8 }}/>
-            <Line type="monotone" dataKey="Sent" stroke="#65AD50"  />
-            </LineChart>
+          </RadialBarChart>
         </div>
     );
   }

@@ -5,6 +5,7 @@ import { Graph1 } from './components/Graph1';
 import { Graph2 } from './components/Graph2';
 import { Graph3 } from './components/Graph3';
 import { Graph4 } from './components/Graph4';
+import { Graph5 } from './components/Graph5';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class Dashboard extends React.Component {
               </div>
             </div>
             <div className="stat-container">
-              Graph
+              <Graph5 />
               <div className="info">
                 <img className="info-img" src={info} alt="info" />
               </div>

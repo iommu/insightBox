@@ -1,14 +1,16 @@
+
 import React from 'react'; 
 import { useQuery } from 'urql';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
 
-export const Graph2 = () => {
+export const Graph5 = () => {
     const [result] = useQuery({
       query: `
       query {
         data(start:"2006-01-02T15:04:05Z", end:"2026-01-02T15:04:05Z") {
           date,
-          received
+          received,
+          sent
         }
       }`
     });
@@ -35,20 +37,30 @@ export const Graph2 = () => {
       var date = new Date(result.data.data[i].date);
       var day = date.getDay(date);
       var received = result.data.data[i].received;
-      var value = {name: days[day], Total: received, pv: 2400, amt: 2400};
+      var sent = result.data.data[i].sent;
+      var value = {name: days[day], Received: received, Sent: sent, amt: 2400};
       graphdata.push(value);
       console.log(i);
     }
     return (
         <div>
-        <div className="graph-title">Emails per Day</div>
-        <BarChart width={430} height={200} data={graphdata} px={500}>
-          <XAxis dataKey="name" stroke="#47494d" />
-          <YAxis />
-          <Tooltip />
-          <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-          <Bar dataKey="Total" fill="#40a1f1" barSize={30} />
-        </BarChart>
+        <div className="graph-title">Sent vs Received</div>
+            <LineChart
+            width={470}
+            height={190}
+            data={graphdata}
+            margin={{
+            top: 5, right: 30, left: 20, bottom: 5,
+            }}
+            >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="Received" stroke="#40a1f1" activeDot={{ r: 8 }}/>
+            <Line type="monotone" dataKey="Sent" stroke="#65AD50"  />
+            </LineChart>
         </div>
     );
   }

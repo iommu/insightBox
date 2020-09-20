@@ -84,6 +84,40 @@ func countWords(wordMap map[string]int, title string) error {
 	return nil
 }
 
+//processDataArray takes in array of gmail.MessageParts and a partially complete model.Day
+func processDataArray(dataArray []*gmail.MessagePart, day model.Day, db *gorm.DB) {
+	// setup saved variables
+	receivedEmails := 0
+	sentEmails := 0
+	words := make(map[string]int)
+	// interate through all payloads in array
+	for _, payload := range dataArray {
+		switch len := len(payload.Headers); {
+		case len > 18:
+			if payload.Headers[18].Value == day.ID {
+				sentEmails++
+			}
+			fallthrough
+		case len > 15:
+			countWords(words, payload.Headers[15].Value)
+			fallthrough
+		default:
+			if payload.Headers[0].Value == day.ID {
+				receivedEmails++
+			}
+		}
+	}
+	// fill in data
+	day.Sent = sentEmails
+	day.Received = receivedEmails
+	// save to database
+	db.Create(&day)
+	for word, count := range words {
+		wordCount := model.Word{ID: day.ID, Date: day.Date, Text: word, Value: count}
+		db.Create(&wordCount)
+	}
+}
+
 //ProcessMailRange takes PK email addr, number of days to process from yesterday backwards and db
 func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 	// calculate last 00:00 time (with respect to UTC)
@@ -108,20 +142,18 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 		// jump back {i} days
 		indexDate := startDay.Add(time.Hour * -24 * time.Duration(i))
 
-		// TODO fix this
-		// // check if day already exists in db
+		// check if day already exists in db and quit if does
 		var day model.Day
-		// err := db.Where("id = ? AND date = ?", email, indexDate).First(&day).Error
-		// // error handing if nil error or error other the not found return {err}
-		// // caution : this means the function cannot fill gaps in day objs unless expressly asked because it will quit at first found day obj
-		// if !gorm.IsRecordNotFoundError(err) {
-		// 	log.Printf("Error: GORM error checking for existing day rows : %v", err)
-		// }
+		err := db.Where("id = ? AND date = ?", email, indexDate).First(&day).Error
+		if !gorm.IsRecordNotFoundError(err) {
+			log.Println("Notif: Found existing record, existing")
+			break
+		} else if err != nil {
+			log.Fatalf("Error: GORM error checking for existing day rows : %v", err)
+		}
 
-		// setup saved variables
-		receivedEmails := 0
-		sentEmails := 0
-		words := make(map[string]int)
+		// init blank array for data
+		var dayEmailData []*gmail.MessagePart
 
 		// for loop for each email {emailIndex}
 		for {
@@ -147,35 +179,14 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 				break // save and go to next day if email happened before process date
 			}
 
-			// ---------- process email
-
-			switch len := len(mail.Payload.Headers); {
-			case len > 18:
-				if mail.Payload.Headers[18].Value == email {
-					sentEmails++
-				}
-				fallthrough
-			case len > 15:
-				countWords(words, mail.Payload.Headers[15].Value)
-				fallthrough
-			default:
-				if mail.Payload.Headers[0].Value == email {
-					receivedEmails++
-				}
-			}
-
-			// ---------- end process email
+			// add email data to data array
+			dayEmailData = append(dayEmailData, mail.Payload)
 
 			emailIndex++
 		}
 
-		// save day
-		day = model.Day{ID: email, Date: indexDate, Sent: sentEmails, Received: receivedEmails}
-		db.Create(&day)
-		for word, count := range words {
-			wordCount := model.Word{ID: email, Date: indexDate, Text: word, Value: count}
-			db.Create(&wordCount)
-		}
+		// parallel process the data
+		go processDataArray(dayEmailData, model.Day{ID: email, Date: indexDate}, db)
 	}
 	return
 }

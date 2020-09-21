@@ -15,6 +15,8 @@ import (
 	"github.com/iommu/insightbox/server/graph/generated"
 	"github.com/iommu/insightbox/server/graph/model"
 	"github.com/iommu/insightbox/server/internal/auth"
+	"github.com/iommu/insightbox/server/internal/processing"
+
 	"github.com/jinzhu/gorm"
 	"github.com/rs/cors"
 	"golang.org/x/oauth2"
@@ -63,6 +65,9 @@ func main() {
 
 	// connect to DB with GORM
 	initDB()
+
+	// setup 00:01 update ticker
+	go processing.InitDaemon(db)
 
 	// create router
 	router := chi.NewRouter()

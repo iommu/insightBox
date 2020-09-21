@@ -42,7 +42,7 @@ export const Graph4 = () => {
       var date = new Date(result.data.data[i].date);
       var day = date.getDay(date);
       var received = result.data.data[i].received;
-      var value = {name: days[day], Received: received, fill: colours[7-counter++]};
+      var value = {name: days[day], Received: received, fill: colours[6-counter++]};
       graphdata.push(value);
     }
 

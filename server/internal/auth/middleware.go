@@ -38,6 +38,7 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 				http.Error(w, "Invalid token", http.StatusForbidden)
 				return
 			}
+			log.Println("Notif: token decoded as ", email)
 
 			// check if user exists in db
 			var dbUser model.User

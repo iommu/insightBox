@@ -35,6 +35,7 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 			log.Println("Notif: token attemping loging : ", tokenStr)
 			email, err := jwt.ParseToken(tokenStr)
 			if err != nil {
+				log.Println("Error: error decoding token : ", err)
 				http.Error(w, "Invalid token", http.StatusForbidden)
 				return
 			}

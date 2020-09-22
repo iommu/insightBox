@@ -36,13 +36,13 @@ export const Graph4 = () => {
     var graphdata = [];
     var rlen = result.data.data.length;
     var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Sunday"];
-    var colours = ["#3461d1", "#40a1f1", "#65AD50", "#FFD151", "#FF8042", "#f13333", "#9636ff"];
+    var colours = ["#40a1f1", "#65AD50", "#FFD151", "#FF8042", "#f13333", "#9636ff", "#3461d1"];
     var counter = 0;
     for (var i = rlen-7; i < rlen; i++) {
       var date = new Date(result.data.data[i].date);
       var day = date.getDay(date);
       var received = result.data.data[i].received;
-      var value = {name: days[day], Received: received, fill: colours[7-counter++]};
+      var value = {name: days[day], Received: received, fill: colours[6-counter++]};
       graphdata.push(value);
     }
 

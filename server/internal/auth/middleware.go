@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"log"
 	"net/http"
 
 	"github.com/jinzhu/gorm"
@@ -31,6 +32,7 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 
 			// validate jwt token
 			tokenStr := header
+			log.Println("Notif: token attemping loging : ", tokenStr)
 			email, err := jwt.ParseToken(tokenStr)
 			if err != nil {
 				http.Error(w, "Invalid token", http.StatusForbidden)

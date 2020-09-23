@@ -129,12 +129,14 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 	srv, err := authenticate(email, db)
 	if err != nil {
 		log.Printf("Error : could not auth with Google servers : %v", err)
+		return
 	}
 
 	// retrieve intial set of emails (countBack * 20) where 20 is rough avgerage emails per day
 	messages, err := srv.Users.Messages.List("me").MaxResults(int64(countBack * 20)).Do()
 	if err != nil {
 		log.Printf("Error : could not retrieve intial set : %v", err)
+		return
 	}
 
 	// run for loop jumping back through date range

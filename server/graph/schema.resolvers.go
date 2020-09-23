@@ -5,7 +5,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/iommu/insightbox/server/graph/generated"
@@ -32,7 +31,6 @@ func (r *mutationResolver) SignIn(ctx context.Context, authCode string) (string,
 func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
 	var user model.User
 	email := auth.ForContext(ctx)
-	fmt.Println(email)
 	err := r.DB.Where("id = ?", email).First(&user).Error
 	if err != nil {
 		return nil, err

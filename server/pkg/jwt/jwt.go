@@ -22,7 +22,7 @@ func GenerateToken(username string) (string, error) {
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 30).Unix()
 	tokenString, err := token.SignedString(SecretKey)
 	if err != nil {
-		log.Fatal("Error in Generating key")
+		log.Fatalf("Error in Generating key")
 		return "", err
 	}
 	return tokenString, nil

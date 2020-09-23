@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -32,7 +31,7 @@ func initDB() {
 	dataSourceName := "group:isit321@(localhost)/insightbox?charset=utf8&parseTime=True&loc=Local"
 	db, err = gorm.Open("mysql", dataSourceName)
 	if err != nil {
-		fmt.Println(err)
+		log.Printf("Error : error connecting to database : %v", err)
 		panic("failed to connect database")
 	}
 
@@ -46,16 +45,16 @@ func printURL() {
 	// get credentials // TODO make good
 	b, err := ioutil.ReadFile("credentials.json")
 	if err != nil {
-		log.Fatalf("Unable to read client secret file: %v", err)
+		log.Fatalf("Error : Unable to read client secret file : %v", err)
 	}
 	// get config with credentials
 	config, err := google.ConfigFromJSON(b, gmail.GmailReadonlyScope, people.UserinfoProfileScope)
 	if err != nil {
-		log.Fatalf("Unable to parse client secret file to config: %v", err)
+		log.Fatalf("Error : Unable to parse client secret file to config : %v", err)
 	}
 	// TODO REMOVE
 	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOnline)
-	fmt.Printf("Go to the following link in your browser then type the "+
+	log.Printf("Go to the following link in your browser then type the "+
 		"authorization code: \n%v\n", authURL)
 }
 

@@ -128,13 +128,13 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 	// authenticate with google servers to access emails
 	srv, err := authenticate(email, db)
 	if err != nil {
-		log.Printf("Error: could not auth with Google servers : %v", err)
+		log.Printf("Error : could not auth with Google servers : %v", err)
 	}
 
 	// retrieve intial set of emails (countBack * 20) where 20 is rough avgerage emails per day
 	messages, err := srv.Users.Messages.List("me").MaxResults(int64(countBack * 20)).Do()
 	if err != nil {
-		log.Printf("Error: could not retrieve intial set : %v", err)
+		log.Printf("Error : could not retrieve intial set : %v", err)
 	}
 
 	// run for loop jumping back through date range
@@ -147,10 +147,10 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 		var day model.Day
 		err := db.Where("id = ? AND date = ?", email, indexDate).First(&day).Error
 		if err == nil {
-			log.Printf("Notif: Found existing record, exiting")
+			log.Printf("Notif : Found existing record, exiting")
 			break
 		} else if !gorm.IsRecordNotFoundError(err) { // else if err exists and isn't err because no existing entry
-			log.Fatalf("Error: GORM error checking for existing day rows : %v", err)
+			log.Fatalf("Error : GORM error checking for existing day rows : %v", err)
 		}
 
 		// init blank array for data
@@ -161,7 +161,7 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 			// get email data
 			mail, err := srv.Users.Messages.Get("me", messages.Messages[emailIndex].Id).Format("metadata").Do()
 			if err != nil {
-				log.Printf("Error: could not get email metadata : %v", err)
+				log.Printf("Error : could not get email metadata : %v", err)
 			}
 
 			// get truncated time of email

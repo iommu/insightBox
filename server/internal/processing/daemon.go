@@ -1,7 +1,6 @@
 package processing
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -26,13 +25,13 @@ func getNextTimerDuration() time.Duration {
 
 // creates new daemon with duration
 func newDaemon() daemon {
-	log.Println("Notif: Creating new daemon")
+	log.Printf("Notif : Creating new daemon")
 	return daemon{time.NewTimer(getNextTimerDuration())}
 }
 
 // resets daemon to next duration
 func (d *daemon) updateDaemon() {
-	log.Println("Notif: Updating daemon")
+	log.Printf("Notif : Updating daemon")
 	d.timer.Reset(getNextTimerDuration())
 }
 
@@ -41,7 +40,7 @@ func InitDaemon(db *gorm.DB) {
 	d := newDaemon()
 	for {
 		<-d.timer.C
-		fmt.Println(time.Now(), " - Daemon triggered")
+		log.Printf("%s - Daemon triggered", time.Now())
 		// get list of all users on db
 		var users []*model.User
 		db.Find(&users)

@@ -32,14 +32,14 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 
 			// validate jwt token
 			tokenStr := header
-			log.Println("Notif: token attemping loging : ", tokenStr)
+			log.Printf("Notif : token attemping loging : %s", tokenStr)
 			email, err := jwt.ParseToken(tokenStr)
 			if err != nil {
-				log.Println("Error: error decoding token : ", err)
+				log.Printf("Error : error decoding token : %v", err)
 				http.Error(w, "Invalid token", http.StatusForbidden)
 				return
 			}
-			log.Println("Notif: token decoded as ", email)
+			log.Printf("Notif : token decoded as %s", email)
 
 			// check if user exists in db
 			var dbUser model.User

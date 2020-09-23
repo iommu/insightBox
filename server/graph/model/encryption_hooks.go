@@ -1,5 +1,9 @@
 package model
 
+import (
+	"github.com/jinzhu/gorm"
+)
+
 /* Encrypt/Decrypt functions */
 
 func encrypt(decrypted string) (encrypted string) {
@@ -18,18 +22,18 @@ func decrypt(encrypted string) (decrypted string) {
 
 /* Token hooks */
 
-// //BeforeCreate method for model.Token
-// func (token *Token) BeforeCreate(scope *gorm.Scope) (err error) {
-// 	if !scope.HasError() {
-// 		scope.SetColumn("AccessToken", encrypt(token.AccessToken))
-// 	}
-// 	return nil
-// }
+//BeforeCreate method for model.Token
+func (token *Token) BeforeCreate(scope *gorm.Scope) (err error) {
+	if !scope.HasError() {
+		scope.SetColumn("AccessToken", encrypt(token.AccessToken))
+	}
+	return nil
+}
 
-// //AfterFind method for model.Token
-// func (token *Token) AfterFind(tx *gorm.DB) (err error) {
-// 	token.AccessToken = decrypt(token.AccessToken)
-// 	return nil
-// }
+//AfterFind method for model.Token
+func (token *Token) AfterFind(tx *gorm.DB) (err error) {
+	token.AccessToken = decrypt(token.AccessToken)
+	return nil
+}
 
 /* Token hooks */

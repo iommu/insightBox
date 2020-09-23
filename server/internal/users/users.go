@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	"reflect"
 
 	"github.com/iommu/insightbox/server/graph/model"
 	"github.com/iommu/insightbox/server/internal/processing"
@@ -92,22 +93,15 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 		return "", err
 	}
 
-	// update our token if not first login
-	var token model.Token
+	// update our token
+	token := model.Token{ID: user.ID, AccessToken: tok.AccessToken, TokenType: tok.TokenType, Expiry: tok.Expiry}
 	err = db.Model(&token).Where("id = ?", user.ID).First(&token).Error
-	if gorm.IsRecordNotFoundError(err) { // if no current user with PK
-		log.Printf("Notif : Token for email addr %s not found, creating", user.ID)
-		// set user default variables for user
-		token.ID = user.ID
+	// if token.RefreshToken is not "" then use it
+	log.Println(tok.RefreshToken, reflect.TypeOf(tok.RefreshToken))
+	if string(tok.RefreshToken) != "" {
 		token.RefreshToken = tok.RefreshToken
-	} else if err != nil {
-		log.Fatalf("Error : GORM error connecting to db : %v", err)
 	}
-
-	token.AccessToken = tok.AccessToken
-	token.TokenType = tok.TokenType
-	token.Expiry = tok.Expiry
-	db.Save(&token)
+	db.Model(&token).Updates(token)
 
 	// run processing section
 	log.Printf("Notif : processing user %s", user.ID)

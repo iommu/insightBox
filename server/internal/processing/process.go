@@ -116,7 +116,7 @@ func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *go
 	for word, count := range wordMap {
 		templateWord.Text = word
 		templateWord.Value = count
-		db.Save(&template)
+		db.Save(&templateWord)
 	}
 }
 

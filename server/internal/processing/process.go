@@ -133,7 +133,11 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 	}
 
 	// retrieve intial set of emails (countBack * 20) where 20 is rough avgerage emails per day
-	messages, err := srv.Users.Messages.List("me").MaxResults(int64(countBack * 20)).Do()
+	downloadMail := int64(countBack * 20)
+	if downloadMail > 500 {
+		downloadMail = 500
+	}
+	messages, err := srv.Users.Messages.List("me").MaxResults(downloadMail).Do()
 	if err != nil {
 		log.Printf("Error : could not retrieve intial set : %v", err)
 		return

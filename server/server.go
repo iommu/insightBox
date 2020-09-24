@@ -16,6 +16,7 @@ import (
 	"github.com/iommu/insightbox/server/graph/generated"
 	"github.com/iommu/insightbox/server/graph/model"
 	"github.com/iommu/insightbox/server/internal/auth"
+	"github.com/iommu/insightbox/server/internal/consts"
 	"github.com/iommu/insightbox/server/internal/processing"
 	"github.com/iommu/insightbox/server/internal/users"
 
@@ -34,6 +35,7 @@ func initDB() {
 	dataSourceName := "group:isit321@(localhost)/insightbox?charset=utf8&parseTime=True&loc=Local"
 	db, err = gorm.Open("mysql", dataSourceName)
 	if err != nil {
+		log.Printf("%s error connecting to database : %v", consts.Error, err)
 		panic("failed to connect database")
 	}
 
@@ -47,12 +49,12 @@ func printURL() {
 	// get credentials // TODO make good
 	b, err := ioutil.ReadFile("credentials.json")
 	if err != nil {
-		log.Fatalf("Error : Unable to read client secret file : %v", err)
+		log.Fatalf("%s Unable to read client secret file : %v", consts.Error, err)
 	}
 	// get config with credentials
 	config, err := google.ConfigFromJSON(b, gmail.GmailReadonlyScope, people.UserinfoProfileScope)
 	if err != nil {
-		log.Fatalf("Error : Unable to parse client secret file to config : %v", err)
+		log.Fatalf("%s Unable to parse client secret file to config : %v", consts.Error, err)
 	}
 	// TODO REMOVE
 	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOnline)
@@ -101,11 +103,11 @@ func main() {
 	devMode := flag.Bool("dev", false, "a bool")
 	flag.Parse()
 	if *devMode {
-		log.Println("Notif : devmode enabled")
-		log.Println("Notif : Use above link and paste the resulting code")
+		log.Printf("%s devmode enabled", consts.Notif)
+		log.Printf("%s Use above link and paste the resulting code", consts.Notif)
 		var authCode string
 		if _, err := fmt.Scan(&authCode); err != nil {
-			log.Fatalf("Unable to read authorization code: %v", err)
+			log.Fatalf("%s Unable to read authorization code: %v", consts.Error, err)
 		}
 		users.SignIn(authCode, db)
 	}

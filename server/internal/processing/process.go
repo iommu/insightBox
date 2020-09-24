@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/iommu/insightbox/server/graph/model"
+	"github.com/iommu/insightbox/server/internal/consts"
 
 	"github.com/jinzhu/gorm"
 	"golang.org/x/oauth2"
@@ -60,7 +61,7 @@ func countWords(wordMap map[string]int, title string, db *gorm.DB) {
 	// remove symbols
 	re, err := regexp.Compile(`[^\w]`)
 	if err != nil {
-		log.Fatalf("Error : Error parsing regex for removing symbols : %v", err)
+		log.Fatalf("%s Error parsing regex for removing symbols : %v", consts.Error, err)
 	}
 	title = re.ReplaceAllString(title, " ")
 
@@ -128,7 +129,7 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 	// authenticate with google servers to access emails
 	srv, err := authenticate(email, db)
 	if err != nil {
-		log.Printf("Error : could not auth with Google servers : %v", err)
+		log.Printf("%s could not auth with Google servers : %v", consts.Error, err)
 		return
 	}
 
@@ -139,7 +140,7 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 	}
 	messages, err := srv.Users.Messages.List("me").MaxResults(downloadMail).Do()
 	if err != nil {
-		log.Printf("Error : could not retrieve intial set : %v", err)
+		log.Printf("%s could not retrieve intial set : %v", consts.Error, err)
 		return
 	}
 
@@ -153,10 +154,10 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 		var day model.Day
 		err := db.Where("id = ? AND date = ?", email, indexDate).First(&day).Error
 		if err == nil {
-			log.Printf("Notif : Found existing record, exiting")
+			log.Printf("%s Found existing record, exiting", consts.Notif)
 			break
 		} else if !gorm.IsRecordNotFoundError(err) { // else if err exists and isn't err because no existing entry
-			log.Fatalf("Error : GORM error checking for existing day rows : %v", err)
+			log.Fatalf("%s GORM error checking for existing day rows : %v", consts.Error, err)
 		}
 
 		// init blank array for data
@@ -167,7 +168,7 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 			// get email data
 			mail, err := srv.Users.Messages.Get("me", messages.Messages[emailIndex].Id).Format("metadata").Do()
 			if err != nil {
-				log.Printf("Error : could not get email metadata : %v", err)
+				log.Printf("%s could not get email metadata : %v", consts.Error, err)
 			}
 
 			// get truncated time of email

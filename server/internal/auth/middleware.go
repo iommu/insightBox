@@ -8,6 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 
 	"github.com/iommu/insightbox/server/graph/model"
+	"github.com/iommu/insightbox/server/internal/consts"
 	"github.com/iommu/insightbox/server/pkg/jwt"
 )
 
@@ -32,14 +33,14 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 
 			// validate jwt token
 			tokenStr := header
-			log.Printf("Notif : token attemping loging : %s", tokenStr)
+			log.Printf("%s token attemping loging : %s", consts.Notif, tokenStr)
 			email, err := jwt.ParseToken(tokenStr)
 			if err != nil {
-				log.Printf("Error : error decoding token : %v", err)
+				log.Printf("%s error decoding token : %v", consts.Error, err)
 				http.Error(w, "Invalid token", http.StatusForbidden)
 				return
 			}
-			log.Printf("Notif : token decoded as %s", email)
+			log.Printf("%s token decoded as %s", consts.Notif, email)
 
 			// check if user exists in db
 			var dbUser model.User

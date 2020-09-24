@@ -7,6 +7,7 @@ import (
 	"reflect"
 
 	"github.com/iommu/insightbox/server/graph/model"
+	"github.com/iommu/insightbox/server/internal/consts"
 	"github.com/iommu/insightbox/server/internal/processing"
 
 	"github.com/jinzhu/gorm"
@@ -21,17 +22,17 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	// get credentials // TODO store google.Config in place of credentials.json
 	b, err := ioutil.ReadFile("credentials.json")
 	if err != nil {
-		log.Fatalf("Error : Unable to read client secret file : %v", err)
+		log.Fatalf("%s Unable to read client secret file : %v", consts.Error, err)
 	}
 	// get config with credentials
 	config, err := google.ConfigFromJSON(b, gmail.GmailReadonlyScope, people.UserinfoProfileScope)
 	if err != nil {
-		log.Fatalf("Error : Unable to parse client secret file to config : %v", err)
+		log.Fatalf("%s Unable to parse client secret file to config : %v", consts.Error, err)
 	}
 	// get token from authCode
 	tok, err := config.Exchange(context.TODO(), authCode)
 	if err != nil {
-		log.Printf("Error : Unable to retrieve token from web : %v", err)
+		log.Printf("%s Unable to retrieve token from web : %v", consts.Error, err)
 		return "", err
 	}
 	// get client with config and auth token
@@ -40,7 +41,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	// connect to People API
 	res, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo")
 	if err != nil {
-		log.Printf("Error : Error requesting user profile : %v", err)
+		log.Printf("%s Error requesting user profile : %v", consts.Error, err)
 		return "", err
 	}
 	if res.Body != nil {
@@ -48,26 +49,26 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.Printf("Error : no content in user profile request body : %v", err)
+		log.Printf("%s no content in user profile request body : %v", consts.Error, err)
 		return "", err
 	}
 	var user model.User
 	err = json.Unmarshal(body, &user)
 	if err != nil {
-		log.Printf("Error : Error, unmarshaling json for user info : %v", err)
+		log.Printf("%s Error, unmarshaling json for user info : %v", consts.Error, err)
 		return "", err
 	}
 	// connect to Gmail API
 	srv, err := gmail.New(client)
 	if err != nil {
-		log.Printf("Error : Unable to retrieve Gmail client : %v", err)
+		log.Printf("%s Unable to retrieve Gmail client : %v", consts.Error, err)
 		return "", err
 	}
 	// get user email as string
 	srvUser := ""
 	profile, err := srv.Users.GetProfile(srvUser).Do()
 	if err != nil {
-		log.Printf("Error : Unable to retrieve email addr : %v", err)
+		log.Printf("%s Unable to retrieve email addr : %v", consts.Error, err)
 		return "", err
 	}
 
@@ -80,16 +81,16 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	var tempUser model.User
 	err = db.Model(&tempUser).Where("id = ?", user.ID).First(&tempUser).Error
 	if gorm.IsRecordNotFoundError(err) { // if no current user with PK
-		log.Printf("Notif : User with email addr %s not found, creating", user.ID)
+		log.Printf("%s User with email addr %s not found, creating", consts.Notif, user.ID)
 		// set user default variables for user
 		user.ColorSchemeID = 1
 	} else if err != nil {
-		log.Fatalf("Error : GORM error connecting to db : %v", err)
+		log.Fatalf("%s GORM error connecting to db : %v", consts.Error, err)
 	}
 	// Save(Create/Update) user to db
 	err = db.Save(&user).Error
 	if err != nil {
-		log.Printf("Error : Error saving user to database : %v", err)
+		log.Printf("%s Error saving user to database : %v", consts.Error, err)
 		return "", err
 	}
 
@@ -104,7 +105,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	db.Model(&token).Updates(token)
 
 	// run processing section
-	log.Printf("Notif : processing user %s", user.ID)
+	log.Printf("%s processing user %s", consts.Notif, user.ID)
 	go processing.ProcessMailRange(user.ID, 62, db)
 
 	return user.ID, nil

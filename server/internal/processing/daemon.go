@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/iommu/insightbox/server/graph/model"
+	"github.com/iommu/insightbox/server/internal/consts"
 	"github.com/jinzhu/gorm"
 )
 
@@ -25,13 +26,13 @@ func getNextTimerDuration() time.Duration {
 
 // creates new daemon with duration
 func newDaemon() daemon {
-	log.Printf("Notif : Creating new daemon")
+	log.Printf("%s Creating new daemon", consts.Notif)
 	return daemon{time.NewTimer(getNextTimerDuration())}
 }
 
 // resets daemon to next duration
 func (d *daemon) updateDaemon() {
-	log.Printf("Notif : Updating daemon")
+	log.Printf("%s Updating daemon", consts.Notif)
 	d.timer.Reset(getNextTimerDuration())
 }
 

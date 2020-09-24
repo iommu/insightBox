@@ -53,7 +53,7 @@ func authenticate(email string, db *gorm.DB) (*gmail.Service, error) {
 }
 
 //countWords count the number of words in the title of an email title
-func countWords(template model.Word, title string, db *gorm.DB) {
+func countWords(wordMap map[string]int, title string, db *gorm.DB) {
 	// change all letters to lower case
 	title = strings.ToLower(title)
 
@@ -66,8 +66,6 @@ func countWords(template model.Word, title string, db *gorm.DB) {
 
 	// break up the title into words delimited by space
 	wordList := strings.Fields(title)
-
-	wordMap := make(map[string]int)
 
 	// count words
 	for _, word := range wordList {
@@ -82,13 +80,6 @@ func countWords(template model.Word, title string, db *gorm.DB) {
 			wordMap[word] = 1
 		}
 	}
-
-	// save all words to db
-	for word, count := range wordMap {
-		template.Text = word
-		template.Value = count
-		db.Create(&template)
-	}
 }
 
 //processDataArray takes in array of gmail.MessageParts and a partially complete model.Day
@@ -96,6 +87,7 @@ func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *go
 	// setup saved variables
 	receivedEmails := 0
 	sentEmails := 0
+	wordMap := make(map[string]int)
 	// interate through all payloads in array
 	for _, payload := range dataArray {
 		switch len := len(payload.Headers); {
@@ -105,7 +97,7 @@ func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *go
 			}
 			fallthrough
 		case len > 15:
-			go countWords(model.Word{ID: template.ID, Date: template.Date}, payload.Headers[15].Value, db)
+			go countWords(wordMap, payload.Headers[15].Value, db)
 			fallthrough
 		case len > 1:
 			if payload.Headers[0].Value == template.ID {
@@ -118,6 +110,14 @@ func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *go
 	template.Received = receivedEmails
 	// save to database
 	db.Create(&template)
+
+	templateWord := model.Word{ID: template.ID, Date: template.Date}
+	// save all words to db
+	for word, count := range wordMap {
+		templateWord.Text = word
+		templateWord.Value = count
+		db.Save(&template)
+	}
 }
 
 //ProcessMailRange takes PK email addr, number of days to process from yesterday backwards and db

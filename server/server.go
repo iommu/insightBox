@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -15,6 +17,7 @@ import (
 	"github.com/iommu/insightbox/server/graph/model"
 	"github.com/iommu/insightbox/server/internal/auth"
 	"github.com/iommu/insightbox/server/internal/processing"
+	"github.com/iommu/insightbox/server/internal/users"
 
 	"github.com/jinzhu/gorm"
 	"github.com/rs/cors"
@@ -31,7 +34,6 @@ func initDB() {
 	dataSourceName := "group:isit321@(localhost)/insightbox?charset=utf8&parseTime=True&loc=Local"
 	db, err = gorm.Open("mysql", dataSourceName)
 	if err != nil {
-		log.Printf("Error : error connecting to database : %v", err)
 		panic("failed to connect database")
 	}
 
@@ -93,6 +95,19 @@ func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "4000"
+	}
+
+	// setup devmode specific "dev" as a command line arg to allow for pasting of auth code
+	devMode := flag.Bool("dev", false, "a bool")
+	flag.Parse()
+	if *devMode {
+		log.Println("Notif : devmode enabled")
+		log.Println("Notif : Use above link and paste the resulting code")
+		var authCode string
+		if _, err := fmt.Scan(&authCode); err != nil {
+			log.Fatalf("Unable to read authorization code: %v", err)
+		}
+		users.SignIn(authCode, db)
 	}
 
 	// start listening on {port}

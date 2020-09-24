@@ -2,6 +2,7 @@ package users
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
 	"reflect"
@@ -10,11 +11,11 @@ import (
 	"github.com/iommu/insightbox/server/internal/consts"
 	"github.com/iommu/insightbox/server/internal/processing"
 
-	"github.com/jinzhu/gorm"
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/gmail/v1"
 	"google.golang.org/api/people/v1"
+	"gorm.io/gorm"
 )
 
 //SignIn gets new token for user and saves/updates user account, returns Email (and error)
@@ -80,7 +81,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	// find user and create if can't
 	var tempUser model.User
 	err = db.Model(&tempUser).Where("id = ?", user.ID).First(&tempUser).Error
-	if gorm.IsRecordNotFoundError(err) { // if no current user with PK
+	if !errors.Is(err, gorm.ErrRecordNotFound) { // if no current user with PK
 		log.Printf("%s User with email addr %s not found, creating", consts.Notif, user.ID)
 		// set user default variables for user
 		user.ColorSchemeID = 1

@@ -6,7 +6,7 @@ import (
 
 	"github.com/iommu/insightbox/server/graph/model"
 	"github.com/iommu/insightbox/server/internal/consts"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 // embed time.Timer to allow for methods

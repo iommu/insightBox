@@ -2,6 +2,7 @@ package processing
 
 import (
 	"context"
+	"errors"
 	"io/ioutil"
 	"log"
 	"regexp"
@@ -11,10 +12,10 @@ import (
 	"github.com/iommu/insightbox/server/graph/model"
 	"github.com/iommu/insightbox/server/internal/consts"
 
-	"github.com/jinzhu/gorm"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/gmail/v1"
+	"gorm.io/gorm"
 )
 
 //authenticate and connect to gmail
@@ -156,7 +157,7 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 		if err == nil {
 			log.Printf("%s Found existing record, exiting", consts.Notif)
 			break
-		} else if !gorm.IsRecordNotFoundError(err) { // else if err exists and isn't err because no existing entry
+		} else if !errors.Is(err, gorm.ErrRecordNotFound) { // else if err exists and isn't err because no existing entry
 			log.Fatalf("%s GORM error checking for existing day rows : %v", consts.Error, err)
 		}
 

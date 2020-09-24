@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 
 	"github.com/iommu/insightbox/server/graph/model"
 	"github.com/iommu/insightbox/server/internal/consts"

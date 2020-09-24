@@ -19,27 +19,38 @@ import (
 	"github.com/iommu/insightbox/server/internal/consts"
 	"github.com/iommu/insightbox/server/internal/processing"
 	"github.com/iommu/insightbox/server/internal/users"
-
-	"github.com/jinzhu/gorm"
 	"github.com/rs/cors"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/gmail/v1"
 	"google.golang.org/api/people/v1"
+	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var db *gorm.DB
 
-func initDB() {
+func initDB(testDB bool) {
 	var err error
-	dataSourceName := "group:isit321@(localhost)/insightbox?charset=utf8&parseTime=True&loc=Local"
-	db, err = gorm.Open("mysql", dataSourceName)
+
+	// open maria or sqlite depending on flag
+	if !testDB {
+		dataSourceName := "group:isit321@(localhost)/insightbox?charset=utf8&parseTime=True&loc=Local"
+		db, err = gorm.Open(mysql.Open(dataSourceName), &gorm.Config{
+			Logger: logger.Default.LogMode(logger.Silent),
+		})
+	} else {
+		db, err = gorm.Open(sqlite.Open("test.db"), &gorm.Config{
+			Logger: logger.Default.LogMode(logger.Silent),
+		})
+	}
+
 	if err != nil {
 		log.Printf("%s error connecting to database : %v", consts.Error, err)
 		panic("failed to connect database")
 	}
-
-	db.LogMode(true)
 
 	// Migration to create tables for User, Day and Token and Word schema
 	db.AutoMigrate(&model.User{}, &model.Day{}, &model.Token{}, &model.Word{}, &model.Email{})
@@ -63,11 +74,16 @@ func printURL() {
 }
 
 func main() {
+	// setup command line args
+	devMode := flag.Bool("dev", false, "a bool")
+	testDB := flag.Bool("testDB", false, "a bool")
+	flag.Parse()
+
 	// print OAuth URL
 	printURL()
 
 	// connect to DB with GORM
-	initDB()
+	initDB(*testDB)
 
 	// setup 00:01 update ticker
 	go processing.InitDaemon(db)
@@ -99,9 +115,6 @@ func main() {
 		port = "4000"
 	}
 
-	// setup devmode specific "dev" as a command line arg to allow for pasting of auth code
-	devMode := flag.Bool("dev", false, "a bool")
-	flag.Parse()
 	if *devMode {
 		log.Printf("%s devmode enabled", consts.Notif)
 		log.Printf("%s Use above link and paste the resulting code", consts.Notif)

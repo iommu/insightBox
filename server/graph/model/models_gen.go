@@ -11,7 +11,7 @@ type Day struct {
 	Date     time.Time `json:"date" gorm:"primary_key"`
 	Sent     int       `json:"sent"`
 	Received int       `json:"received"`
-	Words    []*Word   `json:"words"`
+	Words    []*Word   `json:"words" gorm:"foreignKey:ID"`
 }
 
 type Email struct {

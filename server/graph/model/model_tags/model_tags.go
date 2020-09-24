@@ -18,6 +18,9 @@ func addGormTags(b *modelgen.ModelBuild) *modelgen.ModelBuild {
 			if model.Name == "Day" && (field.Name == "id" || field.Name == "date") {
 				field.Tag += ` gorm:"primary_key"`
 			}
+			if model.Name == "Day" && (field.Name == "words") {
+				field.Tag += ` gorm:"foreignKey:ID"`
+			}
 			// Add tags for "Word"
 			if model.Name == "Word" && (field.Name == "id" || field.Name == "date" || field.Name == "text") {
 				field.Tag += ` gorm:"primary_key"`

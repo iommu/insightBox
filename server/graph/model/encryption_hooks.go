@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 /* Encrypt/Decrypt functions */
@@ -23,10 +23,8 @@ func decrypt(encrypted string) (decrypted string) {
 /* Token hooks */
 
 //BeforeCreate method for model.Token
-func (token *Token) BeforeCreate(scope *gorm.Scope) (err error) {
-	if !scope.HasError() {
-		scope.SetColumn("AccessToken", encrypt(token.AccessToken))
-	}
+func (token *Token) BeforeCreate(tx *gorm.DB) (err error) {
+	token.AccessToken = encrypt(token.AccessToken)
 	return nil
 }
 

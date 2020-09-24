@@ -105,7 +105,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 
 	// run processing section
 	log.Printf("Notif : processing user %s", user.ID)
-	go processing.ProcessMailRange(user.ID, 14, db)
+	go processing.ProcessMailRange(user.ID, 62, db)
 
 	return user.ID, nil
 }

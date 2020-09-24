@@ -14,6 +14,15 @@ type Day struct {
 	Words    []*Word   `json:"words"`
 }
 
+type Email struct {
+	ID       string    `json:"id" gorm:"primary_key"`
+	Date     time.Time `json:"date" gorm:"primary_key"`
+	PoiEmail string    `json:"poi_email" gorm:"primary_key"`
+	PoiName  string    `json:"poi_name"`
+	Sent     int       `json:"sent"`
+	Received int       `json:"received"`
+}
+
 type Token struct {
 	ID           string    `json:"id"`
 	AccessToken  string    `json:"access_token"`

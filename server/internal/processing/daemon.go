@@ -47,7 +47,7 @@ func InitDaemon(db *gorm.DB) {
 		// iterate through all users
 		for _, user := range users {
 			// download past 14 days (will quit if day object already exists)
-			go ProcessMailRange(user.ID, 14, db)
+			go ProcessMailRange(user.ID, 62, db)
 		}
 		// update daemon
 		d.updateDaemon()

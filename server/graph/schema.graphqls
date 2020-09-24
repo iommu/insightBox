@@ -32,6 +32,15 @@ type Word {
   value: Int!
 }
 
+type Email {
+  id: ID!
+  date: Time!
+  poi_email: String!
+  poi_name: String!
+  sent: Int!
+  received: Int!
+}
+
 type Mutation {
   signIn(authCode: String!): String! #takes in oauth key, returns JWT string
 }

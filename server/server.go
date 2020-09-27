@@ -25,7 +25,8 @@ import (
 	"google.golang.org/api/gmail/v1"
 	"google.golang.org/api/people/v1"
 	"gorm.io/driver/mysql"
-	"gorm.io/driver/sqlite"
+
+	//	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -42,9 +43,9 @@ func initDB(testDB bool) {
 			Logger: logger.Default.LogMode(logger.Silent),
 		})
 	} else {
-		db, err = gorm.Open(sqlite.Open("test.db"), &gorm.Config{
-			Logger: logger.Default.LogMode(logger.Silent),
-		})
+		// db, err = gorm.Open(sqlite.Open("test.db"), &gorm.Config{
+		// 	Logger: logger.Default.LogMode(logger.Silent),
+		// })
 	}
 
 	if err != nil {

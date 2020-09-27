@@ -124,8 +124,9 @@ func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *go
 
 //ProcessMailRange takes PK email addr, number of days to process from yesterday backwards and db
 func ProcessMailRange(email string, countBack int, db *gorm.DB) {
-	// calculate last 00:00 time (with respect to time zone)
-	startDay := time.Now().Truncate(time.Hour * 24)
+	// calculate last 00:00 time
+	timeVal := time.Now()
+	startDay := time.Date(timeVal.Year(), timeVal.Month(), timeVal.Day(), 0, 0, 0, 0, timeVal.Location())
 
 	// authenticate with google servers to access emails
 	srv, err := authenticate(email, db)
@@ -173,7 +174,9 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 			}
 
 			// get truncated time of email
-			emailDate := time.Unix(mail.InternalDate/1000, 0).Truncate(time.Hour * 24)
+			timeVal = time.Unix(mail.InternalDate/1000, 0)
+			emailDate := time.Date(timeVal.Year(), timeVal.Month(), timeVal.Day(), 0, 0, 0, 0, timeVal.Location())
+
 			if emailDate.After(indexDate) {
 				emailIndex++
 				continue // skip this email if it happened after current process date (this should only occur with emails after last nights 00:00)

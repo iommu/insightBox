@@ -22,8 +22,6 @@ export const ProfileDropDown = () => {
       }`
     });
   
-    console.log(result);
-  
     const { data, fetching, error } = result;
   
     if (fetching) return (

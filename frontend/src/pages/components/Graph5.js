@@ -3,19 +3,23 @@ import React from 'react';
 import { useQuery } from 'urql';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
 
+var end = new Date().toISOString();
+var d = new Date();
+// for some reason you have to set the date back an extra day if you want 7 days returned from graphql
+d.setDate(d.getDate()-8); // ie: minus 8 days from today's date
+var start = new Date(d).toISOString();
+
 export const Graph5 = () => {
     const [result] = useQuery({
       query: `
       query {
-        data(start:"2006-01-02T15:04:05Z", end:"2026-01-02T15:04:05Z") {
+        data(start:"` + start + `", end:"` + end + `") {
           date,
           received,
           sent
         }
       }`
     });
-
-    console.log(result);
   
     const { fetching, error } = result;
   
@@ -28,29 +32,30 @@ export const Graph5 = () => {
         <p> Error getting user data </p>
       );
     };
+
+    console.log(result);
   
     // do computation here
     var graphdata = [];
     var rlen = result.data.data.length;
     var days = ["S", "M", "T", "W", "T", "F", "S"];
-    for (var i = rlen-7; i < rlen; i++) {
+    for (var i = 0; i < rlen; i++) {
       var date = new Date(result.data.data[i].date);
       var day = date.getDay(date);
       var received = result.data.data[i].received;
       var sent = result.data.data[i].sent;
       var value = {name: days[day], Received: received, Sent: sent, amt: 2400};
       graphdata.push(value);
-      console.log(i);
     }
     return (
         <div>
         <div className="graph-title">Sent vs Received</div>
             <LineChart
-            width={470}
+            width={410}
             height={190}
             data={graphdata}
             margin={{
-            top: 5, right: 30, left: 20, bottom: 5,
+            top: 5, right: 20, left: -30, bottom: 5,
             }}
             >
             <CartesianGrid strokeDasharray="3 3" />

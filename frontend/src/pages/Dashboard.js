@@ -7,6 +7,8 @@ import { Graph3 } from './components/Graph3';
 import { Graph4 } from './components/Graph4';
 import { Graph5 } from './components/Graph5';
 import { Graph6 } from './components/Graph6';
+import { Graph7 } from './components/Graph7';
+import { Graph8 } from './components/Graph8';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -58,13 +60,13 @@ class Dashboard extends React.Component {
               </div>
             </div>
             <div className="stat-container">
-              Graph
+              <Graph7 />
               <div className="info">
                 <img className="info-img" src={info} alt="info" />
               </div>
             </div>
             <div className="stat-container">
-              Graph
+              <Graph8 />
               <div className="info">
                 <img className="info-img" src={info} alt="info" />
               </div>

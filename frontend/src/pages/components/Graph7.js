@@ -62,7 +62,7 @@ export const Graph7 = () => {
             height={190}
             data={graphdata}
             margin={{
-            top: 5, right: 30, left: 10, bottom: 5,
+            top: 20, right: 30, left: 10, bottom: 0,
             }}
             >
             <CartesianGrid strokeDasharray="3 3" />

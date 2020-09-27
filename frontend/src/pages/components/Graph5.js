@@ -55,7 +55,7 @@ export const Graph5 = () => {
             height={190}
             data={graphdata}
             margin={{
-            top: 5, right: 20, left: -30, bottom: 5,
+            top: 20, right: 20, left: -30, bottom: 0,
             }}
             >
             <CartesianGrid strokeDasharray="3 3" />

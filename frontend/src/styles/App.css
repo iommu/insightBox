@@ -173,11 +173,11 @@
 /* If the screen size is 2500px wide or more, set the font-size to 160px */
 @media screen and (min-width: 2031px) {
     #title1 {
-      font-size: 170px;
+      font-size: 160px;
     }
     #title2{
-        font-size: 50px;
-        margin-top: 60px;
+        font-size: 45px;
+        margin-top: 13px;
     }
 }
 

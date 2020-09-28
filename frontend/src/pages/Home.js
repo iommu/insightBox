@@ -14,7 +14,7 @@ function Home() {
   return (
     <div>
       <div id="home-icon">
-        <img src={logo} alt="insightBox" width="260" />
+        <img id="logo-img" src={logo} alt="insightBox" />
       </div>
       <div id="title-main">
         <div id="title1">insightBox</div>

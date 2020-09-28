@@ -117,7 +117,11 @@
     display: inline-block;
     position: absolute;
     left: 0vw;
-    margin-top: 23vh;
+    margin-top: 20vh;
+}
+
+#logo-img{
+    width: 260px;
 }
 
 #title-main{
@@ -131,7 +135,7 @@
     
 }
 
-@media screen and (max-height: 600px) {
+@media screen and (min-height: 600px) {
     
     #title-main{
         top: 180px;

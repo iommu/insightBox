@@ -122,14 +122,22 @@
 
 #title-main{
     display: block;
-    position: fixed;
-    top: 230px;
+    position: absolute;
+    top: 30vh;
     left: 280px;
     font-family: arial;
     text-align: center;
     line-height: 6.5em;
     
 }
+
+@media screen and (max-height: 600px) {
+    
+    #title-main{
+        top: 180px;
+    }
+}
+
 
 #title1{
     font-size: 7.85vw;
@@ -177,7 +185,7 @@
     }
     #title2{
         font-size: 45px;
-        margin-top: 13px;
+        margin-top: 15px;
     }
 }
 

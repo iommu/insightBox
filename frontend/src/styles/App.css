@@ -353,7 +353,6 @@
     position: absolute;
     bottom: 10px;
     right: 5px;
-    width: auto;
 }
 
 #home-graph2{
@@ -368,7 +367,6 @@
     position: absolute;
     bottom: 10px;
     right: 447px;
-    width: auto;
 }
 
 #home-graph3{
@@ -383,7 +381,6 @@
     position: absolute;
     bottom: 247px;
     right: 5px;
-    width: auto;
 }
 
 #home-graph4{
@@ -398,7 +395,6 @@
     position: absolute;
     bottom: 247px;
     right: 207px;
-    width: auto;
 }
 
 #home-graph5{
@@ -413,7 +409,6 @@
     position: absolute;
     bottom: 10px;
     right: 842px;
-    width: auto;
 }
 
 #home-graph6{
@@ -428,7 +423,6 @@
     position: absolute;
     bottom: 481px;
     right: 5px;
-    width: auto;
 }
 
 #home-graph7{
@@ -443,7 +437,6 @@
     position: absolute;
     bottom: 10px;
     right: 660px;
-    width: auto;
 }
 
 .footer{
@@ -457,4 +450,22 @@
 .footer a{
     color: grey;
     text-decoration: none;
+}
+
+@media screen and (max-width: 1297px){
+    #home-graph5{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 851px){
+    #home-graph7{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1377px){
+    #home-graph4{
+        display: none;
+    }
 }

@@ -205,10 +205,10 @@
     border: 1px solid #afafaf;
     background-color: white;
     width: auto;
-    height: 25.2vh;
+    height: 200px;
     text-align: left;
-    padding: 1.1vh 0.9vw;
-    margin: 1vh 0.6vw;
+    padding: 10px 10px;
+    margin: 10px 10px;
     overflow-y: scroll;
     overflow-x: hidden;
     position: relative;
@@ -290,7 +290,7 @@
 .graph-title{
     text-align: center;
     font-family: Helvetica, sans-serif;
-    line-height: 2vh;
+    line-height: 14px;
     font-size: 14px;
     padding: 10px;
     color: #333333;
@@ -298,8 +298,8 @@
 
 .graph-title2{
     text-align: center;
-    line-height: 1vh;
     font-size: 14px;
+    line-height: 6px;
     padding: 10px;
     color: #333333;
 }

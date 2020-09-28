@@ -132,10 +132,16 @@
 }
 
 #title1{
-    font-size: 110px;
+    font-size: 7.85vw;
     font-weight: bold;
     
 }
+
+@media screen and (max-width: 1400px) {
+    #title1 {
+      font-size: 110px;
+    }
+  }
 
 #title2{
     font-size: 32px;

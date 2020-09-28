@@ -145,6 +145,13 @@
     padding-right: 40px;
 }
 
+@media screen and (min-width: 1788px) {
+    
+    #title2{
+        margin-top: 2vh;
+    }
+}
+
 /* If the screen size is 1400px wide or less, set the font-size to 110px */
 @media screen and (max-width: 1400px) {
     #title1 {

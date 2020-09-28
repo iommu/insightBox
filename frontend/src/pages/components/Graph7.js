@@ -59,7 +59,7 @@ export const Graph7 = () => {
         <div className="graph-title">Weekly Trend Average (Received)</div>
             <LineChart
             width={280}
-            height={190}
+            height={160}
             data={graphdata}
             margin={{
             top: 20, right: 30, left: 10, bottom: 0,

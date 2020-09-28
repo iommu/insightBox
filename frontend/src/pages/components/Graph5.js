@@ -52,7 +52,7 @@ export const Graph5 = () => {
         <div className="graph-title">Sent vs Received</div>
             <LineChart
             width={410}
-            height={190}
+            height={160}
             data={graphdata}
             margin={{
             top: 20, right: 20, left: -30, bottom: 0,

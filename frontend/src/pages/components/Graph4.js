@@ -3,7 +3,7 @@ import React from 'react';
 import { useQuery } from 'urql';
 // eslint-disable-next-line
 import { PureComponent } from 'react';
-import { RadialBarChart, RadialBar, Tooltip } from 'recharts';
+import { RadialBarChart, RadialBar, Tooltip, ResponsiveContainer } from 'recharts';
 
 var end = new Date().toISOString();
 var d = new Date();
@@ -51,11 +51,13 @@ export const Graph4 = () => {
 
     return (
         <div>
-        <div className="graph-title">Emails Recieved per Week Day</div>
-          <RadialBarChart width={240} height={210} cx={120} cy={100} innerRadius={10} outerRadius={100} barSize={8} data={graphdata}>
+        <div className="graph-title">Emails Recieved<br />per Week Day</div>
+        <ResponsiveContainer width={160} height={150}>
+          <RadialBarChart width={200} height={160} innerRadius={8} outerRadius={80} barSize={7} data={graphdata}>
             <RadialBar minAngle={15} label={{ position: 'insideStart', fill: '#fff' }} background clockWise dataKey="Received" />
             <Tooltip />
           </RadialBarChart>
+          </ResponsiveContainer>
         </div>
     );
   }

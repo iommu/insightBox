@@ -1,9 +1,14 @@
 import React from 'react';
 import logo from '../images/logo.png';
-import graph1 from '../images/graph1.png';
-import graph2 from '../images/graph2.png';
 import '../styles/App.css';
 import GoogleBtn from './components/GoogleBtn';
+
+import { Graph1Home } from './components/Graph1Home';
+import { Graph2Home } from './components/Graph2Home';
+import { Graph4Home } from './components/Graph4Home';
+import { Graph5Home } from './components/Graph5Home';
+import { Graph6Home } from './components/Graph6Home';
+import { Graph7Home } from './components/Graph7Home';
 
 function Home() {
   return (
@@ -18,12 +23,43 @@ function Home() {
       <div id="connect">
         <GoogleBtn />
       </div>
-      <div id="graph2">
-        <img src={graph2} alt="example graph" width="700" />
-      </div>
-      <div id="graph1">
-        <img src={graph1} alt="example graph" width="650" />
-      </div>
+
+
+
+
+        <div className="homepage-slide">
+
+          <div id="home-graph1">
+              <Graph2Home />
+          </div>
+
+          <div id="home-graph2">
+              <Graph1Home />
+          </div>
+
+          <div id="home-graph3">
+              <Graph4Home />
+          </div>
+
+          <div id="home-graph4">
+              <Graph7Home />
+          </div>
+
+          <div id="home-graph5">
+              <Graph5Home />
+          </div>
+
+          <div id="home-graph7">
+              <Graph6Home />
+          </div>
+
+        </div>
+      
+    <div className="footer">
+      Graphs from <a href="https://recharts.org/en-US">Recharts</a>
+    </div>
+        
+
     </div>
   );
 }

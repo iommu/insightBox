@@ -124,7 +124,7 @@
     display: block;
     position: absolute;
     top: 30vh;
-    left: 280px;
+    left: 18vw;
     font-family: arial;
     text-align: center;
     line-height: 6.5em;
@@ -135,6 +135,13 @@
     
     #title-main{
         top: 180px;
+    }
+}
+
+@media screen and (max-width: 1420px) {
+    
+    #title-main{
+        left: 250px;
     }
 }
 

@@ -2,7 +2,7 @@
 import React from 'react'; 
 // eslint-disable-next-line
 import { PureComponent } from 'react';
-import { RadialBarChart, RadialBar, Tooltip, ResponsiveContainer } from 'recharts';
+import { RadialBarChart, RadialBar, Tooltip,  } from 'recharts';
 
 
 const graphdata = [
@@ -21,12 +21,11 @@ export const Graph4Home = () => {
     return (
         <div>
         <div className="graph-title">Emails Recieved<br />per Week Day</div>
-        <ResponsiveContainer width={160} height={150}>
-          <RadialBarChart width={200} height={160} innerRadius={8} outerRadius={80} barSize={7} data={graphdata}>
+        
+          <RadialBarChart width={190} height={150} innerRadius={8} outerRadius={80} barSize={7} data={graphdata}>
             <RadialBar minAngle={15} label={{ position: 'insideStart', fill: '#fff' }} background clockWise dataKey="Received" />
             <Tooltip />
           </RadialBarChart>
-          </ResponsiveContainer>
         </div>
     );
   }

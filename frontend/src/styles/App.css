@@ -115,19 +115,49 @@
 
 #home-icon{
     display: inline-block;
-    position: absolute;
-    left: 0vw;
-    margin-top: 20vh;
+    position: fixed;
+    left: 4vw;
+    margin-top: 27vh;
+}
+
+@media screen and (max-width: 1190px) {
+    #home-icon{
+        left: 3vw;
+    }
+}
+
+@media screen and (max-width: 1490px) {
+    #home-icon{
+        left: 2vw;
+    }
 }
 
 #logo-img{
     width: 260px;
 }
 
+@media screen and (min-width: 2000px) {
+    #logo-img{
+        width: 290px;
+    }
+}
+
+@media screen and (min-width: 2100px) {
+    #logo-img{
+        width: 310px;
+    }
+}
+
+@media screen and (min-width: 2200px) {
+    #logo-img{
+        width: 330px;
+    }
+}
+
 #title-main{
     display: block;
     position: absolute;
-    top: 32vh;
+    top: 30vh;
     left: 18vw;
     font-family: arial;
     text-align: center;
@@ -135,10 +165,13 @@
     
 }
 
-@media screen and (min-height: 600px) {
+@media screen and (max-height: 800px) {
     
     #title-main{
-        top: 180px;
+        top: 250px;
+    }
+    #home-icon{
+        margin-top: 200px;
     }
 }
 
@@ -190,12 +223,12 @@
 }
 
 /* If the screen size is 2500px wide or more, set the font-size to 160px */
-@media screen and (min-width: 2500px) {
+@media screen and (min-width: 2450px) {
     #title1 {
-      font-size: 160px;
+      font-size: 175px;
     }
     #title2{
-        font-size: 45px;
+        font-size: 48px;
         margin-top: 45px;
     }
 }
@@ -462,7 +495,7 @@
     z-index: 1;
     position: absolute;
     bottom: 247px;
-    right: 207px;
+    right: 235px;
 }
 
 #home-graph5{
@@ -532,7 +565,7 @@
     }
 }
 
-@media screen and (max-width: 1377px){
+@media screen and (max-width: 1400px){
     #home-graph4{
         display: none;
     }

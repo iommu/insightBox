@@ -49,7 +49,7 @@ export const Graph8 = () => {
     return (
         <div>
         <div className="graph-title">Received per Week Day</div>
-        <RadarChart outerRadius={70} width={280} height={180} data={graphdata}>
+        <RadarChart outerRadius={65} width={280} height={166} data={graphdata}>
             <PolarGrid />
             <PolarAngleAxis dataKey="name" tick={{fontSize: 12}}/>
             <PolarRadiusAxis />

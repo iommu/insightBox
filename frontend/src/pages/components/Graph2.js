@@ -1,6 +1,6 @@
 import React from 'react'; 
 import { useQuery } from 'urql';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,  } from 'recharts';
 
 var end = new Date().toISOString();
 var d = new Date();
@@ -46,8 +46,10 @@ export const Graph2 = () => {
     return (
         <div>
         <div className="graph-title">Emails Received per Day</div>
-        <ResponsiveContainer width={400} height={180}>
-        <BarChart 
+        
+        <BarChart
+        width={400} 
+        height={180}
         data={graphdata}
         margin={{top: 5, right: 20, left: -20, bottom: 5,}}
           >
@@ -57,7 +59,6 @@ export const Graph2 = () => {
           <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
           <Bar dataKey="Total" fill="#40a1f1" barSize={30} />
         </BarChart>
-        </ResponsiveContainer>
         </div>
     );
   }

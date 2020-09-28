@@ -37,8 +37,8 @@ export const Graph1Home = () => {
   return (
     <div>
     <div className="graph-title">Email Received %<br /> Day of the Week</div>
-    <ResponsiveContainer width={170} height={150}>
-    <PieChart >
+    
+    <PieChart width={170} height={150}>
     <Pie
       data={graphdata}
       labelLine={false}
@@ -53,7 +53,6 @@ export const Graph1Home = () => {
     </Pie>
     <Tooltip wrapperStyle={{ backgroundColor: '#ccc' }}/>
   </PieChart>
-  </ResponsiveContainer>
   </div>
   );
  }

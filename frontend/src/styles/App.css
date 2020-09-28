@@ -127,7 +127,7 @@
 #title-main{
     display: block;
     position: absolute;
-    top: 30vh;
+    top: 32vh;
     left: 18vw;
     font-family: arial;
     text-align: center;
@@ -190,7 +190,7 @@
 }
 
 /* If the screen size is 2500px wide or more, set the font-size to 160px */
-@media screen and (min-width: 2031px) {
+@media screen and (min-width: 2500px) {
     #title1 {
       font-size: 160px;
     }
@@ -266,6 +266,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    font-size: 14px;
 }
 
 .stat-container{

@@ -19,10 +19,11 @@ function Home() {
       <div id="title-main">
         <div id="title1">insightBox</div>
         <div id="title2">insights on your inbox</div>
+        <div id="connect">
+          <GoogleBtn />
+        </div>
       </div>
-      <div id="connect">
-        <GoogleBtn />
-      </div>
+      
 
 
 

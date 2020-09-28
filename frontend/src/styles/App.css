@@ -205,11 +205,16 @@
 
 #connect{
     display: inline-block;
-    position: fixed;
-    top: 430px;
-    left: 300px;
+    position: absolute;
     font-family: arial;
-    text-align: center;
+    left: 0vw;
+    bottom: -10vh;
+}
+
+@media screen and (max-height: 650px) {
+    #connect{
+        bottom: -60px;
+    }
 }
 
 .connect-button{

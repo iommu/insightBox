@@ -115,9 +115,9 @@
 
 #home-icon{
     display: inline-block;
-    position: fixed;
-    left: 10px;
-    margin-top: 180px;
+    position: absolute;
+    left: 0vw;
+    margin-top: 23vh;
 }
 
 #title-main{

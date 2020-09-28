@@ -17,7 +17,7 @@ export const Graph2Home = () => {
     return (
         <div>
         <div className="graph-title">Emails Received per Day</div>
-        <ResponsiveContainer width={400} height={180}>
+        <ResponsiveContainer width={400} height={170}>
         <BarChart 
         data={graphdata}
         margin={{top: 5, right: 20, left: -20, bottom: 5,}}

@@ -217,6 +217,12 @@
     }
 }
 
+@media screen and (min-height: 800px) {
+    #connect{
+        bottom: -80px;
+    }
+}
+
 .connect-button{
     border: 1px solid #c54339;
     border-radius: 3px;

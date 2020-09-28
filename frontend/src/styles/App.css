@@ -155,7 +155,14 @@
 @media screen and (min-width: 2084px) {
     
     #title2{
-        margin-top: 3vh;
+        margin-top: 4vh;
+    }
+}
+
+@media screen and (min-width: 2300px) {
+    
+    #title2{
+        margin-top: 6vh;
     }
 }
 

@@ -469,3 +469,51 @@
         display: none;
     }
 }
+
+@media screen and (max-width: 1144px){
+    #home-graph1{
+        display: none;
+    }
+    #home-graph2{
+        display: none;
+    }
+    #home-graph3{
+        display: none;
+    }
+    #home-graph4{
+        display: none;
+    }
+    #home-graph5{
+        display: none;
+    }
+    #home-graph6{
+        display: none;
+    }
+    #home-graph7{
+        display: none;
+    }
+}
+
+@media screen and (max-height: 730px){
+    #home-graph1{
+        display: none;
+    }
+    #home-graph2{
+        display: none;
+    }
+    #home-graph3{
+        display: none;
+    }
+    #home-graph4{
+        display: none;
+    }
+    #home-graph5{
+        display: none;
+    }
+    #home-graph6{
+        display: none;
+    }
+    #home-graph7{
+        display: none;
+    }
+}

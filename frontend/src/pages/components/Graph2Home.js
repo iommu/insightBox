@@ -20,7 +20,7 @@ export const Graph2Home = () => {
         
         <BarChart 
         width={400} 
-        height={170}
+        height={165}
         data={graphdata}
         margin={{top: 5, right: 20, left: -20, bottom: 5,}}
           >

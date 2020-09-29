@@ -49,7 +49,7 @@ export const Graph2 = () => {
         
         <BarChart
         width={400} 
-        height={180}
+        height={165}
         data={graphdata}
         margin={{top: 5, right: 20, left: -20, bottom: 5,}}
           >

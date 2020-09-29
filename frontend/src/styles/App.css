@@ -310,8 +310,6 @@
     text-align: left;
     padding: 10px 10px;
     margin: 10px 10px;
-    overflow-y: scroll;
-    overflow-x: hidden;
     position: relative;
 }
 

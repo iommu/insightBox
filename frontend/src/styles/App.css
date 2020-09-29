@@ -313,7 +313,6 @@
     overflow-y: scroll;
     overflow-x: hidden;
     position: relative;
-    font-size: 1.1vw;
 }
 
 #down-img{
@@ -595,7 +594,7 @@
     }
 }
 
-@media screen and (max-height: 730px){
+@media screen and (max-height: 770px){
     #home-graph1{
         display: none;
     }

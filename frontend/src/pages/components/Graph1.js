@@ -51,6 +51,16 @@ export const Graph1 = () => {
       <p> Error getting user data </p>
     );
   };
+
+
+
+
+
+
+
+
+
+
   
   // do computation here
   var graphdata = [];

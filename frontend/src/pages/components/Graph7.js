@@ -51,8 +51,6 @@ export const Graph7 = () => {
     graphdata.push(value1);
     graphdata.push(value2);
 
-    console.log(result);
-
 
     return (
         <div>

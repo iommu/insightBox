@@ -32,8 +32,6 @@ export const Graph5 = () => {
         <p> Error getting user data </p>
       );
     };
-
-    console.log(result);
   
     // do computation here
     var graphdata = [];

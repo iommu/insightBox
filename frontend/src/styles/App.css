@@ -116,32 +116,121 @@
 #home-icon{
     display: inline-block;
     position: fixed;
-    left: 4%;
-    margin-top: 210px;
+    left: 4vw;
+    margin-top: 27vh;
+}
+
+@media screen and (max-width: 1190px) {
+    #home-icon{
+        left: 3vw;
+    }
+}
+
+@media screen and (max-width: 1490px) {
+    #home-icon{
+        left: 2vw;
+    }
+}
+
+#logo-img{
+    width: 260px;
+}
+
+@media screen and (min-width: 2000px) {
+    #logo-img{
+        width: 290px;
+    }
+}
+
+@media screen and (min-width: 2100px) {
+    #logo-img{
+        width: 310px;
+    }
+}
+
+@media screen and (min-width: 2200px) {
+    #logo-img{
+        width: 330px;
+    }
 }
 
 #title-main{
     display: block;
-    position: fixed;
-    top: 280px;
-    left: 300px;
+    position: absolute;
+    top: 30vh;
+    left: 18vw;
     font-family: arial;
     text-align: center;
     line-height: 6.5em;
     
 }
 
+@media screen and (max-height: 800px) {
+    
+    #title-main{
+        top: 250px;
+    }
+    #home-icon{
+        margin-top: 200px;
+    }
+}
+
+@media screen and (max-width: 1420px) {
+    
+    #title-main{
+        left: 250px;
+    }
+}
+
+
 #title1{
-    font-size: 110px;
+    font-size: 7.85vw;
     font-weight: bold;
     
 }
 
 #title2{
-    font-size: 32px;
+    font-size: 2.2vw;
     font-weight: normal;
+    margin-top: 1vh;
     color: grey;
     padding-right: 40px;
+}
+
+@media screen and (min-width: 1788px) {
+    
+    #title2{
+        margin-top: 2vh;
+    }
+}
+
+@media screen and (min-width: 2084px) {
+    
+    #title2{
+        margin-top: 5vh;
+    }
+}
+
+/* If the screen size is 1400px wide or less, set the font-size to 110px */
+@media screen and (max-width: 1400px) {
+    #title1 {
+      font-size: 110px;
+    }
+    #title2{
+        font-size: 31px;
+        margin-top: 8px;
+    }
+}
+
+/* If the screen size is 2500px wide or more, set the font-size to 160px */
+@media screen and (min-width: 2450px) {
+    #title1 {
+      font-size: 175px;
+    }
+    #title2{
+        font-size: 48px;
+        margin-top: 45px;
+    }
 }
 
 #title3{
@@ -153,11 +242,22 @@
 
 #connect{
     display: inline-block;
-    position: fixed;
-    top: 470px;
-    left: 350px;
+    position: absolute;
     font-family: arial;
-    text-align: center;
+    left: 0vw;
+    bottom: -10vh;
+}
+
+@media screen and (max-height: 650px) {
+    #connect{
+        bottom: -60px;
+    }
+}
+
+@media screen and (min-height: 800px) {
+    #connect{
+        bottom: -80px;
+    }
 }
 
 .connect-button{
@@ -190,20 +290,6 @@
     
 }
 
-#graph1{
-    display: inline-block;
-    position: fixed;
-    bottom: 260px;
-    right: -250px;
-}
-
-#graph2{
-    display: inline-block;
-    position: fixed;
-    bottom: 25px;
-    right: -5px;
-}
-
 .dashboard-content{
     margin: auto;
     margin-top: 10px;
@@ -213,18 +299,17 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    font-size: 14px;
 }
 
 .stat-container{
     border: 1px solid #afafaf;
     background-color: white;
     width: auto;
-    height: 250px;
+    height: 200px;
     text-align: left;
-    padding: 10px 18px;
-    margin: 16px 16px;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    padding: 10px 10px;
+    margin: 10px 10px;
     position: relative;
 }
 
@@ -302,7 +387,17 @@
 
 .graph-title{
     text-align: center;
-    font-size: 16px;
+    font-family: Helvetica, sans-serif;
+    line-height: 14px;
+    font-size: 14px;
+    padding: 10px;
+    color: #333333;
+}
+
+.graph-title2{
+    text-align: center;
+    font-size: 14px;
+    line-height: 6px;
     padding: 10px;
     color: #333333;
 }
@@ -323,7 +418,7 @@
 }
 
 .numbers{
-    font-size: 28px;
+    font-size: 22px;
     font-weight: bold;
 }
 
@@ -336,4 +431,187 @@
 .info-img{
     width: 18px;
     opacity: 0;
+}
+
+.homepage-slide{
+    width: 100%;
+    height: 100%;
+}
+
+
+#home-graph1{
+    border: 1px solid #afafaf;
+    background-color: white;
+    height: 200px;
+    padding: 10px 12px;
+    margin: 16px 16px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    z-index: 1;
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+}
+
+#home-graph2{
+    border: 1px solid #afafaf;
+    background-color: white;
+    height: 200px;
+    padding: 10px 12px;
+    margin: 16px 16px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    z-index: 1;
+    position: absolute;
+    bottom: 10px;
+    right: 447px;
+}
+
+#home-graph3{
+    border: 1px solid #afafaf;
+    background-color: white;
+    height: 200px;
+    padding: 10px 12px;
+    margin: 16px 16px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    z-index: 1;
+    position: absolute;
+    bottom: 247px;
+    right: 5px;
+}
+
+#home-graph4{
+    border: 1px solid #afafaf;
+    background-color: white;
+    height: 200px;
+    padding: 10px 12px;
+    margin: 16px 16px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    z-index: 1;
+    position: absolute;
+    bottom: 247px;
+    right: 235px;
+}
+
+#home-graph5{
+    border: 1px solid #afafaf;
+    background-color: white;
+    height: 200px;
+    padding: 10px 12px;
+    margin: 16px 16px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    z-index: 1;
+    position: absolute;
+    bottom: 10px;
+    right: 842px;
+}
+
+#home-graph6{
+    border: 1px solid #afafaf;
+    background-color: white;
+    height: 200px;
+    padding: 10px 12px;
+    margin: 16px 16px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    z-index: 1;
+    position: absolute;
+    bottom: 481px;
+    right: 5px;
+}
+
+#home-graph7{
+    border: 1px solid #afafaf;
+    background-color: white;
+    height: 200px;
+    padding: 10px 12px;
+    margin: 16px 16px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    z-index: 1;
+    position: absolute;
+    bottom: 10px;
+    right: 660px;
+}
+
+.footer{
+    color: grey;
+    position: fixed;
+    bottom: 5px;
+    right: 25px;
+    font-size: 12px;
+}
+
+.footer a{
+    color: grey;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 1297px){
+    #home-graph5{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 851px){
+    #home-graph7{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1400px){
+    #home-graph4{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1144px){
+    #home-graph1{
+        display: none;
+    }
+    #home-graph2{
+        display: none;
+    }
+    #home-graph3{
+        display: none;
+    }
+    #home-graph4{
+        display: none;
+    }
+    #home-graph5{
+        display: none;
+    }
+    #home-graph6{
+        display: none;
+    }
+    #home-graph7{
+        display: none;
+    }
+}
+
+@media screen and (max-height: 770px){
+    #home-graph1{
+        display: none;
+    }
+    #home-graph2{
+        display: none;
+    }
+    #home-graph3{
+        display: none;
+    }
+    #home-graph4{
+        display: none;
+    }
+    #home-graph5{
+        display: none;
+    }
+    #home-graph6{
+        display: none;
+    }
+    #home-graph7{
+        display: none;
+    }
 }

@@ -10,7 +10,7 @@ import logo from '../../images/logo.png';
 
 import { ProfileDropDown } from './ProfileDropDown';
 
-class TopBar extends React.Component {
+class NavBar extends React.Component {
   render() {
     return (
       <div id="topbar-fixed">
@@ -60,4 +60,4 @@ class TopBar extends React.Component {
   }
 }
 
-export default withRouter(TopBar);
+export default withRouter(NavBar);

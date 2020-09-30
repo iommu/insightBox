@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import info from '../images/info.png';
+import SideBar from "./components/SideBar";
 import { Graph1 } from './components/Graph1';
 import { Graph2 } from './components/Graph2';
 import { Graph3 } from './components/Graph3';
@@ -36,6 +37,7 @@ class Dashboard extends React.Component {
   render() {
     return (
         <div id="dash-container">
+          <SideBar/>
           <div className="dashboard-content">
             <div className="stat-container">
               <Graph1 />

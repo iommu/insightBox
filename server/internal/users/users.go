@@ -80,7 +80,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	// find user and create if can't
 	var tempUser model.User
 	err = db.Model(&tempUser).Where("id = ?", user.ID).First(&tempUser).Error
-	if !errors.Is(err, gorm.ErrRecordNotFound) { // if no current user with PK
+	if errors.Is(err, gorm.ErrRecordNotFound) { // if no current user with PK
 		log.Printf("%s User with email addr %s not found, creating", consts.Notif, user.ID)
 		// set user default variables for user
 		user.ColorSchemeID = 1
@@ -100,7 +100,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 
 	// find existing token in db
 	err = db.Model(&tokenDB).Where("id = ?", user.ID).First(&tokenDB).Error
-	if !errors.Is(err, gorm.ErrRecordNotFound) {
+	if errors.Is(err, gorm.ErrRecordNotFound) {
 		log.Printf("%s Token with email addr %s not found, creating", consts.Notif, user.ID)
 	} else if err != nil {
 		log.Fatalf("%s GORM error connecting to db : %v", consts.Error, err)

@@ -115,6 +115,21 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 
 	if refreshToken == "" {
 		log.Printf("%s refresh token for user is blank : %v", consts.Error, err) // todo, revoke access
+		client.Get("https://accounts.google.com/o/oauth2/revoke?")
+		res, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo")
+		if err != nil {
+			log.Printf("%s Error requesting user profile : %v", consts.Error, err)
+			return "", err
+		}
+		if res.Body != nil {
+			defer res.Body.Close()
+		}
+		body, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			log.Printf("%s no content in user profile request body : %v", consts.Error, err)
+			return "", err
+		}
+		log.Printf(string(body))
 		return "", nil
 	}
 

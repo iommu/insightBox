@@ -5,7 +5,6 @@ import (
 	"errors"
 	"io/ioutil"
 	"log"
-	"reflect"
 
 	"github.com/iommu/insightbox/server/graph/model"
 	"github.com/iommu/insightbox/server/internal/consts"
@@ -95,15 +94,33 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 		return "", err
 	}
 
-	// update our token
-	token := model.Token{ID: user.ID, AccessToken: tok.AccessToken, TokenType: tok.TokenType, Expiry: tok.Expiry}
-	err = db.Model(&token).Where("id = ?", user.ID).First(&token).Error
-	// if token.RefreshToken is not "" then use it
-	log.Println(tok.RefreshToken, reflect.TypeOf(tok.RefreshToken))
-	if string(tok.RefreshToken) != "" {
-		token.RefreshToken = tok.RefreshToken
+	// create blank token object and blank refresh token string
+	tokenDB := model.Token{}
+	refreshToken := ""
+
+	// find existing token in db
+	err = db.Model(&tokenDB).Where("id = ?", user.ID).First(&tokenDB).Error
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		log.Printf("%s Token with email addr %s not found, creating", consts.Notif, user.ID)
+	} else if err != nil {
+		log.Fatalf("%s GORM error connecting to db : %v", consts.Error, err)
 	}
-	db.Model(&token).Updates(token)
+
+	// if tok.RefreshToken is not "" then use it
+	if string(tok.RefreshToken) != "" {
+		refreshToken = tok.RefreshToken
+	} else { // else then the refresh token should be in the db object
+		refreshToken = tokenDB.RefreshToken
+	}
+
+	if refreshToken == "" {
+		log.Printf("%s refresh token for user is blank : %v", consts.Error, err) // todo, revoke access
+		return "", nil
+	}
+
+	// make new token object
+	tokenDB = model.Token{ID: user.ID, AccessToken: tok.AccessToken, TokenType: tok.TokenType, Expiry: tok.Expiry, RefreshToken: refreshToken}
+	db.Save(&tokenDB)
 
 	// run processing section
 	log.Printf("%s processing user %s", consts.Notif, user.ID)

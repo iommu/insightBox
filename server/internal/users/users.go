@@ -112,7 +112,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	} else { // else then the refresh token should be in the db object
 		refreshToken = tokenDB.RefreshToken
 	}
-	log
+
 	if refreshToken == "" {
 		log.Printf("%s refresh token for user is blank : %v", consts.Error, err) // todo, revoke access
 		client.Get("https://accounts.google.com/o/oauth2/revoke?")

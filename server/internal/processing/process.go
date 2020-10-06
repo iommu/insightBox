@@ -55,7 +55,7 @@ func authenticate(email string, db *gorm.DB) (*gmail.Service, error) {
 }
 
 //countWords count the number of words in the title of an email title
-func countWords(wordMap map[string]int, title string, db *gorm.DB) {
+func countWords(wordMap map[string]int, title string) {
 	// change all letters to lower case
 	title = strings.ToLower(title)
 
@@ -84,42 +84,86 @@ func countWords(wordMap map[string]int, title string, db *gorm.DB) {
 	}
 }
 
+//countContacts increments 1 for the respective contact
+func countContacts(contactMap map[string]int, contact string) {
+	// clean the contact string
+	begin := strings.IndexByte(contact, '<')
+	if begin >= 0 {
+		contact = contact[strings.IndexByte(contact, '<')+1 : strings.IndexByte(contact, '>')]
+	}
+	// check if the contact has been initialized in the map
+	_, initialized := contactMap[contact]
+	if initialized {
+		//contact already exists in map, add 1
+		contactMap[contact]++
+	} else {
+		//contact is new, initialize it to 1
+		contactMap[contact] = 1
+	}
+}
+
 //processDataArray takes in array of gmail.MessageParts and a partially complete model.Day
 func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *gorm.DB) {
 	// setup saved variables
 	receivedEmails := 0
 	sentEmails := 0
-	//wordMap := make(map[string]int)
+	wordMap := make(map[string]int)
+	receivedMap := make(map[string]int)
+	sentMap := make(map[string]int)
+
 	// interate through all payloads in array
 	for _, payload := range dataArray {
-		switch len := len(payload.Headers); {
-		case len > 18:
-			if payload.Headers[18].Value == template.ID {
-				sentEmails++
-			}
-			fallthrough
-		case len > 15:
-			//go countWords(wordMap, payload.Headers[15].Value, db)
-			fallthrough
-		case len > 1:
-			if payload.Headers[0].Value == template.ID {
-				receivedEmails++
+		// set up variables to save metadata
+		to, from, subject := "", "", ""
+		// loop through all objects in Headers
+		for _, obj := range payload.Headers {
+			// switch case depending on Name
+			switch obj.Name {
+			case "Subject":
+				subject = obj.Value
+			case "To":
+				to = obj.Value
+				//clean the data
+			case "From":
+				from = obj.Value
+				//clean the data
+			//default means we got unknown/unwanted data
+			default:
+				log.Printf("Unknown data in Header: %v", obj)
+				break
 			}
 		}
+		// checking if email is a sent or received email
+		if from == template.ID {
+			sentEmails++
+			// count number of times user sent an email to a contact
+			countContacts(sentMap, to)
+
+		} else {
+			receivedEmails++
+			// count words in subject and add it to the map
+			countWords(wordMap, subject)
+			// count number of times user received an email from a contact
+			countContacts(receivedMap, from)
+		}
+
 	}
-	// fill in data
+	// fill in data to Day
 	template.Sent = sentEmails
 	template.Received = receivedEmails
-	// save to database
+
+	// save Day to database
 	db.Create(&template)
 
-	// templateWord := model.Word{ID: template.ID, Date: template.Date}
-	// // save all words to db
-	// for word, count := range wordMap {
-	// 	templateWord.Text = word
-	// 	templateWord.Value = count
-	// 	db.Save(&templateWord)
-	// }
+	templateWord := model.Word{ID: template.ID, Date: template.Date}
+	// save all word counts from map to db
+	for word, count := range wordMap {
+		templateWord.Text = word
+		templateWord.Value = count
+		db.Create(&templateWord)
+	}
+
+	//save all contact counts from map to db
 }
 
 //ProcessMailRange takes PK email addr, number of days to process from yesterday backwards and db
@@ -167,8 +211,10 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 
 		// for loop for each email {emailIndex}
 		for {
+			//set headers we wish to grab
+			headers := []string{"To", "From", "Subject"}
 			// get email data
-			mail, err := srv.Users.Messages.Get("me", messages.Messages[emailIndex].Id).Format("metadata").Do()
+			mail, err := srv.Users.Messages.Get("me", messages.Messages[emailIndex].Id).Format("metadata").MetadataHeaders(headers...).Do()
 			if err != nil {
 				log.Printf("%s could not get email metadata : %v", consts.Error, err)
 			}

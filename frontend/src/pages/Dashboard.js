@@ -37,7 +37,7 @@ class Dashboard extends React.Component {
   render() {
     return (
         <div id="dash-container">
-          {/* <SideBar/> */}
+          <SideBar/>
           <div className="dashboard-content">
             <div className="stat-container">
               <Graph1 />

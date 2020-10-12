@@ -19,8 +19,8 @@ class Dashboard extends React.Component {
       this.props.history.push("/");
     }
     this.state = {
-      startDate: new Date().toISOString(),
-      endDate: new Date().toISOString()
+      startDate: new Date(),
+      endDate: new Date()
     };
   }
 
@@ -34,7 +34,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div id="dash-container">
-        <p>Date range is from ${this.state.startDate} to ${this.state.endDate}</p>
+        <p>Date range is from ${this.state.startDate.toISOString()} to ${this.state.endDate.toISOString()}</p>
         <SideBar updateDates={this.updateDates}/>
         <div className="dashboard-content" style={{ marginLeft: "300px" }}>
           <div className="stat-container">

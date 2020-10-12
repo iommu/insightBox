@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../styles/Calendar.scss';
-import moment from 'moment'
+import moment from 'moment';
 
 const Heading = ({date, changeMonth, resetDate}) => (
   <nav className="calendar--nav">
@@ -123,11 +123,11 @@ class SideBar extends React.Component {
     } else if (date.isAfter(startDate, 'day')) {
       endDate = moment(date);
     }
-
     this.setState({
       startDate,
       endDate
     });
+    this.props.updateDates(startDate.toDate(), endDate.toDate());
   }
 
   render() {

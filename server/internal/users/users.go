@@ -25,26 +25,27 @@ func DeleteAccount(email string, db *gorm.DB) error {
 	// de-auth user with google so next login will grant refresh token
 	err := DeAuth(email, db)
 	if err != nil {
+		log.P
 		return err
 	}
 	// delete all items with primary key of email from db
-	err = db.Delete(&model.Day{}, email).Error
+	err = db.Where("id = ?", email).Delete(&model.Day{}).Error
 	if err != nil {
 		return err
 	}
-	err = db.Delete(&model.Email{}, email).Error
+	err = db.Where("id = ?", email).Delete(&model.Email{}).Error
 	if err != nil {
 		return err
 	}
-	err = db.Delete(&model.Token{}, email).Error
+	err = db.Where("id = ?", email).Delete(&model.Token{}).Error
 	if err != nil {
 		return err
 	}
-	err = db.Delete(&model.User{}, email).Error
+	err = db.Where("id = ?", email).Delete(&model.User{}).Error
 	if err != nil {
 		return err
 	}
-	err = db.Delete(&model.Word{}, email).Error
+	err = db.Where("id = ?", email).Delete(&model.Word{}).Error
 	if err != nil {
 		return err
 	}

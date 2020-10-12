@@ -93,7 +93,6 @@ a:active {
 
 .homepage-content {
   position: absolute;
-  margin-top: 6%;
   margin-left: 30%;
   width: 40%;
   text-align: left;
@@ -102,7 +101,6 @@ a:active {
 
 .aboutpage-content {
   position: absolute;
-  margin-top: 6%;
   margin-left: 25%;
   width: 50%;
   text-align: left;
@@ -394,10 +392,6 @@ a:active {
   width: 100%;
   top: 0px;
   z-index: 1;
-}
-
-#dash-container {
-  margin-top: 85px;
 }
 
 #graph3 {

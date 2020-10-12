@@ -3,7 +3,7 @@ $radius: 12px;
 $width: 250px; /* +30px padding*/
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   background-color: #f8f7fa;
   color: #333;
 }
@@ -70,7 +70,7 @@ body {
 
   &--days {
     font-size: 0;
-    
+
     span {
       width: 14.28571%;
       display: inline-block;
@@ -104,7 +104,9 @@ body {
         border-radius: 0;
       }
 
-      &.start, &.between, &.end {
+      &.start,
+      &.between,
+      &.end {
         background-color: #b670f4;
         color: #fff;
       }
@@ -121,7 +123,8 @@ body {
         border-radius: $radius;
       }
 
-      &.between:nth-child(7n):after, &.start:nth-child(7n):after {
+      &.between:nth-child(7n):after,
+      &.start:nth-child(7n):after {
         content: "";
         position: absolute;
         top: 0;
@@ -131,7 +134,8 @@ body {
         width: $width * 0.0555;
       }
 
-      &.between:nth-child(7n + 1):after, &.end:nth-child(7n + 1):after {
+      &.between:nth-child(7n + 1):after,
+      &.end:nth-child(7n + 1):after {
         content: "";
         position: absolute;
         top: 0;

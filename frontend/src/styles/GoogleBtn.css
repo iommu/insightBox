@@ -18,11 +18,11 @@ span.label {
   font-family: serif;
   font-weight: normal;
   color: #000;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 span.icon {
-  background: url('../images/g-normal.png') transparent 5px 50% no-repeat;
+  background: url("../images/g-normal.png") transparent 5px 50% no-repeat;
   display: inline-block;
   vertical-align: middle;
   width: 42px;
@@ -37,5 +37,5 @@ span.buttonText {
   font-size: 14px;
   font-weight: bold;
   /* Use the Roboto font that is loaded in the <head> */
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }

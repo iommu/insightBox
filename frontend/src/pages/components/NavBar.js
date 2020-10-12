@@ -20,6 +20,7 @@ class NavBar extends React.Component {
             sx={{
               position: "static",
               borderBottom: "3px solid",
+              height: "85px",
               borderImage:
                 "linear-gradient(to right, #9636ff 20%, #40a1f1 20%, #40a1f1 40%, #65AD50 40%, #65AD50 60%, #FFD151 60%, #FFD151 80%, #f13333 80%, #f13333 100%) 5",
             }}

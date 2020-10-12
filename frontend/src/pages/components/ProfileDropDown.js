@@ -50,7 +50,7 @@ export const ProfileDropDown = () => {
                   </div>
               </button>
               <div className="dropdown-content">
-                  <a href="/dashboard">Settings</a>
+                  <a href="/settings">Settings</a>
                   <a href="/" onClick={() => { LogOutFunc(this) }}>Logout</a>
               </div>
           </div>

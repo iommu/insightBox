@@ -279,8 +279,7 @@ a:active {
 
 .dashboard-content {
   margin: auto;
-  margin-top: 10px;
-  width: 95%;
+  width: auto;
   text-align: center;
   height: auto;
   display: flex;

@@ -18,6 +18,7 @@ import About from './pages/About';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfUse from './pages/TermsofUse';
 import Dashboard from './pages/Dashboard';
+import Settings from './pages/Settings';
 import SignIn from './pages/SignIn';
 
 const client = createClient({
@@ -42,6 +43,7 @@ function App() {
             <Route path="/termsofuse"><TermsOfUse /></Route>
             <Route path="/termsofuse"><TermsOfUse /></Route>
             <Route path="/dashboard"><Dashboard /></Route>
+            <Route path="/settings"><Settings /></Route>
             <Route path="/signin" component={SignIn}></Route>
             <Route path="/"><Home /></Route>
           </Switch>

@@ -6,7 +6,7 @@ function SideBar() {
   const sBStyle = {
     width : "300px",
     height: "100%",
-    position: "absolute",
+    position: "fixed",
     backgroundColor: "#FFF"
   };
   return (

@@ -20,12 +20,44 @@ import (
 	"gorm.io/gorm"
 )
 
-func DeAuth(email string, db *gorm.DB) (int, error) {
+//DeleteAccount deletes account of (email)
+func DeleteAccount(email string, db *gorm.DB) error {
+	// de-auth user with google so next login will grant refresh token
+	err := DeAuth(email, db)
+	if err != nil {
+		return err
+	}
+	// delete all items with primary key of email from db
+	err = db.Delete(&model.Day{}, email).Error
+	if err != nil {
+		return err
+	}
+	err = db.Delete(&model.Email{}, email).Error
+	if err != nil {
+		return err
+	}
+	err = db.Delete(&model.Token{}, email).Error
+	if err != nil {
+		return err
+	}
+	err = db.Delete(&model.User{}, email).Error
+	if err != nil {
+		return err
+	}
+	err = db.Delete(&model.Word{}, email).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+//DeAuth deoauthorized oAuth token of (email)
+func DeAuth(email string, db *gorm.DB) error {
 	//get token from database
 	var token model.Token
 	err := db.Where("id = ?", email).First(&token).Error
 	if err != nil {
-		return -1, err
+		return err
 	}
 
 	// replace refreshtoken with access if no refresh token was found
@@ -37,7 +69,7 @@ func DeAuth(email string, db *gorm.DB) (int, error) {
 	http.PostForm("https://accounts.google.com/o/oauth2/revoke", url.Values{
 		"token": {token.RefreshToken}})
 
-	return 0, nil
+	return nil
 }
 
 //SignIn gets new token for user and saves/updates user account, returns Email (and error)

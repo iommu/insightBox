@@ -32,20 +32,19 @@ func (r *mutationResolver) SignIn(ctx context.Context, authCode string) (string,
 
 func (r *mutationResolver) DeleteAccount(ctx context.Context, email string) (int, error) {
 	// check email = email
-	emailReference := *auth.ForContext(ctx)
-	if emailReference != email {
-		log.Printf("%s User with email addr %s attempted deleting account with wrong email addr", consts.Notif, emailReference)
+	emailReference := auth.ForContext(ctx)
+	// check emailReference
+	if emailReference == nil {
+		log.Printf("%s User tried to delete account with invalid JWT", consts.Error)
 		return -1, nil
 	}
-	log.Printf("%s User with email addr %s has flagged their account for deletion", consts.Notif, emailReference)
-	// de-auth user with google so next login will grant refresh token
-	users.DeAuth(emailReference, r.DB)
-	// delete all items with primary key of email from db
-	r.DB.Delete(&model.Day{}, emailReference)
-	r.DB.Delete(&model.Email{}, emailReference)
-	r.DB.Delete(&model.Token{}, emailReference)
-	r.DB.Delete(&model.User{}, emailReference)
-	r.DB.Delete(&model.Word{}, emailReference)
+	if *emailReference != email {
+		log.Printf("%s User with email addr %s attempted deleting account with wrong email addr", consts.Notif, *emailReference)
+		return -1, nil
+	}
+	log.Printf("%s User with email addr %s has flagged their account for deletion", consts.Notif, *emailReference)
+	// delete users account
+	go users.DeleteAccount(*emailReference, r.DB)
 	return 0, nil
 }
 

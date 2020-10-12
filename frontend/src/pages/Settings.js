@@ -19,9 +19,9 @@ const Settings = props => {
       if(result.data){
         if(result.data.deleteAccount==0){
           console.log("account deletion sucessful! :(");
-          //localStorage.removeItem("token");
-          //localStorage.removeItem("old_code");
-          //props.history.push("/");
+          localStorage.removeItem("token");
+          localStorage.removeItem("old_code");
+          props.history.push("/");
         } else {
           console.log("account deletion failed! :(");  
           document.getElementById("errorText").innerHTML = "Error deleting account, check that the typed email is the email address of this account";

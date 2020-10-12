@@ -5,11 +5,13 @@ package graph
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/iommu/insightbox/server/graph/generated"
 	"github.com/iommu/insightbox/server/graph/model"
 	"github.com/iommu/insightbox/server/internal/auth"
+	"github.com/iommu/insightbox/server/internal/consts"
 	"github.com/iommu/insightbox/server/internal/users"
 	"github.com/iommu/insightbox/server/pkg/jwt"
 )
@@ -26,6 +28,25 @@ func (r *mutationResolver) SignIn(ctx context.Context, authCode string) (string,
 		return "", err
 	}
 	return token, nil
+}
+
+func (r *mutationResolver) DeleteAccount(ctx context.Context, email string) (int, error) {
+	// check email = email
+	emailReference := *auth.ForContext(ctx)
+	if emailReference != email {
+		log.Printf("%s User with email addr %s attempted deleting account with wrong email addr", consts.Notif, emailReference)
+		return -1, nil
+	}
+	log.Printf("%s User with email addr %s has flagged their account for deletion", consts.Notif, emailReference)
+	// de-auth user with google so next login will grant refresh token
+	users.DeAuth(emailReference, r.DB)
+	// delete all items with primary key of email from db
+	r.DB.Delete(&model.Day{}, emailReference)
+	r.DB.Delete(&model.Email{}, emailReference)
+	r.DB.Delete(&model.Token{}, emailReference)
+	r.DB.Delete(&model.User{}, emailReference)
+	r.DB.Delete(&model.Word{}, emailReference)
+	return 0, nil
 }
 
 func (r *queryResolver) User(ctx context.Context) (*model.User, error) {

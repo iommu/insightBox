@@ -5,6 +5,9 @@ import (
 	"errors"
 	"io/ioutil"
 	"log"
+	"net/http"
+	"net/url"
+	"strings"
 
 	"github.com/iommu/insightbox/server/graph/model"
 	"github.com/iommu/insightbox/server/internal/consts"
@@ -16,6 +19,26 @@ import (
 	"google.golang.org/api/people/v1"
 	"gorm.io/gorm"
 )
+
+func DeAuth(email string, db *gorm.DB) (int, error) {
+	//get token from database
+	var token model.Token
+	err := db.Where("id = ?", email).First(&token).Error
+	if err != nil {
+		return -1, err
+	}
+
+	// replace refreshtoken with access if no refresh token was found
+	if strings.Replace(token.RefreshToken, " ", "", -1) == "" {
+		token.RefreshToken = token.AccessToken
+	}
+
+	// run post request for revoking tokens
+	http.PostForm("https://accounts.google.com/o/oauth2/revoke", url.Values{
+		"token": {token.RefreshToken}})
+
+	return 0, nil
+}
 
 //SignIn gets new token for user and saves/updates user account, returns Email (and error)
 func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
@@ -114,22 +137,9 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	}
 
 	if refreshToken == "" {
-		log.Printf("%s refresh token for user is blank : %v", consts.Error, err) // todo, revoke access
-		client.Get("https://accounts.google.com/o/oauth2/revoke?")
-		res, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo")
-		if err != nil {
-			log.Printf("%s Error requesting user profile : %v", consts.Error, err)
-			return "", err
-		}
-		if res.Body != nil {
-			defer res.Body.Close()
-		}
-		body, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			log.Printf("%s no content in user profile request body : %v", consts.Error, err)
-			return "", err
-		}
-		log.Fatalf(string(body))
+		log.Printf("%s refresh token for user is blank : %v", consts.Error, err)
+		// revoke access
+		DeAuth(user.ID, db)
 		return "", nil
 	}
 

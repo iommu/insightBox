@@ -62,7 +62,8 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		SignIn func(childComplexity int, authCode string) int
+		DeleteAccount func(childComplexity int, email string) int
+		SignIn        func(childComplexity int, authCode string) int
 	}
 
 	Query struct {
@@ -97,6 +98,7 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	SignIn(ctx context.Context, authCode string) (string, error)
+	DeleteAccount(ctx context.Context, email string) (int, error)
 }
 type QueryResolver interface {
 	User(ctx context.Context) (*model.User, error)
@@ -194,6 +196,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Email.Sent(childComplexity), true
+
+	case "Mutation.deleteAccount":
+		if e.complexity.Mutation.DeleteAccount == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteAccount_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteAccount(childComplexity, args["email"].(string)), true
 
 	case "Mutation.signIn":
 		if e.complexity.Mutation.SignIn == nil {
@@ -440,6 +454,7 @@ type Email {
 
 type Mutation {
   signIn(authCode: String!): String! #takes in oauth key, returns JWT string
+  deleteAccount(email: String!): Int! #takes email address as 100% sure you want to delete check 
 }
 
 type Query {
@@ -456,6 +471,20 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 // endregion ************************** generated!.gotpl **************************
 
 // region    ***************************** args.gotpl *****************************
+
+func (ec *executionContext) field_Mutation_deleteAccount_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["email"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["email"] = arg0
+	return args, nil
+}
 
 func (ec *executionContext) field_Mutation_signIn_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
@@ -956,6 +985,47 @@ func (ec *executionContext) _Mutation_signIn(ctx context.Context, field graphql.
 	res := resTmp.(string)
 	fc.Result = res
 	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteAccount(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteAccount_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteAccount(rctx, args["email"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_user(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2788,6 +2858,11 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = graphql.MarshalString("Mutation")
 		case "signIn":
 			out.Values[i] = ec._Mutation_signIn(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "deleteAccount":
+			out.Values[i] = ec._Mutation_deleteAccount(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}

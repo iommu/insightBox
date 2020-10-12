@@ -33,7 +33,7 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 
 			// validate jwt token
 			tokenStr := header
-			log.Printf("%s token attemping loging : %s", consts.Notif, tokenStr)
+			log.Printf("%s token attemping login : %s", consts.Notif, tokenStr)
 			email, err := jwt.ParseToken(tokenStr)
 			if err != nil {
 				log.Printf("%s error decoding token : %v", consts.Error, err)

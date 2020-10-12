@@ -1,12 +1,24 @@
 User : {
-    id : # email
-    
+    id: ID! #is their email
+    given_name: String!
+    family_name: String!
+    picture: String!
+    locale: String! 
+    colorSchemeID: Int!
     Data : {
-        Days : [
-            {
-
-            }
-        ]
+        contacts : [String!]
+        Days : [{
+            id: ID!
+            date: Time!
+            sent: Int!
+            received: Int!
+            words: [{
+                id: ID!
+                date: Time!
+                text: String!
+                value: Int!
+            }]
+        }]
     }
 }
 

@@ -25,7 +25,6 @@ func DeleteAccount(email string, db *gorm.DB) error {
 	// de-auth user with google so next login will grant refresh token
 	err := DeAuth(email, db)
 	if err != nil {
-		log.P
 		return err
 	}
 	// delete all items with primary key of email from db
@@ -49,6 +48,7 @@ func DeleteAccount(email string, db *gorm.DB) error {
 	if err != nil {
 		return err
 	}
+	log.Printf("%s user account %s deleted", consts.Notif, email)
 	return nil
 }
 

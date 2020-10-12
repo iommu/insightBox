@@ -49,6 +49,7 @@ func DeleteAccount(email string, db *gorm.DB) error {
 	if err != nil {
 		return err
 	}
+	log.Printf("%s user account %s deleted", consts.Notif, email)
 	return nil
 }
 

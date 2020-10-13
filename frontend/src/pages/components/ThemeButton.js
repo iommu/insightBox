@@ -8,7 +8,6 @@ export default (props) => {
   return (
     <button
       id="themeButton"
-      {...props}
       onClick={(e) => {
         const index = modes.indexOf(mode);
         let next = modes[(index + 1) % modes.length];

@@ -12,6 +12,12 @@ export default {
         background: "#fff",
         primary: "#33e",
         muted: "#333",
+      },
+      highContrast: {
+        text: "#000",
+        background: "#fff",
+        primary: "#33e",
+        muted: "#333",
       }
     },
   },

@@ -16,7 +16,7 @@ const Settings = (props) => {
   const deleteAccount = React.useCallback(() => {
     executeMutation({ email }).then((result) => {
       if (result.data) {
-        if (result.data.deleteAccount == 0) {
+        if (result.data.deleteAccount === 0) {
           console.log("account deletion sucessful! :(");
           localStorage.removeItem("token");
           localStorage.removeItem("old_code");

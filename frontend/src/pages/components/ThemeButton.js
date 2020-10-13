@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx, useColorMode } from "theme-ui";
-import theme from "../../styles/theme";
 
 const modes = ["default", "dark"];
 

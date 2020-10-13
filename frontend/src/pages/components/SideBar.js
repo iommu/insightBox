@@ -1,62 +1,77 @@
-import React from 'react';
-import '../../styles/Calendar.scss';
-import moment from 'moment';
+import React from "react";
+import "../../styles/Calendar.scss";
+import moment from "moment";
 
-const Heading = ({date, changeMonth, resetDate}) => (
+const Heading = ({ date, changeMonth, resetDate }) => (
   <nav className="calendar--nav">
     <a onClick={() => changeMonth(date.month() - 1)}>&#8249;</a>
-    <h1 onClick={() => resetDate()}>{date.format('MMMM')} <small>{date.format('YYYY')}</small></h1>
+    <h1 onClick={() => resetDate()}>
+      {date.format("MMMM")} <small>{date.format("YYYY")}</small>
+    </h1>
     <a onClick={() => changeMonth(date.month() + 1)}>&#8250;</a>
   </nav>
 );
 
-const Day = ({currentDate, date, startDate, endDate, onClick}) => {
+const Day = ({ currentDate, date, startDate, endDate, onClick }) => {
   let className = [];
 
-  if (moment().isSame(date, 'day')) {
-    className.push('active');
+  if (moment().isSame(date, "day")) {
+    className.push("active");
   }
 
-  if (date.isSame(startDate, 'day')) {
-    className.push('start');
+  if (date.isSame(startDate, "day")) {
+    className.push("start");
   }
 
-  if (date.isBetween(startDate, endDate, 'day')) {
-    className.push('between');
+  if (date.isBetween(startDate, endDate, "day")) {
+    className.push("between");
   }
 
-  if (date.isSame(endDate, 'day')) {
-    className.push('end');
+  if (date.isSame(endDate, "day")) {
+    className.push("end");
   }
 
-  if (! date.isSame(currentDate, 'month')) {
-    className.push('muted');
+  if (!date.isSame(currentDate, "month")) {
+    className.push("muted");
   }
 
   return (
-    <span onClick={() => onClick(date)} currentDate={date} className={className.join(' ')}>{date.date()}</span>
-  )
+    <span
+      onClick={() => onClick(date)}
+      currentDate={date}
+      className={className.join(" ")}
+    >
+      {date.date()}
+    </span>
+  );
 };
 
-const Days = ({date, startDate, endDate, onClick}) => {
+const Days = ({ date, startDate, endDate, onClick }) => {
   const thisDate = moment(date);
   const daysInMonth = moment(date).daysInMonth();
-  const firstDayDate = moment(date).startOf('month');
-  const previousMonth = moment(date).subtract(1, 'month');
+  const firstDayDate = moment(date).startOf("month");
+  const previousMonth = moment(date).subtract(1, "month");
   const previousMonthDays = previousMonth.daysInMonth();
-  const nextsMonth = moment(date).add(1, 'month');
+  const nextsMonth = moment(date).add(1, "month");
   let days = [];
   let labels = [];
 
   for (let i = 1; i <= 7; i++) {
-    labels.push(<span className="label">{moment().day(i).format('ddd')}</span>);
+    labels.push(<span className="label">{moment().day(i).format("ddd")}</span>);
   }
 
   for (let i = firstDayDate.day(); i > 1; i--) {
     previousMonth.date(previousMonthDays - i + 2);
 
     days.push(
-      <Day key={moment(previousMonth).format('DD MM YYYY')} onClick={(date) => onClick(date)} currentDate={date} date={moment(previousMonth)} startDate={startDate} endDate={endDate} />
+      <Day
+        key={moment(previousMonth).format("DD MM YYYY")}
+        onClick={(date) => onClick(date)}
+        currentDate={date}
+        date={moment(previousMonth)}
+        startDate={startDate}
+        endDate={endDate}
+      />
     );
   }
 
@@ -64,15 +79,29 @@ const Days = ({date, startDate, endDate, onClick}) => {
     thisDate.date(i);
 
     days.push(
-      <Day key={moment(thisDate).format('DD MM YYYY')} onClick={(date) => onClick(date)} currentDate={date} date={moment(thisDate)} startDate={startDate} endDate={endDate} />
+      <Day
+        key={moment(thisDate).format("DD MM YYYY")}
+        onClick={(date) => onClick(date)}
+        currentDate={date}
+        date={moment(thisDate)}
+        startDate={startDate}
+        endDate={endDate}
+      />
     );
   }
 
   const daysCount = days.length;
-  for (let i = 1; i <= (42 - daysCount); i++) {
+  for (let i = 1; i <= 42 - daysCount; i++) {
     nextsMonth.date(i);
     days.push(
-      <Day key={moment(nextsMonth).format('DD MM YYYY')} onClick={(date) => onClick(date)} currentDate={date} date={moment(nextsMonth)} startDate={startDate} endDate={endDate} />
+      <Day
+        key={moment(nextsMonth).format("DD MM YYYY")}
+        onClick={(date) => onClick(date)}
+        currentDate={date}
+        date={moment(nextsMonth)}
+        startDate={startDate}
+        endDate={endDate}
+      />
     );
   }
 
@@ -90,60 +119,71 @@ class SideBar extends React.Component {
 
     this.state = {
       date: moment(),
-      startDate: moment().subtract(5, 'day'),
-      endDate: moment().add(3, 'day')
+      startDate: moment().subtract(5, "day"),
+      endDate: moment().add(3, "day"),
     };
   }
 
   resetDate() {
     this.setState({
-      date: moment()
+      date: moment(),
     });
   }
 
   changeMonth(month) {
-    const {date} = this.state;
+    const { date } = this.state;
 
     date.month(month);
 
-    this.setState(
-      date
-    );
+    this.setState(date);
   }
 
   changeDate(date) {
-    let {startDate, endDate} = this.state;
+    let { startDate, endDate } = this.state;
 
-    if (startDate === null || date.isBefore(startDate, 'day') || ! startDate.isSame(endDate, 'day')) {
+    if (
+      startDate === null ||
+      date.isBefore(startDate, "day") ||
+      !startDate.isSame(endDate, "day")
+    ) {
       startDate = moment(date);
       endDate = moment(date);
-    } else if (date.isSame(startDate, 'day') && date.isSame(endDate, 'day')) {
+    } else if (date.isSame(startDate, "day") && date.isSame(endDate, "day")) {
       startDate = null;
       endDate = null;
-    } else if (date.isAfter(startDate, 'day')) {
+    } else if (date.isAfter(startDate, "day")) {
       endDate = moment(date);
     }
     this.setState({
       startDate,
-      endDate
+      endDate,
     });
     this.props.updateDates(startDate.toDate(), endDate.toDate());
   }
 
   render() {
-    const {date, startDate, endDate} = this.state;
+    const { date, startDate, endDate } = this.state;
     const sBStyle = {
-      width : "300px",
+      width: "300px",
       height: "100%",
       position: "fixed",
-      backgroundColor: "#FFF"
+      backgroundColor: "#FFF",
     };
     return (
       <div style={sBStyle}>
         <div id="calendar" className="calendar">
-          <Heading date={date} changeMonth={(month) => this.changeMonth(month)} resetDate={() => this.resetDate()} />
+          <Heading
+            date={date}
+            changeMonth={(month) => this.changeMonth(month)}
+            resetDate={() => this.resetDate()}
+          />
 
-          <Days onClick={(date) => this.changeDate(date)} date={date} startDate={startDate} endDate={endDate} />
+          <Days
+            onClick={(date) => this.changeDate(date)}
+            date={date}
+            startDate={startDate}
+            endDate={endDate}
+          />
         </div>
       </div>
     );

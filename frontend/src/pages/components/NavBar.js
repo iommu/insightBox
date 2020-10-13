@@ -10,7 +10,7 @@ import { ProfileDropDown } from "./ProfileDropDown";
 class NavBar extends React.Component {
   render() {
     return (
-      <div id="topbar-container" style={{height: "85px"}}>
+      <div id="topbar-container" style={{ height: "85px" }}>
         <div id="topbar-fixed">
           <Flex
             px={2}
@@ -58,7 +58,7 @@ class NavBar extends React.Component {
                   </Link>
                 </Box>
                 <Box mx="auto" />
-                <ThemeButton/>
+                <ThemeButton />
                 <AuthButton>
                   <Button
                     sx={{

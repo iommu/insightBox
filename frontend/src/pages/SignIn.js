@@ -1,12 +1,12 @@
-import React from 'react';
-import '../styles/App.css';
+import React from "react";
+import "../styles/App.css";
 
 // import graphql and create client
-import { createClient } from 'urql';
+import { createClient } from "urql";
 
 // create custom client for this page where no token should exist
 const client = createClient({
-  url: 'https://insightbox.xyz/api',
+  url: "https://insightbox.xyz/api",
 });
 
 class SignIn extends React.Component {
@@ -14,26 +14,31 @@ class SignIn extends React.Component {
     super(props);
     // check if we have a auth code in URL
     const url = new URLSearchParams(window.location.search);
-    const code = url.get('code');
+    const code = url.get("code");
     // do a check for the code and check we didn't accidentally come back to this page with same code
     if (code != null && code !== localStorage.getItem("old_code")) {
       localStorage.setItem("old_code", code);
-      client.mutation(`
+      client
+        .mutation(
+          `
       mutation{
         signIn(authCode: "${code}")
-      }`).toPromise().then(result => {
-        if (result.data) {
-          if (result.data.signIn) {
-            localStorage.setItem("token", result.data.signIn);
-            console.log("token saved");
+      }`
+        )
+        .toPromise()
+        .then((result) => {
+          if (result.data) {
+            if (result.data.signIn) {
+              localStorage.setItem("token", result.data.signIn);
+              console.log("token saved");
+            } else {
+              console.log("returned token blank (auth error)");
+            }
           } else {
-            console.log("returned token blank (auth error)");
+            console.log("server aint up now is it");
           }
-        } else {
-          console.log("server aint up now is it");
-        }
-        window.close();
-      });
+          window.close();
+        });
     }
   }
 
@@ -45,7 +50,7 @@ class SignIn extends React.Component {
         </div>
       </div>
     );
-  };
+  }
 }
 
 export default SignIn;

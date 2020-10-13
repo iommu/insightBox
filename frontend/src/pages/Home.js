@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
+import { jsx } from "theme-ui";
 
 import logo from "../images/logo.png";
 import "../styles/App.css";
@@ -51,7 +51,7 @@ export default (props) => (
       </div>
     </div>
 
-    <div className="footer" sx={{color:'muted'}}>
+    <div className="footer" sx={{ color: "muted" }}>
       Graphs from <a href="https://recharts.org/en-US">Recharts</a>
     </div>
   </div>

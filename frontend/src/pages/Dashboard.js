@@ -20,22 +20,25 @@ class Dashboard extends React.Component {
     }
     this.state = {
       startDate: new Date(),
-      endDate: new Date()
+      endDate: new Date(),
     };
   }
 
   updateDates = (startDate, endDate) => {
     this.setState({
       startDate: startDate,
-      endDate: endDate
+      endDate: endDate,
     });
-  }
+  };
 
   render() {
     return (
       <div id="dash-container">
-        <p>Date range is from ${this.state.startDate.toISOString()} to ${this.state.endDate.toISOString()}</p>
-        <SideBar updateDates={this.updateDates}/>
+        <p>
+          Date range is from ${this.state.startDate.toISOString()} to $
+          {this.state.endDate.toISOString()}
+        </p>
+        <SideBar updateDates={this.updateDates} />
         <div className="dashboard-content" style={{ marginLeft: "300px" }}>
           <div className="stat-container">
             <Graph1 />

@@ -5,7 +5,7 @@ import AuthButton from "./Oauth";
 import ThemeButton from "./ThemeButton";
 import logo from "../../images/logo.png";
 
-import { ProfileDropDown } from "./ProfileDropDown";
+import ProfileDropDown from "./ProfileDropDown";
 
 class NavBar extends React.Component {
   render() {

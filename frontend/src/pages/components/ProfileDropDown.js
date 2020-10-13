@@ -7,7 +7,7 @@ function LogOutFunc(that) {
   that.props.history.push("/");
 }
 
-export const ProfileDropDown = () => {
+export default () => {
   const [result] = useQuery({
     query: `
       query {

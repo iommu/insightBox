@@ -8,6 +8,8 @@ import {
   Route
 } from 'react-router-dom';
 import { createClient, Provider } from 'urql';
+import { ThemeProvider } from 'theme-ui';
+import theme from './styles/theme';
 
 // import all components
 import NavBar from './pages/components/NavBar'
@@ -33,23 +35,25 @@ const client = createClient({
 
 function App() {
   return (
-    <div className="App">
-      <Provider value={client}>
-        <BrowserRouter>
-          <NavBar />
-          <Switch>
-            <Route path="/about"><About /></Route>
-            <Route path="/privacypolicy"><PrivacyPolicy /></Route>
-            <Route path="/termsofuse"><TermsOfUse /></Route>
-            <Route path="/termsofuse"><TermsOfUse /></Route>
-            <Route path="/dashboard"><Dashboard /></Route>
-            <Route path="/settings"><Settings /></Route>
-            <Route path="/signin" component={SignIn}></Route>
-            <Route path="/"><Home /></Route>
-          </Switch>
-        </BrowserRouter>
-      </Provider>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <Provider value={client}>
+          <BrowserRouter>
+            <NavBar />
+            <Switch>
+              <Route path="/about"><About /></Route>
+              <Route path="/privacypolicy"><PrivacyPolicy /></Route>
+              <Route path="/termsofuse"><TermsOfUse /></Route>
+              <Route path="/termsofuse"><TermsOfUse /></Route>
+              <Route path="/dashboard"><Dashboard /></Route>
+              <Route path="/settings"><Settings /></Route>
+              <Route path="/signin" component={SignIn}></Route>
+              <Route path="/"><Home /></Route>
+            </Switch>
+          </BrowserRouter>
+        </Provider>
+      </div>
+    </ThemeProvider>
   );
 }
 

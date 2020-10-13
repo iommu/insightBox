@@ -2,6 +2,7 @@ import React from "react";
 import { Flex, Button, Box, Text } from "rebass";
 import { Switch, Route, Link, withRouter } from "react-router-dom";
 import AuthButton from "./Oauth";
+import ThemeButton from "./ThemeButton";
 import logo from "../../images/logo.png";
 
 import { ProfileDropDown } from "./ProfileDropDown";
@@ -57,6 +58,7 @@ class NavBar extends React.Component {
                   </Link>
                 </Box>
                 <Box mx="auto" />
+                <ThemeButton/>
                 <AuthButton>
                   <Button
                     sx={{

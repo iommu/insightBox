@@ -104,24 +104,6 @@ func countWords(wordMap map[string]int, title string) {
 	}
 }
 
-//countContacts increments 1 for the respective contact
-func countContacts(contactMap map[string]int, contact string) {
-	// clean the contact string
-	begin := strings.IndexByte(contact, '<')
-	if begin >= 0 {
-		contact = contact[strings.IndexByte(contact, '<')+1 : strings.IndexByte(contact, '>')]
-	}
-	// check if the contact has been initialized in the map
-	_, initialized := contactMap[contact]
-	if initialized {
-		//contact already exists in map, add 1
-		contactMap[contact]++
-	} else {
-		//contact is new, initialize it to 1
-		contactMap[contact] = 1
-	}
-}
-
 //processDataArray takes in array of gmail.MessageParts and a partially complete model.Day
 func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *gorm.DB) {
 	// setup saved variables

@@ -8,8 +8,8 @@ export default {
         muted: "#444",
       },
       default: {
-        text: "#000",
-        background: "#fff",
+        text: "#333",
+        background: "#f8f7fa",
         primary: "#33e",
         muted: "#333",
       }

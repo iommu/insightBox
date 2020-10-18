@@ -12,6 +12,12 @@ User : {
             date: Time!
             sent: Int!
             received: Int!
+            Hours : [{
+                id: ID!
+                date: Time!
+                sent: Int!
+                rec: Int!
+            }],
             words: [{
                 id: ID!
                 date: Time!

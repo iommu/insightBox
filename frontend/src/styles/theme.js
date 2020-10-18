@@ -8,6 +8,12 @@ export default {
         muted: "#444",
       },
       default: {
+        text: "#333",
+        background: "#f8f7fa",
+        primary: "#33e",
+        muted: "#333",
+      },
+      highContrast: {
         text: "#000",
         background: "#fff",
         primary: "#33e",

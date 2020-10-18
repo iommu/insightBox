@@ -135,14 +135,23 @@ func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *go
 			}
 		}
 		// checking if email is a sent or received email
+
+		//clean the "to" string to only get email address
+		temp := strings.IndexByte(to, '<')
+		if temp >= 0 {
+			to = to[strings.IndexByte(to, '<')+1 : strings.IndexByte(to, '>')]
+		}
+
+		//clean the "from" string to only get email address
+		temp = strings.IndexByte(from, '<')
+		if temp >= 0 {
+			from = from[strings.IndexByte(from, '<')+1 : strings.IndexByte(from, '>')]
+		}
+
 		if from == template.ID {
 			sentEmails++
 			// increment number of times user sent an email to a contact
-			//clean the "to" string to only get email address
-			begin := strings.IndexByte(to, '<')
-			if begin >= 0 {
-				to = to[strings.IndexByte(to, '<')+1 : strings.IndexByte(to, '>')]
-			}
+
 			// check if the contact has been initialized in the map, initialize if not done
 			_, initialized := contactMap[to]
 			if !initialized {
@@ -155,11 +164,7 @@ func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *go
 			// count words in subject and add it to the map
 			countWords(wordMap, subject)
 			// increment number of times user received an email from a contact
-			//clean the "to" string to only get email address
-			begin := strings.IndexByte(from, '<')
-			if begin >= 0 {
-				from = from[strings.IndexByte(from, '<')+1 : strings.IndexByte(from, '>')]
-			}
+
 			// check if the contact has been initialized in the map, initialize if not done
 			_, initialized := contactMap[from]
 			if !initialized {

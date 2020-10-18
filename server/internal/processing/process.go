@@ -142,7 +142,7 @@ func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *go
 			to = to[strings.IndexByte(to, '<')+1 : strings.IndexByte(to, '>')]
 		}
 
-		//clean the "to" string to only get email address
+		//clean the "from" string to only get email address
 		temp = strings.IndexByte(from, '<')
 		if temp >= 0 {
 			from = from[strings.IndexByte(from, '<')+1 : strings.IndexByte(from, '>')]

@@ -18,6 +18,26 @@ import (
 	"gorm.io/gorm"
 )
 
+type contactCounter struct {
+	sent     int
+	received int
+}
+
+func (c *contactCounter) incrementSent() {
+	c.sent++
+}
+
+func (c *contactCounter) incrementReceived() {
+	c.received++
+}
+
+func makeContactCounter() contactCounter {
+	return contactCounter{
+		sent:     0,
+		received: 0,
+	}
+}
+
 //authenticate and connect to gmail
 func authenticate(email string, db *gorm.DB) (*gmail.Service, error) {
 	//get token from database
@@ -84,32 +104,13 @@ func countWords(wordMap map[string]int, title string) {
 	}
 }
 
-//countContacts increments 1 for the respective contact
-func countContacts(contactMap map[string]int, contact string) {
-	// clean the contact string
-	begin := strings.IndexByte(contact, '<')
-	if begin >= 0 {
-		contact = contact[strings.IndexByte(contact, '<')+1 : strings.IndexByte(contact, '>')]
-	}
-	// check if the contact has been initialized in the map
-	_, initialized := contactMap[contact]
-	if initialized {
-		//contact already exists in map, add 1
-		contactMap[contact]++
-	} else {
-		//contact is new, initialize it to 1
-		contactMap[contact] = 1
-	}
-}
-
 //processDataArray takes in array of gmail.MessageParts and a partially complete model.Day
 func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *gorm.DB) {
 	// setup saved variables
 	receivedEmails := 0
 	sentEmails := 0
 	wordMap := make(map[string]int)
-	receivedMap := make(map[string]int)
-	sentMap := make(map[string]int)
+	contactMap := make(map[string]contactCounter)
 
 	// interate through all payloads in array
 	for _, payload := range dataArray {
@@ -136,15 +137,36 @@ func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *go
 		// checking if email is a sent or received email
 		if from == template.ID {
 			sentEmails++
-			// count number of times user sent an email to a contact
-			countContacts(sentMap, to)
-
+			// increment number of times user sent an email to a contact
+			//clean the "to" string to only get email address
+			begin := strings.IndexByte(to, '<')
+			if begin >= 0 {
+				to = to[strings.IndexByte(to, '<')+1 : strings.IndexByte(to, '>')]
+			}
+			// check if the contact has been initialized in the map, initialize if not done
+			_, initialized := contactMap[to]
+			if !initialized {
+				contactMap[to] = makeContactCounter()
+			}
+			contact := contactMap[to]
+			contact.incrementSent()
 		} else {
 			receivedEmails++
 			// count words in subject and add it to the map
 			countWords(wordMap, subject)
-			// count number of times user received an email from a contact
-			countContacts(receivedMap, from)
+			// increment number of times user received an email from a contact
+			//clean the "to" string to only get email address
+			begin := strings.IndexByte(from, '<')
+			if begin >= 0 {
+				from = from[strings.IndexByte(from, '<')+1 : strings.IndexByte(from, '>')]
+			}
+			// check if the contact has been initialized in the map, initialize if not done
+			_, initialized := contactMap[from]
+			if !initialized {
+				contactMap[from] = makeContactCounter()
+			}
+			contact := contactMap[from]
+			contact.incrementReceived()
 		}
 
 	}
@@ -164,6 +186,13 @@ func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *go
 	}
 
 	//save all contact counts from map to db
+	templateContact := model.Email{ID: template.ID, Date: template.Date}
+	for contact, counter := range contactMap {
+		templateContact.PoiEmail = contact
+		templateContact.Sent = counter.sent
+		templateContact.Received = counter.received
+		db.Create(&templateContact)
+	}
 }
 
 //ProcessMailRange takes PK email addr, number of days to process from yesterday backwards and db

@@ -11,6 +11,7 @@ import { Graph7 } from "./components/Graph7";
 import { Graph8 } from "./components/Graph8";
 import SideBar from "./components/SideBar";
 import { Graphtest } from "./components/Graphtest";
+import { GenerateKEM } from "./components/Crypto";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class Dashboard extends React.Component {
       endDate: new Date(),
     };
 
+    GenerateKEM();
 
   }
 

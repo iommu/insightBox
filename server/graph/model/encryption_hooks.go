@@ -25,7 +25,7 @@ func GetSK() {
 	check(err)
 	fmt.Print(string(keys))
 
-	f, err := os.Open("/tmp/dat")
+	f, err := os.Open("server_keys.txt")
 	check(err)
 
 	b1 := make([]byte, 5)

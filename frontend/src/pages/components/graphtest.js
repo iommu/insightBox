@@ -5,7 +5,7 @@ import { useQuery } from 'urql';
 import { PureComponent } from 'react';
 // eslint-disable-next-line
 import { PieChart, Pie, Sector, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import Dashboard, { sDate } from '../Dashboard';
+//import Dashboard, { sDate } from '../Dashboard';
 //alert('test: ' + Dashboard.updateDates);
 //alert(sDatetoISOString());
 
@@ -21,11 +21,20 @@ var d = new Date();
 // for some reason you have to set the date back an extra day if you want 7 days returned from graphql
 d.setDate(d.getDate()-8); // ie: minus 8 days from today's date
 var start = new Date(d).toISOString();
+console.log(start);
+var sDates;
+var eDates;
 
-export const Graphtest = (sDate,eDate) => {
+export const Graphtest = (dates) => {
   
-  //console.log(props.updateDates);
-  console.log(sDate);
+  
+  console.log(dates);             //returns date array, which contains sDate and eDate
+  console.log(dates.sDate);
+  console.log(dates.eDate);
+
+  sDates = dates.sDate.toString();
+  eDates = dates.eDate;
+  
 
   const COLORS = ['#40a1f1', '#65AD50', '#FFD151', '#FF8042', '#f13333', '#9636ff', '#3461d1'];
   const RADIAN = Math.PI / 180;
@@ -43,12 +52,10 @@ export const Graphtest = (sDate,eDate) => {
     );
   };
 
-  //alert(days.startDate)
-
   const [result] = useQuery({
     query: `
     query {
-      data(start:"` + start + `", end:"` + end + `") {
+      data(start:"` + sDates + `", end:"` + eDates + `") {
         date,
         received
       }
@@ -66,7 +73,7 @@ export const Graphtest = (sDate,eDate) => {
       <p> Error getting user data </p>
     );
   };
-
+  console.log(result);
   //console.log(Dashboard.state.startDate.toISOString())
 
   

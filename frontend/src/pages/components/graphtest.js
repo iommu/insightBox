@@ -22,9 +22,9 @@ var d = new Date();
 d.setDate(d.getDate()-8); // ie: minus 8 days from today's date
 var start = new Date(d).toISOString();
 
-export const Graphtest = (props) => {
+export const Graphtest = (dashBoardsDate) => {
   
-  //var test = props.hell;
+  console.log(dashBoardsDate);
   
   const COLORS = ['#40a1f1', '#65AD50', '#FFD151', '#FF8042', '#f13333', '#9636ff', '#3461d1'];
   const RADIAN = Math.PI / 180;

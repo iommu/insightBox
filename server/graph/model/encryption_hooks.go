@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 
+	kyberk2so "github.com/symbolicsoft/kyber-k2so"
+
 	"gorm.io/gorm"
 )
 
@@ -41,6 +43,16 @@ func GetSK() ([2400]byte, error) {
 	}
 	// return byte array of secret key
 	return secretKey, nil
+}
+
+// DecryptSymmetricKey decrypts c using SK to get ss
+func DecryptSymmetricKey(c [1088]byte) ([32]byte, error) {
+
+	secretKey, _ := GetSK()
+
+	ss, _ := kyberk2so.KemDecrypt768(c, secretKey)
+
+	return ss, nil
 }
 
 func encrypt(decrypted string) (encrypted string) {

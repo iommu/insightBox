@@ -89,7 +89,7 @@ func main() {
 	// test stuff here
 	fmt.Println("encryption test")
 	SK, _ := model.GetSK()
-	fmt.Println(SK)
+	// fmt.Println(SK)
 	fmt.Println(len(SK))
 
 	// setup 00:01 update ticker

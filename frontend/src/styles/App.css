@@ -164,10 +164,10 @@ a:active {
 
 @media screen and (max-height: 800px) {
   #title-main {
-    top: 250px;
+    top: 220px;
   }
   #home-icon {
-    margin-top: 200px;
+    margin-top: 150px;
   }
 }
 

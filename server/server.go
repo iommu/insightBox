@@ -88,6 +88,7 @@ func main() {
 
 	// test stuff here
 	fmt.Println("encryption test")
+	model.GetSK()
 
 	// setup 00:01 update ticker
 	go processing.InitDaemon(db)

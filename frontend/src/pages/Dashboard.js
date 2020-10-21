@@ -27,7 +27,7 @@ class Dashboard extends React.Component {
 
   }
 
-  
+ 
 
   updateDates = (startDate, endDate) => {
     this.setState({
@@ -94,7 +94,7 @@ class Dashboard extends React.Component {
             </div>
           </div>
           <div className="stat-container">
-            <Graphtest dashboardsDate = {this.state.startDate} />
+            <Graphtest sDate={this.state.startDate} eDate={this.state.endDate} />
             <div className="info">
               <img className="info-img" src={info} alt="info" />
             </div>

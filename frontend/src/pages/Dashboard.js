@@ -10,6 +10,7 @@ import { Graph6 } from "./components/Graph6";
 import { Graph7 } from "./components/Graph7";
 import { Graph8 } from "./components/Graph8";
 import SideBar from "./components/SideBar";
+import { Graphtest } from "./components/Graphtest";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -88,6 +89,12 @@ class Dashboard extends React.Component {
           </div>
           <div className="stat-container">
             <Graph8 />
+            <div className="info">
+              <img className="info-img" src={info} alt="info" />
+            </div>
+          </div>
+          <div className="stat-container">
+            <Graphtest dashboardsDate = {this.state.startDate} />
             <div className="info">
               <img className="info-img" src={info} alt="info" />
             </div>

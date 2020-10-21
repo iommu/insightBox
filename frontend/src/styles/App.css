@@ -115,7 +115,7 @@ a:active {
   display: inline-block;
   position: fixed;
   left: 4vw;
-  margin-top: 27vh;
+  margin-top: 21vh;
 }
 
 @media screen and (max-width: 1190px) {
@@ -155,7 +155,7 @@ a:active {
 #title-main {
   display: block;
   position: absolute;
-  top: 30vh;
+  top: 27vh;
   left: 18vw;
   font-family: arial;
   text-align: center;

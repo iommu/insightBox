@@ -165,7 +165,7 @@ class SideBar extends React.Component {
     const { date, startDate, endDate } = this.state;
     const sBStyle = {
       width: "300px",
-      height: "100%",
+      height: "450px",
       position: "fixed",
       backgroundColor: "#f8f7fa",
     };

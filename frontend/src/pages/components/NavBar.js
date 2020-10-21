@@ -23,7 +23,7 @@ class NavBar extends React.Component {
               borderBottom: "3px solid",
               height: "85px",
               borderImage:
-                "linear-gradient(to right, #9636ff 20%, #40a1f1 20%, #40a1f1 40%, #65AD50 40%, #65AD50 60%, #FFD151 60%, #FFD151 80%, #f13333 80%, #f13333 100%) 5",
+                "linear-gradient(to right,  #40a1f1 25%, #65AD50 25%, #65AD50 50%, #FFD151 50%, #FFD151 75%, #f13333 75%, #f13333 100%) 5",
             }}
           >
             <Link to="/">

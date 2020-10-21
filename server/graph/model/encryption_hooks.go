@@ -22,12 +22,12 @@ func GetSK() {
 	// open file
 	keys, err := ioutil.ReadFile("server_keys.txt")
 	check(err)
-	fmt.Print(string(keys))
+	//fmt.Print(string(keys))
 	fmt.Println(" ")
 
 	// read in key into byte array
 	// trim string to get SK array
-	SK := keys[5399 : len(keys)-1]
+	SK := keys[5399:len(keys)]
 	fmt.Print(string(SK))
 
 	//

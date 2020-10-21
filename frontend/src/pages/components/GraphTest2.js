@@ -25,7 +25,7 @@ console.log(start);
 var sDates;
 var eDates;
 
-export const Graphtest = (dates) => {
+export const GraphTest2 = (dates) => {
   
   
   console.log(dates);             //returns date array, which contains sDate and eDate

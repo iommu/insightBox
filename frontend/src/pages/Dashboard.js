@@ -12,6 +12,7 @@ import { Graph8 } from "./components/Graph8";
 import SideBar from "./components/SideBar";
 import { Graphtest } from "./components/Graphtest";
 import { GenerateKEM } from "./components/Crypto";
+import { GraphTest2 } from "./components/GraphTest2";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -96,7 +97,7 @@ class Dashboard extends React.Component {
             </div>
           </div>
           <div className="stat-container">
-            <Graphtest sDate={this.state.startDate.toISOString()} eDate={this.state.endDate.toISOString()} />
+            <GraphTest2 sDate={this.state.startDate.toISOString()} eDate={this.state.endDate.toISOString()} />
             <div className="info">
               <img className="info-img" src={info} alt="info" />
             </div>

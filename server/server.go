@@ -88,7 +88,7 @@ func main() {
 
 	// test stuff here
 	fmt.Println("encryption test")
-	SK, _ = model.GetSK()
+	SK, _ := model.GetSK()
 	fmt.Println(SK)
 	fmt.Println(len(SK))
 

@@ -3,7 +3,6 @@ package model
 import (
 	"fmt"
 	"io/ioutil"
-	"os"
 
 	"gorm.io/gorm"
 )
@@ -24,16 +23,12 @@ func GetSK() {
 	keys, err := ioutil.ReadFile("server_keys.txt")
 	check(err)
 	fmt.Print(string(keys))
-
-	f, err := os.Open("server_keys.txt")
-	check(err)
-
-	b1 := make([]byte, 5)
-	n1, err := f.Read(b1)
-	check(err)
-	fmt.Printf("%d bytes: %s\n", n1, string(b1[:n1]))
+	fmt.Println(" ")
 
 	// read in key into byte array
+	// trim string to get SK array
+	SK := keys[5399 : len(keys)-1]
+	fmt.Print(string(SK))
 
 	//
 

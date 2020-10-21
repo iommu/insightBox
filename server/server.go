@@ -87,7 +87,7 @@ func main() {
 	initDB(*testDB)
 
 	// test stuff here
-	
+	fmt.Println("encryption test")
 
 	// setup 00:01 update ticker
 	go processing.InitDaemon(db)

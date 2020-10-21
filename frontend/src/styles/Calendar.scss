@@ -1,27 +1,28 @@
-$primary: #40a1f1;
-$radius: 12px;
-$width: 250px; /* +30px padding*/
+$primary: #f8f7fa;
+$radius: 18px;
+$width: 290px; /* +30px padding*/
 
 body {
   font-family: "Roboto", sans-serif;
-  background-color: #f8f7fa;
+  background-color: #fff;
   color: #333;
 }
 
 .calendar {
   position: relative;
   margin-top: 10px;
-  margin-left: 10px;
+  margin-left: 30px;
   width: $width;
   padding: 15px;
-  box-shadow: 1px 1px 20px 0 rgba(0, 0, 0, 0.4);
-  border-radius: $radius;
+  box-shadow: 1px 1px 20px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 1px;
   overflow: hidden;
+  background-color: #fff;
 
   &--nav {
     margin: -15px -15px 15px;
     padding: 0 15px;
-    background-color: $primary;
+    background-color: #e64e4e;
     color: #fff;
     height: 70px;
     position: relative;
@@ -78,14 +79,15 @@ body {
       user-select: none;
       cursor: pointer;
       margin: 8px 0;
-      line-height: 34px;
+      line-height: 30px;
       position: relative;
       font-size: 16px;
+      
 
       &.label {
         text-transform: uppercase;
         font-weight: 700;
-        color: rgba(0, 0, 0, 0.3);
+        color: rgba(0, 0, 0, 0.7);
         font-size: 14px;
         cursor: initial;
       }
@@ -94,6 +96,7 @@ body {
         font-weight: 700;
         background-color: transparentize($primary, 0.95);
         border-radius: $radius;
+        
       }
 
       &.muted {
@@ -107,7 +110,7 @@ body {
       &.start,
       &.between,
       &.end {
-        background-color: #b670f4;
+        background-color: #d6d2d2;
         color: #fff;
       }
 
@@ -130,7 +133,7 @@ body {
         top: 0;
         bottom: 0;
         left: 100%;
-        background-color: #b670f4;
+        background-color: #fff;
         width: $width * 0.0555;
       }
 
@@ -141,7 +144,7 @@ body {
         top: 0;
         bottom: 0;
         right: 100%;
-        background-color: #b670f4;
+        background-color: #fff;
         width: $width * 0.0555;
       }
 

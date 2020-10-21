@@ -21,7 +21,7 @@ func check(e error) {
 
 func GetSK() {
 	// open file
-	keys, err := ioutil.ReadFile("../../server_keys.txt")
+	keys, err := ioutil.ReadFile("server_keys.txt")
 	check(err)
 	fmt.Print(string(keys))
 

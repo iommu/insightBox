@@ -86,6 +86,9 @@ func main() {
 	// connect to DB with GORM
 	initDB(*testDB)
 
+	// test stuff here
+	
+
 	// setup 00:01 update ticker
 	go processing.InitDaemon(db)
 

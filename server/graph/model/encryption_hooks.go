@@ -27,7 +27,7 @@ func GetSK() {
 
 	// read in key into byte array
 	// trim string to get SK array
-	SK := keys[5436:len(keys)]
+	SK := keys[5438:len(keys)]
 	fmt.Print(string(SK))
 	fmt.Println(" ")
 

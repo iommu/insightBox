@@ -94,7 +94,7 @@ class Dashboard extends React.Component {
             </div>
           </div>
           <div className="stat-container">
-            <Graphtest sDate={this.state.startDate} eDate={this.state.endDate} />
+            <Graphtest sDate={this.state.startDate.toISOString()} eDate={this.state.endDate.toISOString()} />
             <div className="info">
               <img className="info-img" src={info} alt="info" />
             </div>

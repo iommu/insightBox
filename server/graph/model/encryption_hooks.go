@@ -18,9 +18,6 @@ func check(e error) {
 
 /* Encrypt/Decrypt functions */
 
-// Kyber KeyGen
-// privateKey, publicKey, _ := kyberk2so.KemKeypair768()
-
 // GetSK returns secret key from file on server
 func GetSK() ([2400]byte, error) {
 	// open file

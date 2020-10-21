@@ -48,6 +48,7 @@ export function GenerateKEM(){
     // send c to server
 
     console.log(publicKey.length);
+    console.log(publicKey);
     
 
 

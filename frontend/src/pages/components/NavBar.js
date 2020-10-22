@@ -4,6 +4,7 @@ import { Switch, Route, Link, withRouter } from "react-router-dom";
 import AuthButton from "./Oauth";
 import ThemeButton from "./ThemeButton";
 import logo from "../../images/logo.png";
+import GoogleBtn2 from "./GoogleBtn2";
 
 import ProfileDropDown from "./ProfileDropDown";
 
@@ -58,28 +59,8 @@ class NavBar extends React.Component {
                   </Link>
                 </Box>
                 <Box mx="auto" />
-                <ThemeButton />
-                <AuthButton>
-                  <Button
-                    sx={{
-                      backgroundColor: "white",
-                      color: "#c54339",
-                      border: "1px solid #c54339",
-                    }}
-                  >
-                    Sign Up
-                  </Button>
-                  &nbsp;&nbsp;
-                  <Button
-                    sx={{
-                      backgroundColor: "#c54339",
-                      color: "white",
-                      border: "1px solid #c54339",
-                    }}
-                  >
-                    Login
-                  </Button>
-                </AuthButton>
+                  <ThemeButton/>
+                  <GoogleBtn2 />
               </Route>
             </Switch>
           </Flex>

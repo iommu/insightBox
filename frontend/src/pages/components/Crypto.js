@@ -245,6 +245,15 @@ export function GenerateKEM(){
     // return (c, ss)
     console.log("c: ", ciphertext);
     console.log("ss: ", sharedSecret);
+
+
+    console.log(JSON.stringify(ciphertext));
+
+    console.log(int16(-1165195434));
+
+
+
+
 }
 
 function indcpaEncrypt(m, publicKey, coins, paramsK){
@@ -339,8 +348,8 @@ const paramsN = 256;
 function polyFromBytes(a){
 	var r = new Array(384); // each element is int16 (0-65535)
 	for (var i=0; i<paramsN/2; i++) {
-		r[2*i] = ((a[3*i+0] >> 0) | (a[3*i+1] << 8)) & 0xFFF;
-		r[2*i+1] = ((a[3*i+1] >> 4) | (a[3*i+2] << 4)) & 0xFFF;
+		r[2*i] = int16(((uint16(a[3*i+0]) >> 0) | (uint16(a[3*i+1]) << 8)) & 0xFFF);
+		r[2*i+1] = int16(((uint16(a[3*i+1]) >> 4) | (uint16(a[3*i+2]) << 4)) & 0xFFF);
 	}
 	return r;
 }
@@ -352,8 +361,8 @@ function polyFromMsg(msg){
 	var mask; // int16
 	for (var i=0; i<paramsN/8; i++) {
 		for (var j=0; j<8; j++) {
-			mask = -1*((msg[i] >> j) & 1);
-			r[8*i+j] = mask & (paramsQ+1)/2;
+			mask = -1*int16((msg[i] >> j) & 1);
+			r[8*i+j] = mask & int16((paramsQ+1)/2);
 		}
 	}
 	return r;
@@ -419,11 +428,11 @@ function indcpaRejUniform(buf, bufl){
 	var ctr = 0;
 	var pos = 0;
 	while (ctr < paramsN && pos+2 <= bufl) {
-		val = buf[pos] | (buf[pos+1] << 8);
+		val = uint16(buf[pos]) | (uint16(buf[pos+1]) << 8);
 		pos = pos + 2;
-		if (val < 19*paramsQ) {
+		if (val < uint16(19*paramsQ)) {
 			val = val - ((val >> 12) * paramsQ);
-			r[ctr] = val;
+			r[ctr] = int16(val);
 			ctr = ctr + 1;
 		}
     }
@@ -476,8 +485,8 @@ function byteopsCbd(buf) {
 		d = t & 0x55555555;
 		d = d + ((t >> 1) & 0x55555555);
 		for (var j = 0; j < 8; j++){
-			a = (d >> (4*j + 0)) & 0x3;
-			b = (d >> (4*j + paramsETA)) & 0x3;
+			a = int16((d >> (4*j + 0)) & 0x3);
+			b = int16((d >> (4*j + paramsETA)) & 0x3);
 			r[8*i+j] = a - b;
 		}
 	}
@@ -487,10 +496,10 @@ function byteopsCbd(buf) {
 // byteopsLoad32 returns a 32-bit unsigned integer loaded from byte x.
 function byteopsLoad32(x) {
 	var r;
-	r = x[0];
-	r = r | (x[1] << 8);
-	r = r | (x[2] << 16);
-	r = r | (x[3] << 24);
+	r = uint32(x[0]);
+	r = r | (uint32(x[1]) << 8);
+	r = r | (uint32(x[2]) << 16);
+	r = r | (uint32(x[3]) << 24);
 	return r;
 }
 
@@ -541,11 +550,11 @@ const paramsQinv = 62209;
 // byteopsMontgomeryReduce computes a Montgomery reduction; given
 // a 32-bit integer `a`, returns `a * R^-1 mod Q` where `R=2^16`.
 function byteopsMontgomeryReduce(a) {
-	var u = a * paramsQinv;
-	var t = u * paramsQ;
+	var u = int16(a * int32(paramsQinv));
+	var t = int32(u) * int32(paramsQ);
 	t = a - t;
 	t >>= 16;
-	return t;
+	return int16(t);
 }
 
 // polyvecReduce applies Barrett reduction to each coefficient of each element
@@ -570,8 +579,8 @@ function polyReduce(r){
 // `a mod Q` in {0,...,Q}.
 function byteopsBarrettReduce(a){
 	var t;
-	var v = ((1 << 26) + paramsQ/2) / paramsQ;
-	t = v * a >> 26;
+	var v = int16(((1 << 26) + paramsQ/2) / paramsQ);
+	t = int16(int32(v) * int32(a) >> 26);
 	t = t * paramsQ;
 	return a - t;
 }
@@ -707,13 +716,13 @@ function polyvecCompress(a, paramsK) {
     for (var i = 0; i < paramsK; i++) {
         for (var j = 0; j < paramsN/4; j++) {
             for (var k = 0; k < 4; k++) {
-                t[k] = (((a[i][4*j+k] << 10) + paramsQ/2) / paramsQ) & 0x3ff;
+                t[k] = uint16((((a[i][4*j+k] << 10) + paramsQ/2) / paramsQ) & 0x3ff);
             }
-            r[rr+0] = t[0] >> 0;
-            r[rr+1] = (t[0] >> 8) | (t[1] << 2);
-            r[rr+2] = (t[1] >> 6) | (t[2] << 4);
-            r[rr+3] = (t[2] >> 4) | (t[3] << 6);
-            r[rr+4] = (t[3] >> 2);
+            r[rr+0] = byte(t[0] >> 0);
+            r[rr+1] = byte((t[0] >> 8) | (t[1] << 2));
+            r[rr+2] = byte((t[1] >> 6) | (t[2] << 4));
+            r[rr+3] = byte((t[2] >> 4) | (t[3] << 6));
+            r[rr+4] = byte((t[3] >> 2));
             rr = rr + 5;
         }
     }
@@ -746,7 +755,7 @@ function polyCompress(a, paramsK) {
     var r = new Array(paramsPolyCompressedBytesK768);
     for (var i = 0; i < paramsN/8; i++) {
         for (var j = 0; j < 8; j++) {
-            t[j] = ((a[8*i+j]<<4)+paramsQ/2)/paramsQ & 15;
+            t[j] = byte(((a[8*i+j]<<4)+paramsQ/2)/paramsQ) & 15;
         }
         r[rr+0] = t[0] | (t[1] << 4);
         r[rr+1] = t[2] | (t[3] << 4);
@@ -762,4 +771,34 @@ function byteopsCSubQ(a) {
 	a = a - paramsQ;
 	a = a + ((a >> 15) & paramsQ);
 	return a;
+}
+
+function byte(n){
+    n = n%256;
+    return n;
+}
+
+function int16(n){
+    n = n%65536;
+    return n;
+}
+
+function uint16(n){
+    n = n%65536;
+    return n;
+}
+
+function int8(n){
+    n = n%256;
+    return n;
+}
+
+function int32(n){
+    n = n%4294967296;
+    return n;
+}
+
+function uint32(n){
+    n = n%4294967296;
+    return n;
 }

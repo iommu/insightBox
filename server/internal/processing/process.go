@@ -184,6 +184,32 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	template.Sent = sentEmails
 	template.Received = receivedEmails
 	//fill in all hours
+	/*
+		template.time_0 = hourCounts[0]
+		template.time_1 = hourCounts[1]
+		template.time_2 = hourCounts[2]
+		template.time_3 = hourCounts[3]
+		template.time_4 = hourCounts[4]
+		template.time_5 = hourCounts[5]
+		template.time_6 = hourCounts[6]
+		template.time_7 = hourCounts[7]
+		template.time_8 = hourCounts[8]
+		template.time_9 = hourCounts[9]
+		template.time_10 = hourCounts[10]
+		template.time_11 = hourCounts[11]
+		template.time_12 = hourCounts[12]
+		template.time_13 = hourCounts[13]
+		template.time_14 = hourCounts[14]
+		template.time_15 = hourCounts[15]
+		template.time_16 = hourCounts[16]
+		template.time_17 = hourCounts[17]
+		template.time_18 = hourCounts[18]
+		template.time_19 = hourCounts[19]
+		template.time_20 = hourCounts[20]
+		template.time_21 = hourCounts[21]
+		template.time_22 = hourCounts[22]
+		template.time_23 = hourCounts[23]
+	*/
 
 	// save Day to database
 	db.Create(&template)

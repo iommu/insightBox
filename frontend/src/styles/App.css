@@ -115,7 +115,7 @@ a:active {
   display: inline-block;
   position: fixed;
   left: 2vw;
-  margin-top: 10vh;
+  margin-top: 15vh;
 }
 
 @media screen and (max-width: 1190px) {
@@ -173,7 +173,7 @@ a:active {
 
 @media screen and (max-width: 1420px) {
   #title-main {
-    left: 200px;
+    left: 230px;
   }
 }
 

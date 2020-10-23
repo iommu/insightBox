@@ -2,7 +2,7 @@
   display: inline-block;
   background: #4285f4;
   color: #ffffff;
-  width: 162px;
+  width: 168px;
   border-radius: 3px;
   border: 1px solid #4285f4;
   white-space: nowrap;
@@ -35,7 +35,7 @@ span.buttonText2 {
   display: inline-block;
   vertical-align: middle;
   padding-left: 2px;
-  padding-right: 6px;
+  padding-right: 20px;
   font-size: 12px;
   font-weight: bold;
   /* Use the Roboto font that is loaded in the <head> */

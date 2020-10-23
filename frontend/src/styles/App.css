@@ -115,7 +115,7 @@ a:active {
   display: inline-block;
   position: fixed;
   left: 4vw;
-  margin-top: 21vh;
+  margin-top: 10vh;
 }
 
 @media screen and (max-width: 1190px) {
@@ -167,7 +167,7 @@ a:active {
     top: 220px;
   }
   #home-icon {
-    margin-top: 150px;
+    margin-top: 80px;
   }
 }
 
@@ -234,7 +234,7 @@ a:active {
   display: inline-block;
   position: absolute;
   font-family: arial;
-  left: 0vw;
+  left: 0.5vw;
   bottom: -10vh;
 }
 

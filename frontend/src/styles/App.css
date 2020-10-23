@@ -114,19 +114,19 @@ a:active {
 #home-icon {
   display: inline-block;
   position: fixed;
-  left: 4vw;
+  left: 2vw;
   margin-top: 10vh;
 }
 
 @media screen and (max-width: 1190px) {
   #home-icon {
-    left: 3vw;
+    left: 1vw;
   }
 }
 
 @media screen and (max-width: 1490px) {
   #home-icon {
-    left: 2vw;
+    left: 0vw;
   }
 }
 
@@ -156,7 +156,7 @@ a:active {
   display: block;
   position: absolute;
   top: 27vh;
-  left: 18vw;
+  left: 16vw;
   font-family: arial;
   text-align: center;
   line-height: 6.5em;
@@ -164,7 +164,7 @@ a:active {
 
 @media screen and (max-height: 800px) {
   #title-main {
-    top: 220px;
+    top: 210px;
   }
   #home-icon {
     margin-top: 80px;
@@ -173,7 +173,7 @@ a:active {
 
 @media screen and (max-width: 1420px) {
   #title-main {
-    left: 250px;
+    left: 200px;
   }
 }
 

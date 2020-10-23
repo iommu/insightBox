@@ -104,37 +104,35 @@ func countWords(wordMap map[string]int, title string) {
 	}
 }
 
-//processDataArray takes in array of gmail.MessageParts and a partially complete model.Day
-func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *gorm.DB) {
+// processDataArray takes in array of gmail.Messages and a partially complete model.Day
+func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.DB) {
 	// setup saved variables
 	receivedEmails := 0
 	sentEmails := 0
 	wordMap := make(map[string]int)
 	contactMap := make(map[string]contactCounter)
+	hourCounts := make([]int, 24)
 
-	// interate through all payloads in array
-	for _, payload := range dataArray {
+	// interate through all mails in array
+	for _, mail := range dataArray {
 		// set up variables to save metadata
 		to, from, subject := "", "", ""
 		// loop through all objects in Headers
-		for _, obj := range payload.Headers {
-			// switch case depending on Name
+		for _, obj := range mail.Payload.Headers {
+			// switch case depending on Name of header
 			switch obj.Name {
 			case "Subject":
 				subject = obj.Value
 			case "To":
 				to = obj.Value
-				//clean the data
 			case "From":
 				from = obj.Value
-				//clean the data
 			//default means we got unknown/unwanted data
 			default:
 				log.Printf("Unknown data in Header: %v", obj)
-				break
+				continue
 			}
 		}
-		// checking if email is a sent or received email
 
 		//clean the "to" string to only get email address
 		temp := strings.IndexByte(to, '<')
@@ -148,6 +146,7 @@ func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *go
 			from = from[strings.IndexByte(from, '<')+1 : strings.IndexByte(from, '>')]
 		}
 
+		//checking if its a sent or received mail
 		if from == template.ID {
 			sentEmails++
 			// increment number of times user sent an email to a contact
@@ -172,12 +171,19 @@ func processDataArray(template model.Day, dataArray []*gmail.MessagePart, db *go
 			}
 			contact := contactMap[from]
 			contact.incrementReceived()
+
+			// increment hour when email was received, only count received because time when you
+			// send is not too useful
+			timeVal := time.Unix(mail.InternalDate/1000, 0)
+			hourReceived := timeVal.Hour()
+			hourCounts[hourReceived]++
 		}
 
 	}
 	// fill in data to Day
 	template.Sent = sentEmails
 	template.Received = receivedEmails
+	//fill in all hours
 
 	// save Day to database
 	db.Create(&template)
@@ -241,7 +247,8 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 		}
 
 		// init blank array for data
-		var dayEmailData []*gmail.MessagePart
+		var dayEmailData []*gmail.Message
+		var dayEmailTimes []time.Time
 
 		// for loop for each email {emailIndex}
 		for {
@@ -266,7 +273,8 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 			}
 
 			// add email data to data array
-			dayEmailData = append(dayEmailData, mail.Payload)
+			dayEmailData = append(dayEmailData, mail)
+			dayEmailTimes = append(dayEmailTimes, timeVal)
 
 			emailIndex++
 			// check overflow and download more email ids if needed

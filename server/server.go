@@ -26,27 +26,20 @@ import (
 	"google.golang.org/api/people/v1"
 	"gorm.io/driver/mysql"
 
-	//	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
 var db *gorm.DB
 
-func initDB(testDB bool) {
+func initDB() {
 	var err error
 
-	// open maria or sqlite depending on flag
-	if !testDB {
-		dataSourceName := "group:isit321@(localhost)/insightbox?charset=utf8&parseTime=True&loc=Local"
-		db, err = gorm.Open(mysql.Open(dataSourceName), &gorm.Config{
-			Logger: logger.Default.LogMode(logger.Silent),
-		})
-	} else {
-		// db, err = gorm.Open(sqlite.Open("test.db"), &gorm.Config{
-		// 	Logger: logger.Default.LogMode(logger.Silent),
-		// })
-	}
+	// open maria
+	dataSourceName := "group:isit321@(localhost)/insightbox?charset=utf8&parseTime=True&loc=Local"
+	db, err = gorm.Open(mysql.Open(dataSourceName), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
 
 	if err != nil {
 		log.Printf("%s error connecting to database : %v", consts.Error, err)
@@ -76,15 +69,15 @@ func printURL() {
 
 func main() {
 	// setup command line args
+	// devMode flag for if we're working on dev machines
 	devMode := flag.Bool("dev", false, "a bool")
-	testDB := flag.Bool("testDB", false, "a bool")
 	flag.Parse()
 
 	// print OAuth URL
 	printURL()
 
 	// connect to DB with GORM
-	initDB(*testDB)
+	initDB()
 
 	// test stuff here
 	fmt.Println("encryption test")

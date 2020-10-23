@@ -155,16 +155,16 @@ a:active {
 #title-main {
   display: block;
   position: absolute;
-  top: 27vh;
+  top: 20vh;
   left: 18vw;
   font-family: arial;
   text-align: center;
   line-height: 6.5em;
 }
 
-@media screen and (max-height: 800px) {
+@media screen and (max-height: 1000px) {
   #title-main {
-    top: 220px;
+    top: 210px;
   }
   #home-icon {
     margin-top: 80px;

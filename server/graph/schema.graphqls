@@ -23,6 +23,31 @@ type Day {
   sent: Int!
   received: Int!
   words: [Word!]!
+  #vvv BELOW IS COUNTING PER HOUR
+  received_0: Int!
+  received_1: Int!
+  received_2: Int!
+  received_3: Int!
+  received_4: Int!
+  received_5: Int!
+  received_6: Int!
+  received_7: Int!
+  received_8: Int!
+  received_9: Int!
+  received_10: Int!
+  received_11: Int!
+  received_12: Int!
+  received_13: Int!
+  received_14: Int!
+  received_15: Int!
+  received_16: Int!
+  received_17: Int!
+  received_18: Int!
+  received_19: Int!
+  received_20: Int!
+  received_21: Int!
+  received_22: Int!
+  received_23: Int!
 }
 
 type Word {
@@ -36,7 +61,6 @@ type Email {
   id: ID!
   date: Time!
   poi_email: String!
-  poi_name: String!
   sent: Int!
   received: Int!
 }

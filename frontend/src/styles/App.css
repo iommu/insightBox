@@ -162,7 +162,7 @@ a:active {
   line-height: 6.5em;
 }
 
-@media screen and (max-height: 800px) {
+@media screen and (max-height: 1000px) {
   #title-main {
     top: 210px;
   }

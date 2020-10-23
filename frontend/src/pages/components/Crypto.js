@@ -1,7 +1,7 @@
 import { SHA3, SHAKE } from 'sha3';
 
 
-const publicKey = new Array(156, 160, 171, 15, 57, 196, 212, 88, 12, 201, 156, 69, 122, 58, 153, 61, 106, 154, 219, 51, 150, 178, 6, 37, 97, 133, 62, 29,
+const publicKey = [156, 160, 171, 15, 57, 196, 212, 88, 12, 201, 156, 69, 122, 58, 153, 61, 106, 154, 219, 51, 150, 178, 6, 37, 97, 133, 62, 29,
     232, 23, 56, 132, 93, 197, 20, 123, 188, 217, 13, 53, 103, 150, 99, 120, 14, 238, 65, 52, 69, 85, 38, 221, 165, 19, 217, 181, 207,
     62, 9, 183, 53, 53, 129, 165, 229, 68, 213, 108, 8, 200, 150, 0, 118, 198, 96, 112, 123, 5, 37, 85, 56, 94, 226, 128, 17, 18, 50,
     117, 92, 207, 213, 154, 115, 67, 220, 70, 154, 49, 79, 101, 146, 37, 206, 187, 173, 77, 226, 38, 82, 152, 55, 79, 67, 27, 217, 247,
@@ -41,9 +41,9 @@ const publicKey = new Array(156, 160, 171, 15, 57, 196, 212, 88, 12, 201, 156, 6
     180, 154, 71, 142, 185, 164, 199, 36, 157, 4, 245, 119, 223, 25, 85, 24, 200, 50, 114, 25, 181, 195, 213, 89, 6, 183, 126, 40, 233,
     59, 229, 240, 110, 65, 242, 81, 201, 122, 97, 55, 198, 187, 144, 40, 79, 193, 41, 40, 176, 154, 81, 175, 234, 149, 151, 145, 168, 49,
     183, 90, 187, 59, 153, 106, 85, 157, 222, 147, 84, 175, 201, 24, 175, 50, 39, 20, 166, 155, 58, 191, 89, 175, 80, 67, 16, 221, 51, 210,
-    123, 126, 199, 122, 47, 145, 64, 58, 25, 89, 176, 153, 170, 195, 210, 118, 29, 70, 75);
+    123, 126, 199, 122, 47, 145, 64, 58, 25, 89, 176, 153, 170, 195, 210, 118, 29, 70, 75];
 
-const nttZetas = new Array(
+const nttZetas = [
     2285, 2571, 2970, 1812, 1493, 1422, 287, 202, 3158, 622, 1577, 182, 962,
     2127, 1855, 1468, 573, 2004, 264, 383, 2500, 1458, 1727, 3199, 2648, 1017,
     732, 608, 1787, 411, 3124, 1758, 1223, 652, 2777, 1015, 2036, 1491, 3047,
@@ -53,9 +53,9 @@ const nttZetas = new Array(
     1653, 3083, 778, 1159, 3182, 2552, 1483, 2727, 1119, 1739, 644, 2457, 349,
     418, 329, 3173, 3254, 817, 1097, 603, 610, 1322, 2044, 1864, 384, 2114, 3193,
     1218, 1994, 2455, 220, 2142, 1670, 2144, 1799, 2051, 794, 1819, 2475, 2459,
-    478, 3221, 3021, 996, 991, 958, 1869, 1522, 1628);
+    478, 3221, 3021, 996, 991, 958, 1869, 1522, 1628];
 
-const nttZetasInv = new Array(
+const nttZetasInv = [
     1701, 1807, 1460, 2371, 2338, 2333, 308, 108, 2851, 870, 854, 1510, 2535,
     1278, 1530, 1185, 1659, 1187, 3109, 874, 1335, 2111, 136, 1215, 2945, 1465,
     1285, 2007, 2719, 2726, 2232, 2512, 75, 156, 3000, 2911, 2980, 872, 2685,
@@ -65,10 +65,8 @@ const nttZetasInv = new Array(
     1860, 3203, 1162, 1618, 666, 320, 8, 2813, 1544, 282, 1838, 1293, 2314, 552,
     2677, 2106, 1571, 205, 2918, 1542, 2721, 2597, 2312, 681, 130, 1602, 1871,
     829, 2946, 3065, 1325, 2756, 1861, 1474, 1202, 2367, 3147, 1752, 2707, 171,
-    3127, 3042, 1907, 1836, 1517, 359, 758, 1441);
+    3127, 3042, 1907, 1836, 1517, 359, 758, 1441];
 
-const Kyber768CTBytes = 1088;
-const paramsSymBytes = 32
 
 // ----------------------------------------------------------------------------------------------
 // From http://baagoe.com/en/RandomMusings/javascript/
@@ -101,7 +99,7 @@ return (function (args) {
     var s2 = 0;
     var c = 1;
 
-    if (args.length == 0) {
+    if (args.length === 0) {
     args = [+new Date()];
     }
     var mash = Mash();
@@ -167,8 +165,6 @@ export function GenerateKEM(){
     // send c to server
 
     const paramsK = 3;
-    var ciphertextFixedLength = new Array(1088);
-    var sharedSecretFixedLength = new Array(32);
 
     // make 32 byte array
     var sharedSecret = new Array(32);
@@ -191,7 +187,7 @@ export function GenerateKEM(){
     buf_tmp = hash1.digest('hex');
     // convert hex string to array
     var buf1 = new Array(32);
-    for (var i=0; i<32; i++){
+    for (i=0; i<32; i++){
         buf1[i] = hexToDec(buf_tmp[2*i] + buf_tmp[2*i+1]);
     }
 
@@ -202,20 +198,19 @@ export function GenerateKEM(){
     buf_tmp = hash2.digest('hex');
     // convert hex string to array
     var buf2 = new Array(32);
-    for (var i=0; i<32; i++){
+    for (i=0; i<32; i++){
         buf2[i] = hexToDec(buf_tmp[2*i] + buf_tmp[2*i+1]);
     }
 
     // kr = sha3.sum512 of (buf1 + buf2) concatenate
     const buffer3 = Buffer.from(buf1);
     const buffer4 = Buffer.from(buf2);
-    var kr = new Array(512);
     const hash3 = new SHA3(512);
     hash3.update(buffer3).update(buffer4);
     var kr_str = hash3.digest('hex');
     // convert hex string to array
     var kr = new Array(32);
-    for (var i=0; i<64; i++){
+    for (i=0; i<64; i++){
         kr[i] = hexToDec(kr_str[2*i] + kr_str[2*i+1]);
     }
     var kr1 = kr.slice(0,32);
@@ -232,7 +227,7 @@ export function GenerateKEM(){
     hash4.update(buffer5);
     var krc_str = hash4.digest('hex');
     // convert hex string to array
-    for (var i=0; i<32; i++){
+    for (i=0; i<32; i++){
         krc[i] = hexToDec(krc_str[2*i] + krc_str[2*i+1]);
     }
 
@@ -243,7 +238,7 @@ export function GenerateKEM(){
     hash5.update(buffer6).update(buffer7);
     var ss_str = hash3.digest('hex');
     // convert hex string to array
-    for (var i=0; i<32; i++){
+    for (i=0; i<32; i++){
         sharedSecret[i] = hexToDec(ss_str[2*i] + ss_str[2*i+1]);
     }
     
@@ -281,7 +276,7 @@ function indcpaEncrypt(m, publicKey, coins, paramsK){
     sp = polyvecReduce(sp, paramsK);
     
 
-	for (var i = 0; i < paramsK; i++) {
+	for (i = 0; i < paramsK; i++) {
 		bp[i] = polyvecPointWiseAccMontgomery(at[i], sp, paramsK);
     }
     
@@ -401,10 +396,10 @@ function indcpaGenMatrix(seed, transposed, paramsK){
             
 			while (ctr < paramsN) {
                 var bufn = buf.slice(0,168);
-                var result = new Array(2);
-                result = indcpaRejUniform(bufn, 168);
-                var missing = result[0];
-                var ctrn = result[1];
+                var result1 = new Array(2);
+                result1 = indcpaRejUniform(bufn, 168);
+                var missing = result1[0];
+                var ctrn = result1[1];
 
 				for (var k=ctr; k<paramsN-ctr; k++) {
 					r[i][j][k] = missing[paramsN-ctr+k];
@@ -526,7 +521,7 @@ function ntt(r){
 		for (var start = 0; start < 256; start = j + l){
 			zeta = nttZetas[k];
 			k = k + 1;
-			for (var j = start; j < start+l; j++) {
+			for (j = start; j < start+l; j++) {
 				t = nttFqMul(zeta, r[j+l]);
 				r[j+l] = r[j] - t;
 				r[j] = r[j] + t;
@@ -666,7 +661,7 @@ function nttInv(r) {
 		for (var start = 0; start < 256; start = j + l) {
 			zeta = nttZetasInv[k];
 			k = k + 1;
-			for (var j = start; j < start+l; j++) {
+			for (j = start; j < start+l; j++) {
 				t = r[j];
 				r[j] = byteopsBarrettReduce(t + r[j+l]);
 				r[j+l] = t - r[j+l];
@@ -674,7 +669,7 @@ function nttInv(r) {
 			}
 		}
 	}
-	for (var j = 0; j < 256; j++) {
+	for (j = 0; j < 256; j++) {
 		r[j] = nttFqMul(r[j], nttZetasInv[127]);
 	}
 	return r;

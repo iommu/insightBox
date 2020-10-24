@@ -79,7 +79,7 @@ func main() {
 	// connect to DB with GORM
 	initDB()
 
-	// set log flags [time + document/line number]
+	// set log flags [time + document:line number]
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	// test stuff here

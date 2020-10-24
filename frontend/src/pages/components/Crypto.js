@@ -249,7 +249,9 @@ export function GenerateKEM(){
 
     console.log(JSON.stringify(ciphertext));
 
+    var x = [202, 151, 109, 15, 212, 178, 200, 64, 50, 90, 204, 1, 151, 3, 19, 189, 104, 40, 179, 25, ];
 
+    console.log(byteopsLoad32(x));
 
 }
 
@@ -493,11 +495,11 @@ function byteopsCbd(buf) {
 // byteopsLoad32 returns a 32-bit unsigned integer loaded from byte x.
 function byteopsLoad32(x) {
 	var r;
-	r = uint32(x[0]);
-	r = r | (uint32(x[1]) << 8);
-	r = r | (uint32(x[2]) << 16);
-	r = r | (uint32(x[3]) << 24);
-	return r;
+    r = uint32(x[0]);
+    r = (r | (uint32(x[1]) << 8) >>> 0);
+	r = (r | (uint32(x[2]) << 16) >>> 0);
+	r = (r | (uint32(x[3]) << 24) >>> 0);
+	return uint32(r);
 }
 
 // polyvecNtt applies forward number-theoretic transforms (NTT)
@@ -772,8 +774,8 @@ function polyCompress(a, paramsK) {
 
 // byteopsCSubQ conditionally subtracts Q from a.
 function byteopsCSubQ(a) {
-	a = a - paramsQ;
-	a = a + ((a >> 15) & paramsQ);
+	a = a - int16(paramsQ);
+	a = a + ((a >> 15) & int16(paramsQ));
 	return a;
 }
 

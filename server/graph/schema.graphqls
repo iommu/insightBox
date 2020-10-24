@@ -23,7 +23,7 @@ type Day {
   sent: Int!
   received: Int!
   words: [Word!]!
-  #vvv BELOW IS COUNTING PER HOUR
+  # vvv BELOW IS COUNTING PER HOUR
   received_0: Int!
   received_1: Int!
   received_2: Int!

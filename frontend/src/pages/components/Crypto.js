@@ -248,10 +248,6 @@ export function GenerateKEM(){
 
 
     console.log(JSON.stringify(ciphertext));
-
-    var x = [98, 238, 68, 156, 138, 165, 222, 136, 242, 37, 126, 230, 245, 1, 69, 67, 100, 135, 83, 243, 109, 251, 175, 121, 221, 82, 185, 21, 202, 151, 109, 15, 212, 178, 200, 64, 50, 90, 204, 1, 151, 3, 19, 189, 104, 40, 179, 25, ];
-    console.log(byteopsLoad32(x));
-
 }
 
 function indcpaEncrypt(m, publicKey, coins, paramsK){
@@ -344,7 +340,7 @@ const paramsN = 256;
 // polyFromBytes de-serialises an array of bytes into a polynomial,
 // and represents the inverse of polyToBytes.
 function polyFromBytes(a){
-	var r = new Array(384); // each element is int16 (0-65535)
+	var r = new Array(384).fill(0); // each element is int16 (0-65535)
 	for (var i=0; i<paramsN/2; i++) {
 		r[2*i] = int16(((uint16(a[3*i+0]) >> 0) | (uint16(a[3*i+1]) << 8)) & 0xFFF);
 		r[2*i+1] = int16(((uint16(a[3*i+1]) >> 4) | (uint16(a[3*i+2]) << 4)) & 0xFFF);
@@ -355,7 +351,7 @@ function polyFromBytes(a){
 const paramsQ = 3329;
 // polyFromMsg converts a 32-byte message to a polynomial.
 function polyFromMsg(msg){
-	var r = new Array(384); // each element is int16 (0-65535)
+	var r = new Array(384).fill(0); // each element is int16 (0-65535)
 	var mask; // int16
 	for (var i=0; i<paramsN/8; i++) {
 		for (var j=0; j<8; j++) {
@@ -477,14 +473,14 @@ function indcpaPrf(l, key, nonce) {
 function byteopsCbd(buf) {
 	var t, d;
 	var a, b;
-	var r = new Array(384); // each element is int16 (0-65535)
+	var r = new Array(384).fill(0); // each element is int16 (0-65535)
 	for (var i = 0; i < paramsN/8; i++) {
-		t = byteopsLoad32(buf.slice(4*i,buf.length));
-		d = t & 0x55555555;
-		d = d + ((t >> 1) & 0x55555555);
+        t = (byteopsLoad32(buf.slice(4*i,buf.length)) >>> 0);
+		d = ((t & 0x55555555) >>> 0);
+		d = (d + ((((t >> 1) >>> 0) & 0x55555555) >>> 0) >>> 0);
 		for (var j = 0; j < 8; j++){
-			a = int16((d >> (4*j + 0)) & 0x3);
-			b = int16((d >> (4*j + paramsETA)) & 0x3);
+			a = int16((((d >> (4*j + 0)) >>> 0) & 0x3) >>> 0);
+			b = int16((((d >> (4*j + paramsETA)) >>> 0) & 0x3) >>> 0);
 			r[8*i+j] = a - b;
 		}
 	}

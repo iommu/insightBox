@@ -5,6 +5,7 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -48,6 +49,10 @@ func (r *mutationResolver) DeleteAccount(ctx context.Context, email string) (int
 	return 0, nil
 }
 
+func (r *mutationResolver) SetC(ctx context.Context, c string) (int, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
 func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
 	var user model.User
 	email := auth.ForContext(ctx)
@@ -69,6 +74,10 @@ func (r *queryResolver) Data(ctx context.Context, start time.Time, end time.Time
 		r.DB.Where("id = ? AND date = ?", email, day.Date).Find(&days[index].Words)
 	}
 	return days, nil
+}
+
+func (r *queryResolver) GetSs(ctx context.Context) (string, error) {
+	panic(fmt.Errorf("not implemented"))
 }
 
 // Mutation returns generated.MutationResolver implementation.

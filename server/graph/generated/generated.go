@@ -86,12 +86,14 @@ type ComplexityRoot struct {
 
 	Mutation struct {
 		DeleteAccount func(childComplexity int, email string) int
+		SetC          func(childComplexity int, c string) int
 		SignIn        func(childComplexity int, authCode string) int
 	}
 
 	Query struct {
-		Data func(childComplexity int, start time.Time, end time.Time) int
-		User func(childComplexity int) int
+		Data  func(childComplexity int, start time.Time, end time.Time) int
+		GetSs func(childComplexity int) int
+		User  func(childComplexity int) int
 	}
 
 	Token struct {
@@ -103,6 +105,7 @@ type ComplexityRoot struct {
 	}
 
 	User struct {
+		C             func(childComplexity int) int
 		ColorSchemeID func(childComplexity int) int
 		FamilyName    func(childComplexity int) int
 		GivenName     func(childComplexity int) int
@@ -123,10 +126,12 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	SignIn(ctx context.Context, authCode string) (string, error)
 	DeleteAccount(ctx context.Context, email string) (int, error)
+	SetC(ctx context.Context, c string) (int, error)
 }
 type QueryResolver interface {
 	User(ctx context.Context) (*model.User, error)
 	Data(ctx context.Context, start time.Time, end time.Time) ([]*model.Day, error)
+	GetSs(ctx context.Context) (string, error)
 }
 
 type executableSchema struct {
@@ -394,6 +399,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteAccount(childComplexity, args["email"].(string)), true
 
+	case "Mutation.setC":
+		if e.complexity.Mutation.SetC == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_setC_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.SetC(childComplexity, args["c"].(string)), true
+
 	case "Mutation.signIn":
 		if e.complexity.Mutation.SignIn == nil {
 			break
@@ -417,6 +434,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Data(childComplexity, args["start"].(time.Time), args["end"].(time.Time)), true
+
+	case "Query.getSS":
+		if e.complexity.Query.GetSs == nil {
+			break
+		}
+
+		return e.complexity.Query.GetSs(childComplexity), true
 
 	case "Query.user":
 		if e.complexity.Query.User == nil {
@@ -459,6 +483,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Token.TokenType(childComplexity), true
+
+	case "User.c":
+		if e.complexity.User.C == nil {
+			break
+		}
+
+		return e.complexity.User.C(childComplexity), true
 
 	case "User.color_scheme_id":
 		if e.complexity.User.ColorSchemeID == nil {
@@ -617,6 +648,7 @@ type User {
   locale: String! 
   color_scheme_id: Int!
   secret_key: String!
+  c: String!
 }
 
 type Day {
@@ -672,11 +704,13 @@ type Email {
 type Mutation {
   signIn(authCode: String!): String! #takes in oauth key, returns JWT string
   deleteAccount(email: String!): Int! #takes email address as 100% sure you want to delete check, returns 0 if worked
+  setC(c: String!): Int!
 }
 
 type Query {
   user: User # can only query for current user info
   data(start: Time!, end: Time!): [Day!]!
+  getSS: String!
 }
 
 scalar Time
@@ -700,6 +734,20 @@ func (ec *executionContext) field_Mutation_deleteAccount_args(ctx context.Contex
 		}
 	}
 	args["email"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_setC_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["c"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["c"] = arg0
 	return args, nil
 }
 
@@ -2027,6 +2075,47 @@ func (ec *executionContext) _Mutation_deleteAccount(ctx context.Context, field g
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Mutation_setC(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_setC_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().SetC(rctx, args["c"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query_user(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -2097,6 +2186,40 @@ func (ec *executionContext) _Query_data(ctx context.Context, field graphql.Colle
 	res := resTmp.([]*model.Day)
 	fc.Result = res
 	return ec.marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐDayᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_getSS(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GetSs(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2560,6 +2683,40 @@ func (ec *executionContext) _User_secret_key(ctx context.Context, field graphql.
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return obj.SecretKey, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _User_c(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "User",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.C, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4014,6 +4171,11 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "setC":
+			out.Values[i] = ec._Mutation_setC(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4060,6 +4222,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_data(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "getSS":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_getSS(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}
@@ -4170,6 +4346,11 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "secret_key":
 			out.Values[i] = ec._User_secret_key(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "c":
+			out.Values[i] = ec._User_c(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}

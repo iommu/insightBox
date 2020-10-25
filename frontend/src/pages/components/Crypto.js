@@ -177,6 +177,17 @@ export function GenerateKEM(){
         buf[i] = nextInt(256);
     }
 
+
+    // test random buf here
+    var randbuf = [166, 18, 158, 52, 58, 252, 13, 249, 31, 252, 169, 87, 87, 73, 165, 100, 222, 85, 187, 91, 187, 228, 13, 247, 104, 112, 247, 47, 27, 144, 127, 10, ];
+
+    for (var i=0; i<32; i++){
+        buf[i] = randbuf[i];
+    }
+
+
+
+
     // buf_tmp = buf[:32]
     var buf_tmp = buf.slice(0,32);
     const buffer1 = Buffer.from(buf_tmp);
@@ -190,6 +201,7 @@ export function GenerateKEM(){
     for (i=0; i<32; i++){
         buf1[i] = hexToDec(buf_tmp[2*i] + buf_tmp[2*i+1]);
     }
+    console.log("buf1: ", buf1);
 
     // buf2 = sha3.sum256 of publicKey[0:1184]
     const buffer2 = Buffer.from(publicKey);
@@ -201,6 +213,7 @@ export function GenerateKEM(){
     for (i=0; i<32; i++){
         buf2[i] = hexToDec(buf_tmp[2*i] + buf_tmp[2*i+1]);
     }
+    console.log("buf2: ", buf2);
 
     // kr = sha3.sum512 of (buf1 + buf2) concatenate
     const buffer3 = Buffer.from(buf1);
@@ -213,12 +226,14 @@ export function GenerateKEM(){
     for (i=0; i<64; i++){
         kr[i] = hexToDec(kr_str[2*i] + kr_str[2*i+1]);
     }
+    console.log("kr: ", kr);
     var kr1 = kr.slice(0,32);
     var kr2 = kr.slice(32,64);
 
     // c = indcpaEncrypt(buf1, publicKey, kr[32:], paramsK)
     var ciphertext = new Array(1088);
     ciphertext = indcpaEncrypt(buf1, publicKey, kr2, paramsK);
+    console.log("ciphertext: ", ciphertext);
 
     // krc = sha3.Sum256(ciphertext)
     const buffer5 = Buffer.from(ciphertext);
@@ -230,13 +245,14 @@ export function GenerateKEM(){
     for (i=0; i<32; i++){
         krc[i] = hexToDec(krc_str[2*i] + krc_str[2*i+1]);
     }
+    console.log("krc: ", krc);
 
     // sha3.ShakeSum256(sharedSecret, append(kr[:paramsSymBytes], krc[:]...))
     const buffer6 = Buffer.from(kr1);
     const buffer7 = Buffer.from(krc);
     const hash5 = new SHAKE(256);
     hash5.update(buffer6).update(buffer7);
-    var ss_str = hash3.digest('hex');
+    var ss_str = hash5.digest('hex');
     // convert hex string to array
     for (i=0; i<32; i++){
         sharedSecret[i] = hexToDec(ss_str[2*i] + ss_str[2*i+1]);
@@ -245,8 +261,6 @@ export function GenerateKEM(){
     // return (c, ss)
     console.log("c: ", ciphertext);
     console.log("ss: ", sharedSecret);
-
-
     console.log(JSON.stringify(ciphertext));
 }
 
@@ -417,7 +431,7 @@ function indcpaGenMatrix(seed, transposed, paramsK){
 // indcpaRejUniform runs rejection sampling on uniform random bytes
 // to generate uniform random integers modulo `Q`.
 function indcpaRejUniform(buf, bufl){
-	var r = new Array(384); // each element is int16 (0-65535)
+	var r = new Array(384).fill(0); // each element is int16 (0-65535)
 	var val;
 	var ctr = 0;
 	var pos = 0;
@@ -831,6 +845,7 @@ function uint16(n){
     return n;
 }
 
+
 function int32(n){
     var end = -2147483648;
     var start = 2147483647;
@@ -852,6 +867,8 @@ function int32(n){
     }
 }
 
+// any bit operations that is meant to be done in uint32 must have >>> 0
+// javascrpt calculates bitwise in SIGNED 32 bit
 function uint32(n){
     n = n%4294967296;
     return n;

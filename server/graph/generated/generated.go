@@ -86,6 +86,7 @@ type ComplexityRoot struct {
 
 	Mutation struct {
 		DeleteAccount func(childComplexity int, email string) int
+		SaveSecretKey func(childComplexity int, secretKey string) int
 		SignIn        func(childComplexity int, authCode string) int
 	}
 
@@ -109,6 +110,7 @@ type ComplexityRoot struct {
 		ID            func(childComplexity int) int
 		Locale        func(childComplexity int) int
 		Picture       func(childComplexity int) int
+		SecretKey     func(childComplexity int) int
 	}
 
 	Word struct {
@@ -122,6 +124,7 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	SignIn(ctx context.Context, authCode string) (string, error)
 	DeleteAccount(ctx context.Context, email string) (int, error)
+	SaveSecretKey(ctx context.Context, secretKey string) (int, error)
 }
 type QueryResolver interface {
 	User(ctx context.Context) (*model.User, error)
@@ -393,6 +396,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteAccount(childComplexity, args["email"].(string)), true
 
+	case "Mutation.saveSecretKey":
+		if e.complexity.Mutation.SaveSecretKey == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_saveSecretKey_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.SaveSecretKey(childComplexity, args["secretKey"].(string)), true
+
 	case "Mutation.signIn":
 		if e.complexity.Mutation.SignIn == nil {
 			break
@@ -459,7 +474,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Token.TokenType(childComplexity), true
 
-	case "User.colorSchemeID":
+	case "User.color_scheme_id":
 		if e.complexity.User.ColorSchemeID == nil {
 			break
 		}
@@ -500,6 +515,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.Picture(childComplexity), true
+
+	case "User.secret_key":
+		if e.complexity.User.SecretKey == nil {
+			break
+		}
+
+		return e.complexity.User.SecretKey(childComplexity), true
 
 	case "Word.date":
 		if e.complexity.Word.Date == nil {
@@ -607,7 +629,8 @@ type User {
   family_name: String!
   picture: String!
   locale: String! 
-  colorSchemeID: Int!
+  color_scheme_id: Int!
+  secret_key: String!
 }
 
 type Day {
@@ -663,6 +686,7 @@ type Email {
 type Mutation {
   signIn(authCode: String!): String! #takes in oauth key, returns JWT string
   deleteAccount(email: String!): Int! #takes email address as 100% sure you want to delete check, returns 0 if worked
+  saveSecretKey(secretKey: String!): Int! #takes encrypted secret key, returns 0 if worked
 }
 
 type Query {
@@ -691,6 +715,20 @@ func (ec *executionContext) field_Mutation_deleteAccount_args(ctx context.Contex
 		}
 	}
 	args["email"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_saveSecretKey_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["secretKey"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["secretKey"] = arg0
 	return args, nil
 }
 
@@ -2018,6 +2056,47 @@ func (ec *executionContext) _Mutation_deleteAccount(ctx context.Context, field g
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Mutation_saveSecretKey(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_saveSecretKey_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().SaveSecretKey(rctx, args["secretKey"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query_user(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -2499,7 +2578,7 @@ func (ec *executionContext) _User_locale(ctx context.Context, field graphql.Coll
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_colorSchemeID(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_color_scheme_id(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2531,6 +2610,40 @@ func (ec *executionContext) _User_colorSchemeID(ctx context.Context, field graph
 	res := resTmp.(int)
 	fc.Result = res
 	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _User_secret_key(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "User",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.SecretKey, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Word_id(ctx context.Context, field graphql.CollectedField, obj *model.Word) (ret graphql.Marshaler) {
@@ -3971,6 +4084,11 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "saveSecretKey":
+			out.Values[i] = ec._Mutation_saveSecretKey(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4120,8 +4238,13 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "colorSchemeID":
-			out.Values[i] = ec._User_colorSchemeID(ctx, field, obj)
+		case "color_scheme_id":
+			out.Values[i] = ec._User_color_scheme_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "secret_key":
+			out.Values[i] = ec._User_secret_key(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}

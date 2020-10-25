@@ -60,7 +60,8 @@ type User struct {
 	FamilyName    string `json:"family_name"`
 	Picture       string `json:"picture"`
 	Locale        string `json:"locale"`
-	ColorSchemeID int    `json:"colorSchemeID"`
+	ColorSchemeID int    `json:"color_scheme_id"`
+	SecretKey     string `json:"secret_key"`
 }
 
 type Word struct {

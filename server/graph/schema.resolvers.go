@@ -48,6 +48,14 @@ func (r *mutationResolver) DeleteAccount(ctx context.Context, email string) (int
 	return 0, nil
 }
 
+func (r *mutationResolver) SaveSecretKey(ctx context.Context, secretKey string) (int, error) {
+	// get user email
+	emailReference := auth.ForContext(ctx)
+	// do things
+	// return success
+	return 0, nil
+}
+
 func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
 	var user model.User
 	email := auth.ForContext(ctx)

@@ -154,12 +154,13 @@ function nextInt(n) {
     return Math.floor(random() * n); //prng.js -> random()
 }
 
-
 function hexToDec(hexString){
     return parseInt(hexString, 16);
 }
 
-
+// ----------------------------------------------------------------------------------------------
+// Translated parts of code to javascript: https://github.com/symbolicsoft/kyber-k2so
+// ----------------------------------------------------------------------------------------------
 export function GenerateKEM(){
     // generate (c, ss) from pk
     // send c to server
@@ -177,17 +178,6 @@ export function GenerateKEM(){
         buf[i] = nextInt(256);
     }
 
-
-    // test random buf here
-    var randbuf = [166, 18, 158, 52, 58, 252, 13, 249, 31, 252, 169, 87, 87, 73, 165, 100, 222, 85, 187, 91, 187, 228, 13, 247, 104, 112, 247, 47, 27, 144, 127, 10, ];
-
-    for (var i=0; i<32; i++){
-        buf[i] = randbuf[i];
-    }
-
-
-
-
     // buf_tmp = buf[:32]
     var buf_tmp = buf.slice(0,32);
     const buffer1 = Buffer.from(buf_tmp);
@@ -201,7 +191,6 @@ export function GenerateKEM(){
     for (i=0; i<32; i++){
         buf1[i] = hexToDec(buf_tmp[2*i] + buf_tmp[2*i+1]);
     }
-    console.log("buf1: ", buf1);
 
     // buf2 = sha3.sum256 of publicKey[0:1184]
     const buffer2 = Buffer.from(publicKey);
@@ -213,7 +202,6 @@ export function GenerateKEM(){
     for (i=0; i<32; i++){
         buf2[i] = hexToDec(buf_tmp[2*i] + buf_tmp[2*i+1]);
     }
-    console.log("buf2: ", buf2);
 
     // kr = sha3.sum512 of (buf1 + buf2) concatenate
     const buffer3 = Buffer.from(buf1);
@@ -226,14 +214,12 @@ export function GenerateKEM(){
     for (i=0; i<64; i++){
         kr[i] = hexToDec(kr_str[2*i] + kr_str[2*i+1]);
     }
-    console.log("kr: ", kr);
     var kr1 = kr.slice(0,32);
     var kr2 = kr.slice(32,64);
 
     // c = indcpaEncrypt(buf1, publicKey, kr[32:], paramsK)
     var ciphertext = new Array(1088);
     ciphertext = indcpaEncrypt(buf1, publicKey, kr2, paramsK);
-    console.log("ciphertext: ", ciphertext);
 
     // krc = sha3.Sum256(ciphertext)
     const buffer5 = Buffer.from(ciphertext);
@@ -245,7 +231,6 @@ export function GenerateKEM(){
     for (i=0; i<32; i++){
         krc[i] = hexToDec(krc_str[2*i] + krc_str[2*i+1]);
     }
-    console.log("krc: ", krc);
 
     // sha3.ShakeSum256(sharedSecret, append(kr[:paramsSymBytes], krc[:]...))
     const buffer6 = Buffer.from(kr1);
@@ -867,8 +852,8 @@ function int32(n){
     }
 }
 
-// any bit operations that is meant to be done in uint32 must have >>> 0
-// javascrpt calculates bitwise in SIGNED 32 bit
+// any bit operations to be done in uint32 must have >>> 0
+// javascript calculates bitwise in SIGNED 32 bit so you need to convert
 function uint32(n){
     n = n%4294967296;
     return n;

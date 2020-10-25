@@ -69,7 +69,6 @@ type Email {
 type Mutation {
   signIn(authCode: String!): String! #takes in oauth key, returns JWT string
   deleteAccount(email: String!): Int! #takes email address as 100% sure you want to delete check, returns 0 if worked
-  saveSecretKey(secretKey: String!): Int! #takes encrypted secret key, returns 0 if worked
 }
 
 type Query {

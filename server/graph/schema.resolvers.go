@@ -5,7 +5,6 @@ package graph
 
 import (
 	"context"
-	"crypto/rand"
 	"log"
 	"time"
 
@@ -46,21 +45,6 @@ func (r *mutationResolver) DeleteAccount(ctx context.Context, email string) (int
 	log.Printf("%s User with email addr %s has flagged their account for deletion", consts.Notif, *emailReference)
 	// delete users account
 	go users.DeleteAccount(*emailReference, r.DB)
-	return 0, nil
-}
-
-func (r *mutationResolver) SaveSecretKey(ctx context.Context, secretKey string) (int, error) {
-	// get user email
-	email := auth.ForContext(ctx)
-
-	// generate 32 random bytes for user's secret key
-	SK := make([]byte, 32)
-	rand.Read(SK[:32])
-
-	// save SK to database
-	r.DB.Model(&model.User{}).Where("id = ?", email).Update("secret_key", SK)
-
-	// return success
 	return 0, nil
 }
 

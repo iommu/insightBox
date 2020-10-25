@@ -5,7 +5,6 @@ import (
 	"errors"
 	"io/ioutil"
 	"log"
-	"regexp"
 	"strings"
 	"time"
 
@@ -18,11 +17,14 @@ import (
 	"gorm.io/gorm"
 )
 
+// struct for counting contacts
 type contactCounter struct {
 	sent     int
 	received int
 }
 
+// incrementSent/Received was done this way because it did not like
+// directly incrementing the values inside the main functions
 func (c *contactCounter) incrementSent() {
 	c.sent++
 }
@@ -72,36 +74,6 @@ func authenticate(email string, db *gorm.DB) (*gmail.Service, error) {
 
 	//return the service to be used
 	return srv, nil
-}
-
-//countWords count the number of words in the title of an email title
-func countWords(wordMap map[string]int, title string) {
-	// change all letters to lower case
-	title = strings.ToLower(title)
-
-	// remove symbols
-	re, err := regexp.Compile(`[^\w]`)
-	if err != nil {
-		log.Fatalf("%s Error parsing regex for removing symbols : %v", consts.Error, err)
-	}
-	title = re.ReplaceAllString(title, " ")
-
-	// break up the title into words delimited by space
-	wordList := strings.Fields(title)
-
-	// count words
-	for _, word := range wordList {
-
-		//check if the word has been initialized in the map
-		_, initialized := wordMap[word]
-		if initialized {
-			//word already exists in map, add 1
-			wordMap[word]++
-		} else {
-			//word is new, initialize it to 1
-			wordMap[word] = 1
-		}
-	}
 }
 
 // processDataArray takes in array of gmail.Messages and a partially complete model.Day
@@ -161,7 +133,7 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 		} else {
 			receivedEmails++
 			// count words in subject and add it to the map
-			countWords(wordMap, subject)
+			CountWords(wordMap, subject)
 			// increment number of times user received an email from a contact
 
 			// check if the contact has been initialized in the map, initialize if not done

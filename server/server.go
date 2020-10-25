@@ -79,6 +79,9 @@ func main() {
 	// connect to DB with GORM
 	initDB()
 
+	// initialize the word filter
+	processing.InitIgnoreWords()
+
 	// set log flags [time + document:line number]
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 

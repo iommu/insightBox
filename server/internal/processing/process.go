@@ -133,7 +133,7 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 		} else {
 			receivedEmails++
 			// count words in subject and add it to the map
-			CountWords(wordMap, subject)
+			countWords(wordMap, subject)
 			// increment number of times user received an email from a contact
 
 			// check if the contact has been initialized in the map, initialize if not done

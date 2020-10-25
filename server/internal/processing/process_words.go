@@ -41,7 +41,7 @@ func cleanString(str string) string {
 }
 
 //CountWords count the number of words in the title of an email title
-func CountWords(wordMap map[string]int, title string) {
+func countWords(wordMap map[string]int, title string) {
 
 	// clean the string to be ready for processing
 	str := cleanString(title)

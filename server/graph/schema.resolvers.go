@@ -50,7 +50,7 @@ func (r *mutationResolver) DeleteAccount(ctx context.Context, email string) (int
 
 func (r *mutationResolver) SaveSecretKey(ctx context.Context, secretKey string) (int, error) {
 	// get user email
-	emailReference := auth.ForContext(ctx)
+	// emailReference := auth.ForContext(ctx)
 	// do things
 	// return success
 	return 0, nil

@@ -13,6 +13,7 @@ import SideBar from "./components/SideBar";
 import { Graphtest } from "./components/Graphtest";
 import { GenerateKEM } from "./components/Crypto";
 import { GraphTest2 } from "./components/GraphTest2";
+import moment from "moment";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -22,8 +23,9 @@ class Dashboard extends React.Component {
       this.props.history.push("/");
     }
     this.state = {
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: moment().subtract(7, "day"),             //sets default dashboard dates to be current date subtract 7 days
+      endDate: moment().subtract(0, "day"),
+      
     };
 
     GenerateKEM();

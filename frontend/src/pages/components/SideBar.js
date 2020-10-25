@@ -119,8 +119,8 @@ class SideBar extends React.Component {
 
     this.state = {
       date: moment(),
-      startDate: moment().subtract(5, "day"),
-      endDate: moment().add(3, "day"),
+      startDate: moment().subtract(7, "day"),     //this alters the grey hightlights on the
+      endDate: moment().add(0, "day"),            //adds days infront of the current date?
     };
   }
 

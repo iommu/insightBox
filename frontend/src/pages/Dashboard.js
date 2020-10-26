@@ -31,7 +31,7 @@ class Dashboard extends React.Component {
     };
 
     // check if client has ss
-    if (localStorage.ss == null){
+    if (localStorage.getItem("ss") == null){
         // generate a (c, ss) pair
         var output = new Array(2);
         output = GenerateKEM();
@@ -42,9 +42,14 @@ class Dashboard extends React.Component {
         var hexStr = bytesToHexStr(output[0]);
         console.log(hexStr);
         // send hex string to server: setC()
-
-
-
+        const [result] = useQuery({
+          query: `
+          query {
+            getCipher(cTmp:"` + hexStr + `")
+          }`
+        });
+        const { fetching, error } = result;
+        console.log(result.data.getCipher);
     }
   }
 

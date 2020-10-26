@@ -38,7 +38,7 @@ func initDB() {
 	// open maria
 	dataSourceName := "group:isit321@(localhost)/insightbox?charset=utf8&parseTime=True&loc=Local"
 	db, err = gorm.Open(mysql.Open(dataSourceName), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
+		Logger: logger.Default.LogMode(logger.Error),
 	})
 
 	if err != nil {

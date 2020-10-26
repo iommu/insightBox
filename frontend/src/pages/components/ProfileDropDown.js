@@ -4,6 +4,7 @@ import down from "../../images/down.png";
 
 function LogOutFunc(that) {
   localStorage.removeItem("token");
+  localStorage.removeItem("ss");
   that.props.history.push("/");
 }
 

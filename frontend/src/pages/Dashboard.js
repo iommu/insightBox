@@ -14,6 +14,8 @@ import { Graphtest } from "./components/Graphtest";
 import { GenerateKEM } from "./components/Crypto";
 import { GraphTest2 } from "./components/GraphTest2";
 import moment from "moment";
+import { useMutation } from "urql";
+
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -23,13 +25,27 @@ class Dashboard extends React.Component {
       this.props.history.push("/");
     }
     this.state = {
-      startDate: moment().subtract(7, "day"),             //sets default dashboard dates to be current date subtract 7 days
+      startDate: moment().subtract(7, "day"),             // sets default dashboard dates to be current date subtract 7 days
       endDate: moment().subtract(0, "day"),
       
     };
 
-    // GenerateKEM();
+    // check if client has ss
+    if (localStorage.ss == null){
+        // generate a (c, ss) pair
+        var output = new Array(2);
+        output = GenerateKEM();
+        // save in localStorage
+        localStorage.c_tmp = output[0];
+        localStorage.ss_tmp = output[1];
+        // convert c to hex string
+        var hexStr = bytesToHexStr(output[0]);
+        console.log(hexStr);
+        // send hex string to server: setC()
 
+
+
+    }
   }
 
  
@@ -111,3 +127,9 @@ class Dashboard extends React.Component {
 }
 
 export default withRouter(Dashboard);
+
+function bytesToHexStr(c){
+  return c.reduce((output, elem) => 
+    (output + ('0' + elem.toString(16)).slice(-2)),
+    '');
+}

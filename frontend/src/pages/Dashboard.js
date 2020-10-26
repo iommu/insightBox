@@ -29,11 +29,12 @@ class Dashboard extends React.Component {
     };
 
     // GenerateKEM();
-    localStorage.reload = 0;
-    if (localStorage.reload == 0){
-      window.location.reload();
-    }
-    localStorage.reload = 1;
+    window.onload = function() {
+      if(!window.location.hash) {
+          window.location = window.location + '#loaded';
+          window.location.reload();
+      }
+  }
 
   }
 

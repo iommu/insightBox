@@ -52,6 +52,11 @@ func DeleteAccount(email string, db *gorm.DB) error {
 	return nil
 }
 
+// function to generate secret key (hex string)
+func generateSK() {
+
+}
+
 //DeAuth deoauthorized oAuth token of (email)
 func DeAuth(email string, db *gorm.DB) error {
 	//get token from database
@@ -140,6 +145,8 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 		log.Printf("%s User with email addr %s not found, creating", consts.Notif, user.ID)
 		// set user default variables for user
 		user.ColorSchemeID = 1
+		// user doesnt exist
+		// set up user secret key
 	} else if err != nil {
 		log.Fatalf("%s GORM error connecting to db : %v", consts.Error, err)
 	}

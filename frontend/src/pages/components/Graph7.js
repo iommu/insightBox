@@ -37,10 +37,6 @@ export const Graph7 = () => {
     var total1 = 0;
     var total2 = 0;
 
-    if (result.data.data == null){
-      window.location.reload();
-    }
-
     for (var i=0; i<14; i++){
       if(i<7){ // week 1
         total1 += result.data.data[i].received;

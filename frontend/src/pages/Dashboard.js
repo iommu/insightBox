@@ -29,6 +29,7 @@ class Dashboard extends React.Component {
     };
 
     // GenerateKEM();
+    window.location.reload();
 
   }
 

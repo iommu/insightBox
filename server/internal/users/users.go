@@ -155,7 +155,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 		user.ColorSchemeID = 1
 		// user doesnt exist
 		// set up user secret key (hex string output)
-		SK, _ := generateSK()
+		SK := generateSK()
 		// save SK string in database
 		user.SecretKey = SK
 	} else if err != nil {

@@ -24,8 +24,6 @@ func GetSK() ([2400]byte, error) {
 	// open file
 	keys, err := ioutil.ReadFile("server_keys.txt")
 	check(err)
-	fmt.Println("aaaaa")
-	fmt.Println(err)
 
 	// read in key into byte array
 	// trim string to get SK array

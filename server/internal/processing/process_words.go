@@ -1,19 +1,9 @@
 package processing
 
-import (
-	"encoding/csv"
-	"io"
-	"log"
-	"os"
-	"regexp"
-	"strings"
-
-	"github.com/iommu/insightbox/server/internal/consts"
-)
-
 //ignoreWords is a map of words to ignore in word counting
 var ignoreWords map[string]bool
 
+/*
 //checks if a word is inside IgnoreWords
 func filterWord(word string) bool {
 	//check if word is inside IgnoreWords, return true if it exists
@@ -108,3 +98,4 @@ func InitIgnoreWords() {
 		log.Printf("Could not close stopwords file: %v", err)
 	}
 }
+*/

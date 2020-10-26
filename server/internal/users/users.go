@@ -61,7 +61,7 @@ func generateSK() (string, error) {
 	// read cryptographically secure random values into array
 	_, err := rand.Read(randbuf)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	// convert to hex string
 	hexStr := hex.EncodeToString(randbuf)

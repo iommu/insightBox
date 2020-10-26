@@ -80,7 +80,7 @@ func main() {
 	initDB()
 
 	// initialize the word filter
-	processing.InitIgnoreWords()
+	// processing.InitIgnoreWords()
 
 	// set log flags [time + document:line number]
 	log.SetFlags(log.LstdFlags | log.Lshortfile)

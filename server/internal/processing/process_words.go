@@ -1,9 +1,16 @@
 package processing
 
+import (
+	"log"
+	"regexp"
+	"strings"
+
+	"github.com/iommu/insightbox/server/internal/consts"
+)
+
 //ignoreWords is a map of words to ignore in word counting
 var ignoreWords map[string]bool
 
-/*
 //checks if a word is inside IgnoreWords
 func filterWord(word string) bool {
 	//check if word is inside IgnoreWords, return true if it exists
@@ -59,6 +66,7 @@ func countWords(wordMap map[string]int, title string) {
 	}
 }
 
+/*
 // InitIgnoreWords creates the word map for words to ignore, and populates it based on
 // the loaded text file
 func InitIgnoreWords() {

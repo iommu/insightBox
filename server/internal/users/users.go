@@ -28,6 +28,10 @@ func DeleteAccount(email string, db *gorm.DB) error {
 		return err
 	}
 	// delete all items with primary key of email from db
+	err = db.Where("id = ?", email).Delete(&model.Word{}).Error
+	if err != nil {
+		return err
+	}
 	err = db.Where("id = ?", email).Delete(&model.Day{}).Error
 	if err != nil {
 		return err
@@ -41,10 +45,6 @@ func DeleteAccount(email string, db *gorm.DB) error {
 		return err
 	}
 	err = db.Where("id = ?", email).Delete(&model.User{}).Error
-	if err != nil {
-		return err
-	}
-	err = db.Where("id = ?", email).Delete(&model.Word{}).Error
 	if err != nil {
 		return err
 	}

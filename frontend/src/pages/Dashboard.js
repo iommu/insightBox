@@ -14,7 +14,7 @@ import { Graphtest } from "./components/Graphtest";
 import { GenerateKEM } from "./components/Crypto";
 import { GraphTest2 } from "./components/GraphTest2";
 import moment from "moment";
-import { useMutation } from "urql";
+import { useQuery } from 'urql';
 
 
 class Dashboard extends React.Component {

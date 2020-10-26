@@ -23,18 +23,13 @@ class Dashboard extends React.Component {
       this.props.history.push("/");
     }
     this.state = {
-      startDate: moment().subtract(7, "day"),             //sets default dashboard dates to be current date subtract 7 days
+      startDate: moment().subtract(7, "day"),             // sets default dashboard dates to be current date subtract 7 days
       endDate: moment().subtract(0, "day"),
       
     };
 
     // GenerateKEM();
-    window.onload = function() {
-      if(!window.location.hash) {
-          window.location = window.location + '#loaded';
-          window.location.reload();
-      }
-  }
+    
 
   }
 

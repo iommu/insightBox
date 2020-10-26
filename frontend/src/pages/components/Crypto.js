@@ -247,6 +247,12 @@ export function GenerateKEM(){
     console.log("c: ", ciphertext);
     console.log("ss: ", sharedSecret);
     console.log(JSON.stringify(ciphertext));
+
+    var result = new Array(2);
+    result[0] = ciphertext;
+    result[1] = sharedSecret;
+
+    return result;
 }
 
 function indcpaEncrypt(m, publicKey, coins, paramsK){

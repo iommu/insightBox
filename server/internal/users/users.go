@@ -1,6 +1,8 @@
 package users
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -53,8 +55,14 @@ func DeleteAccount(email string, db *gorm.DB) error {
 }
 
 // function to generate secret key (hex string)
-func generateSK() {
-
+func generateSK() string {
+	// make byte array of 32 bytes
+	randbuf := make([]byte, 32)
+	// read cryptographically secure random values into array
+	rand.Read(randbuf)
+	// convert to hex string
+	hexStr := hex.EncodeToString(randbuf)
+	return hexStr
 }
 
 //DeAuth deoauthorized oAuth token of (email)
@@ -146,7 +154,10 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 		// set user default variables for user
 		user.ColorSchemeID = 1
 		// user doesnt exist
-		// set up user secret key
+		// set up user secret key (hex string output)
+		SK := generateSK()
+		// save SK string in database
+		user.SecretKey = SK
 	} else if err != nil {
 		log.Fatalf("%s GORM error connecting to db : %v", consts.Error, err)
 	}

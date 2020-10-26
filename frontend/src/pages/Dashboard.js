@@ -28,7 +28,7 @@ class Dashboard extends React.Component {
       
     };
 
-    GenerateKEM();
+    // GenerateKEM();
 
   }
 

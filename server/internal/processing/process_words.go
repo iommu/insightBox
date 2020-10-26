@@ -1,7 +1,10 @@
 package processing
 
 import (
+	"encoding/csv"
+	"io"
 	"log"
+	"os"
 	"regexp"
 	"strings"
 
@@ -66,7 +69,6 @@ func countWords(wordMap map[string]int, title string) {
 	}
 }
 
-/*
 // InitIgnoreWords creates the word map for words to ignore, and populates it based on
 // the loaded text file
 func InitIgnoreWords() {
@@ -106,4 +108,3 @@ func InitIgnoreWords() {
 		log.Printf("Could not close stopwords file: %v", err)
 	}
 }
-*/

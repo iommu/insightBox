@@ -14,7 +14,6 @@ type User {
   locale: String! 
   color_scheme_id: Int!
   secret_key: String!
-  c: String!
 }
 
 type Day {
@@ -70,13 +69,12 @@ type Email {
 type Mutation {
   signIn(authCode: String!): String! #takes in oauth key, returns JWT string
   deleteAccount(email: String!): Int! #takes email address as 100% sure you want to delete check, returns 0 if worked
-  setC(c: String!): Int!
 }
 
 type Query {
   user: User # can only query for current user info
   data(start: Time!, end: Time!): [Day!]!
-  getSS: String!
+  getCipher(cTmp: String!): String!
 }
 
 scalar Time

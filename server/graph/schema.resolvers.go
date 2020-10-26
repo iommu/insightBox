@@ -49,10 +49,6 @@ func (r *mutationResolver) DeleteAccount(ctx context.Context, email string) (int
 	return 0, nil
 }
 
-func (r *mutationResolver) SetC(ctx context.Context, c string) (int, error) {
-	panic(fmt.Errorf("not implemented"))
-}
-
 func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
 	var user model.User
 	email := auth.ForContext(ctx)
@@ -76,8 +72,9 @@ func (r *queryResolver) Data(ctx context.Context, start time.Time, end time.Time
 	return days, nil
 }
 
-func (r *queryResolver) GetSs(ctx context.Context) (string, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, error) {
+	processed := cTmp
+	return processed, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
@@ -88,3 +85,16 @@ func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//    it when you're done.
+//  - You have helper methods in this file. Move them out to keep these resolver files clean.
+func (r *mutationResolver) SetC(ctx context.Context, c string) (int, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+func (r *queryResolver) GetSs(ctx context.Context) (string, error) {
+	panic(fmt.Errorf("not implemented"))
+}

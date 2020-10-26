@@ -62,7 +62,6 @@ type User struct {
 	Locale        string `json:"locale"`
 	ColorSchemeID int    `json:"color_scheme_id"`
 	SecretKey     string `json:"secret_key"`
-	C             string `json:"c"`
 }
 
 type Word struct {

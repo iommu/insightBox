@@ -56,6 +56,10 @@ func (r *mutationResolver) DeleteAccount(ctx context.Context, email string) (int
 func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
 	var user model.User
 	email := auth.ForContext(ctx)
+	if email == nil {
+		log.Printf("%s User tried to get User data with invalid JWT", consts.Error)
+		return &user, nil
+	}
 	err := r.DB.Where("id = ?", email).First(&user).Error
 	if err != nil {
 		return nil, err
@@ -66,6 +70,10 @@ func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
 func (r *queryResolver) Data(ctx context.Context, start time.Time, end time.Time) ([]*model.Day, error) {
 	email := auth.ForContext(ctx)
 	var days []*model.Day
+	if emil == nil {
+		log.Printf("%s User tried to get Days data with invalid JWT", consts.Error)
+		return days, nil
+	}
 	err := r.DB.Set("gorm:auto_preload", true).Where("id = ? AND date BETWEEN ? AND ?", email, start, end).Find(&days).Error
 	if err != nil {
 		return nil, err
@@ -78,6 +86,10 @@ func (r *queryResolver) Data(ctx context.Context, start time.Time, end time.Time
 
 func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, error) {
 	email := auth.ForContext(ctx)
+	if email == nil {
+		log.Printf("%s User tried to GetCipher with invalid JWT", consts.Error)
+		return "", nil
+	}
 	// convert cTmp from hex string to byte array
 	ctmp, _ := hex.DecodeString(cTmp)
 	var ctmp1 [1088]byte

@@ -12,7 +12,7 @@ import { Graph8 } from "./components/Graph8";
 import SideBar from "./components/SideBar";
 import { GraphTest2 } from "./components/GraphTest2";
 import moment from "moment";
-import {Cipher} from './Cipher';
+import { Cipher } from "./Cipher";
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -37,11 +37,7 @@ class Dashboard extends React.Component {
     render() {
         return (
             <div id="dash-container">
-              <Cipher/>
-                <p>
-                    Date range is from ${this.state.startDate.toISOString()} to
-                    ${this.state.endDate.toISOString()}
-                </p>
+                <Cipher />
                 <SideBar updateDates={this.updateDates} />
                 <div
                     className="dashboard-content"

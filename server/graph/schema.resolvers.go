@@ -106,6 +106,12 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 		return "", err
 	}
 	ss := user.SecretKey
+
+	if ss == "" {
+		log.Printf("%s User doesnt have a secret key", consts.Error)
+		return "", nil
+	}
+
 	fmt.Println("ss hex")
 	fmt.Println(ss)
 

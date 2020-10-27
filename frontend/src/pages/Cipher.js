@@ -17,6 +17,8 @@ export const Cipher = () => {
         var hexStrC = bytesToHexStr(output[0]);
         var hexStrSS = bytesToHexStr(output[1]);
 
+        console.log("hesStrC: ", hexStrC);
+
         // save in localStorage as hex strings
         localStorage.c_tmp = hexStrC;
         localStorage.ss_tmp = hexStrSS;

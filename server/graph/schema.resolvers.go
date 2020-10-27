@@ -129,6 +129,9 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 	// cipher []byte to hex string
 	cipherHex := hex.EncodeToString(cipher)
 
+	fmt.Println("encrypted sym key")
+	fmt.Println(cipherHex)
+
 	// return cipher to client
 	return cipherHex, nil
 }

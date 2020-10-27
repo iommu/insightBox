@@ -70,7 +70,7 @@ func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
 func (r *queryResolver) Data(ctx context.Context, start time.Time, end time.Time) ([]*model.Day, error) {
 	email := auth.ForContext(ctx)
 	var days []*model.Day
-	if emil == nil {
+	if email == nil {
 		log.Printf("%s User tried to get Days data with invalid JWT", consts.Error)
 		return days, nil
 	}

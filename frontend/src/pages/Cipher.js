@@ -2,6 +2,9 @@ import React, { useReducer } from "react";
 import { useQuery, useClient } from "urql";
 import { Graphtest } from "./components/Graphtest";
 import { GenerateKEM } from "./components/Crypto";
+// import { aesjs } from 'aes-js';
+
+var aesjs = require('aes-js');
 
 export const Cipher = () => {
     const client = useClient();
@@ -14,8 +17,7 @@ export const Cipher = () => {
         localStorage.ss_tmp = output[1];
         // convert c to hex string
         var hexStr = bytesToHexStr(output[0]);
-        console.log(hexStr);
-        // send hex string to server: setC()
+        // send hex string to server and get cipher back
         client
             .query(
                 `
@@ -27,14 +29,20 @@ export const Cipher = () => {
             )
             .toPromise()
             .then((result) => {
-                console.log(result);
+                // convert result to byte array
+                var cipher = aesjs.utils.utf8.toBytes(result);
+                // decrypt cipher to get ss
+                var aesCtr = new aesjs.ModeOfOperation.ctr(localStorage.ss_tmp, new aesjs.Counter(5));
+                var ss = aesCtr.decrypt(cipher);
+                localStorage.ss = ss;
+                console.log("ss", ss);
             });
         // TODO add error handling
         // result.data.getCipher
     }
     return (null);
 };
-
+ 
 function bytesToHexStr(c) {
     return c.reduce(
         (output, elem) => output + ("0" + elem.toString(16)).slice(-2),

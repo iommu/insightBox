@@ -5,6 +5,9 @@ package graph
 
 import (
 	"context"
+	"crypto/aes"
+	"crypto/cipher"
+	"encoding/hex"
 	"fmt"
 	"log"
 	"time"
@@ -15,6 +18,7 @@ import (
 	"github.com/iommu/insightbox/server/internal/consts"
 	"github.com/iommu/insightbox/server/internal/users"
 	"github.com/iommu/insightbox/server/pkg/jwt"
+	kyberk2so "github.com/symbolicsoft/kyber-k2so"
 )
 
 func (r *mutationResolver) SignIn(ctx context.Context, authCode string) (string, error) {
@@ -73,8 +77,41 @@ func (r *queryResolver) Data(ctx context.Context, start time.Time, end time.Time
 }
 
 func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, error) {
-	processed := cTmp
-	return processed, nil
+	email := auth.ForContext(ctx)
+	// convert cTmp from hex string to byte array
+	ctmp, _ := hex.DecodeString(cTmp)
+	var ctmp1 [1088]byte
+	copy(ctmp1[:], ctmp)
+	// get server secret key
+	SK, _ := model.GetSK()
+	// decrypt c_tmp with server SK to get ss_tmp
+	sstmp, _ := kyberk2so.KemDecrypt768(ctmp1, SK)
+
+	// get user's symmetric key (User.SecretKey) from db
+	var user model.User
+	err := r.DB.Where("id = ?", email).First(&user).Error
+	if err != nil {
+		return "", err
+	}
+	ss := user.SecretKey
+
+	ss1, _ := hex.DecodeString(ss)
+
+	// encrypt ss with ss_tmp using AES-256
+	// create new cipher block from key
+	var sstmp1 []byte = sstmp[:]
+	block, _ := aes.NewCipher(sstmp1)
+	// create counter mode
+	aesGCM, _ := cipher.NewGCM(block)
+	// create nonce
+	nonce := make([]byte, aesGCM.NonceSize())
+	cipher := aesGCM.Seal(nonce, nonce, ss1, nil)
+
+	// cipher []byte to hex string
+	cipherHex := hex.EncodeToString(cipher)
+
+	// return cipher to client
+	return cipherHex, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

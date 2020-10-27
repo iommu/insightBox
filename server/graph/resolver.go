@@ -6,6 +6,7 @@ import "gorm.io/gorm"
 //
 // It serves as dependency injection for your app, add any dependencies you require here.
 
+// Resolver does ...
 type Resolver struct {
 	DB *gorm.DB
 }

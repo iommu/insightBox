@@ -5,13 +5,9 @@ package graph
 
 import (
 	"context"
-<<<<<<< HEAD
 	"crypto/aes"
 	"crypto/cipher"
 	"encoding/hex"
-	"fmt"
-=======
->>>>>>> 57a52a7e7011de33b6924a6f174506a0c2c56cc9
 	"log"
 	"time"
 

@@ -8,6 +8,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"encoding/hex"
+	"fmt"
 	"log"
 	"time"
 
@@ -80,7 +81,10 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 	// convert cTmp from hex string to byte array
 	ctmp, _ := hex.DecodeString(cTmp)
 	var ctmp1 [1088]byte
+	fmt.Println("ctmp")
+	fmt.Println(ctmp)
 	copy(ctmp1[:], ctmp)
+	fmt.Println(ctmp1)
 	// get server secret key
 	SK, _ := model.GetSK()
 	// decrypt c_tmp with server SK to get ss_tmp
@@ -93,8 +97,12 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 		return "", err
 	}
 	ss := user.SecretKey
+	fmt.Println("ss")
+	fmt.Println(ss)
 
 	ss1, _ := hex.DecodeString(ss)
+
+	fmt.Println(ss1)
 
 	// encrypt ss with ss_tmp using AES-256
 	// create new cipher block from key

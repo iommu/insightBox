@@ -12,30 +12,39 @@ export const Cipher = () => {
         // generate a (c, ss) pair
         var output = new Array(2);
         output = GenerateKEM();
-        // save in localStorage
-        localStorage.c_tmp = output[0];
-        localStorage.ss_tmp = output[1];
-        // convert c to hex string
-        var hexStr = bytesToHexStr(output[0]);
-        // send hex string to server and get cipher back
+        
+        // convert to hex string
+        var hexStrC = bytesToHexStr(output[0]);
+        var hexStrSS = bytesToHexStr(output[1]);
+
+        // save in localStorage as hex strings
+        localStorage.c_tmp = hexStrC;
+        localStorage.ss_tmp = hexStrSS;
+
+        // send hex string c to server and get cipher back
         client
             .query(
                 `
             query {
               getCipher(cTmp:"` +
-                    hexStr +
+                    hexStrC +
                     `")
             }`
             )
             .toPromise()
             .then((result) => {
-                // convert result to byte array
-                var cipher = aesjs.utils.utf8.toBytes(result);
-                // decrypt cipher to get ss
-                var aesCtr = new aesjs.ModeOfOperation.ctr(localStorage.ss_tmp, new aesjs.Counter(5));
+                // get back encrypted symmetric key from server
+                console.log("res: ", result.data.getCipher);
+                // convert to byte array
+                var cipher = aesjs.utils.hex.toBytes(result.data.getCipher);
+                // decrypt cipher with ss_tmp (output[1]) to get original user symmetric key
+                var aesCtr = new aesjs.ModeOfOperation.ctr(output[1], new aesjs.Counter(5));
+                // 32 byte symmetric key
                 var ss = aesCtr.decrypt(cipher);
-                localStorage.ss = ss;
-                console.log("ss", ss);
+                // convert to hex string and store
+                localStorage.ss = bytesToHexStr(ss);
+                console.log("ss from aes", ss);
+                console.log("ss in local storage", localStorage.ss);
             });
         // TODO add error handling
         // result.data.getCipher

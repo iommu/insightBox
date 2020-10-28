@@ -127,8 +127,8 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 	//
 	// cipher = encrypt(sstmp, ss)
 	// sstmp is key, ss is message
-	var sstmp1 []byte
-	copy(sstmp1, sstmp[:])
+	var sstmp1 []byte = sstmp[:]
+	fmt.Println(len(sstmp1))
 	block, err := aes.NewCipher(sstmp1)
 	if err != nil {
 		panic(err)

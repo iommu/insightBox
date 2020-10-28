@@ -151,6 +151,13 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 	fmt.Println("encrypted sym key")
 	fmt.Println(cipherHex)
 
+	// decrypt test
+	ss2 := make([]byte, len(ss1))
+	stream = cipher.NewCTR(block, iv)
+	stream.XORKeyStream(ss2, ciphertext[aes.BlockSize:])
+
+	fmt.Printf("%s\n", ss2)
+
 	// return cipher to client
 	return cipherHex, nil
 }

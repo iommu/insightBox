@@ -156,7 +156,8 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 	stream = cipher.NewCTR(block, iv)
 	stream.XORKeyStream(ss2, ciphertext[aes.BlockSize:])
 
-	fmt.Printf("%s\n", ss2)
+	fmt.Println("ss2")
+	fmt.Println(ss2)
 
 	// return cipher to client
 	return cipherHex, nil

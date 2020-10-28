@@ -529,6 +529,18 @@ a:active {
   text-decoration: none;
 }
 
+#mutliContainer {
+  overflow-y: scroll;
+  height: 165px;
+  scroll-snap-type: y mandatory;
+  overflow-x: hidden;
+}
+
+
+#multiContainer div {
+  scroll-snap-align: start;
+}
+
 @media screen and (max-width: 1297px) {
   #home-graph5 {
     display: none;
@@ -594,3 +606,4 @@ a:active {
     display: none;
   }
 }
+

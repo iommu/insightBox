@@ -153,9 +153,6 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 	fmt.Println("encrypted sym key")
 	fmt.Println(cipherHex)
 
-	fmt.Println("ss2")
-	fmt.Println(ss2)
-
 	// return cipher to client
 	return cipherHex, nil
 }

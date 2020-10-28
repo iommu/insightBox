@@ -7,8 +7,10 @@ import (
 	"context"
 	"crypto/aes"
 	"crypto/cipher"
+	"crypto/rand"
 	"encoding/hex"
 	"fmt"
+	"io"
 	"log"
 	"time"
 
@@ -122,16 +124,29 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 
 	// encrypt ss with ss_tmp using AES-256
 	// create new cipher block from key
-	var sstmp1 []byte = sstmp[:]
-	block, _ := aes.NewCipher(sstmp1)
-	// create counter mode
-	aesGCM, _ := cipher.NewGCM(block)
-	// create nonce
-	nonce := make([]byte, aesGCM.NonceSize())
-	cipher := aesGCM.Seal(nonce, nonce, ss1, nil)
+	//
+	// cipher = encrypt(sstmp, ss)
+	// sstmp is key, ss is message
+	var sstmp1 []byte
+	copy(sstmp1, sstmp[:])
+	block, err := aes.NewCipher(sstmp1)
+	if err != nil {
+		panic(err)
+	}
+
+	// The IV needs to be unique, but not secure. Therefore it's common to
+	// include it at the beginning of the ciphertext.
+	ciphertext := make([]byte, aes.BlockSize+len(ss))
+	iv := ciphertext[:aes.BlockSize]
+	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
+		panic(err)
+	}
+
+	stream := cipher.NewCTR(block, iv)
+	stream.XORKeyStream(ciphertext[aes.BlockSize:], ss1)
 
 	// cipher []byte to hex string
-	cipherHex := hex.EncodeToString(cipher)
+	cipherHex := hex.EncodeToString(ciphertext[aes.BlockSize:])
 
 	fmt.Println("encrypted sym key")
 	fmt.Println(cipherHex)

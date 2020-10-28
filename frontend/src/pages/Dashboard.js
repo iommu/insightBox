@@ -11,6 +11,7 @@ import { Graph7 } from "./components/Graph7";
 import { Graph8 } from "./components/Graph8";
 import SideBar from "./components/SideBar";
 import { GraphTest2 } from "./components/GraphTest2";
+import { GraphTest3 } from "./components/GraphTest3";
 import moment from "moment";
 import { Cipher } from "./Cipher";
 
@@ -93,6 +94,15 @@ class Dashboard extends React.Component {
                     </div>
                     <div className="stat-container">
                         <GraphTest2
+                            sDate={this.state.startDate.toISOString()}
+                            eDate={this.state.endDate.toISOString()}
+                        />
+                        <div className="info">
+                            <img className="info-img" src={info} alt="info" />
+                        </div>
+                    </div>
+                    <div className="stat-container">
+                    <GraphTest3
                             sDate={this.state.startDate.toISOString()}
                             eDate={this.state.endDate.toISOString()}
                         />

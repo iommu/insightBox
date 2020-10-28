@@ -5,6 +5,7 @@ import { GenerateKEM } from "./components/Crypto";
 // import { aesjs } from 'aes-js';
 
 var aesjs = require('aes-js');
+var CryptoJS = require("crypto-js");
 
 export const Cipher = () => {
     const client = useClient();
@@ -41,14 +42,18 @@ export const Cipher = () => {
                 // convert to byte array
                 var cipher = aesjs.utils.hex.toBytes(result.data.getCipher);
                 console.log("cipher byte array:", cipher);
-                // decrypt cipher with ss_tmp (output[1]) to get original user symmetric key
-                var aesCtr = new aesjs.ModeOfOperation.ctr(output[1]);
-                // 32 byte symmetric key
-                var ss = aesCtr.decrypt(cipher);
+
+
+                var iv = cipher.slice(0,32);
+                var encryptedBytes = cipher.slice(32,64);
+                // decrypt cipher using output[1]
+                var aesCbc = new aesjs.ModeOfOperation.cbc(output[1], iv);
+                var ss = aesCbc.decrypt(encryptedBytes);
+
                 // convert to hex string and store
-                localStorage.ss = bytesToHexStr(ss);
+                //localStorage.ss = bytesToHexStr(ss);
                 console.log("ss from aes", ss);
-                console.log("ss in local storage", localStorage.ss);
+                // console.log("ss in local storage", localStorage.ss);
             });
         // TODO add error handling
         // result.data.getCipher

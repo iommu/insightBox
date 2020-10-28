@@ -144,19 +144,14 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 		panic(err)
 	}
 
-	stream := cipher.NewCTR(block, iv)
-	stream.XORKeyStream(ciphertext[aes.BlockSize:], ss1)
+	mode := cipher.NewCBCEncrypter(block, iv)
+	mode.CryptBlocks(ciphertext[aes.BlockSize:], ss1)
 
 	// cipher []byte to hex string
-	cipherHex := hex.EncodeToString(ciphertext[aes.BlockSize:])
+	cipherHex := hex.EncodeToString(ciphertext[:])
 
 	fmt.Println("encrypted sym key")
 	fmt.Println(cipherHex)
-
-	// decrypt test
-	ss2 := make([]byte, len(ss1))
-	stream = cipher.NewCTR(block, iv)
-	stream.XORKeyStream(ss2, ciphertext[aes.BlockSize:])
 
 	fmt.Println("ss2")
 	fmt.Println(ss2)

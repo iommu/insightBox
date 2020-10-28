@@ -16,6 +16,7 @@ export const Cipher = () => {
         // convert to hex string
         var hexStrC = bytesToHexStr(output[0]);
         var hexStrSS = bytesToHexStr(output[1]);
+        console.log("key", output[1]);
 
         console.log("hesStrC: ", hexStrC);
 
@@ -39,8 +40,9 @@ export const Cipher = () => {
                 console.log("res: ", result.data.getCipher);
                 // convert to byte array
                 var cipher = aesjs.utils.hex.toBytes(result.data.getCipher);
+                console.log("cipher byte array:", cipher);
                 // decrypt cipher with ss_tmp (output[1]) to get original user symmetric key
-                var aesCtr = new aesjs.ModeOfOperation.ctr(output[1], new aesjs.Counter(5));
+                var aesCtr = new aesjs.ModeOfOperation.ctr(output[1]);
                 // 32 byte symmetric key
                 var ss = aesCtr.decrypt(cipher);
                 // convert to hex string and store

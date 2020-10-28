@@ -129,6 +129,8 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 	// sstmp is key, ss is message
 	var sstmp1 []byte = sstmp[:]
 	fmt.Println(len(sstmp1))
+	fmt.Println("sstmp1")
+	fmt.Println(sstmp1)
 	block, err := aes.NewCipher(sstmp1)
 	if err != nil {
 		panic(err)

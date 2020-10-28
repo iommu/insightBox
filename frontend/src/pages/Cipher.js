@@ -17,9 +17,6 @@ export const Cipher = () => {
         // convert to hex string
         var hexStrC = bytesToHexStr(output[0]);
         var hexStrSS = bytesToHexStr(output[1]);
-        console.log("key", output[1]);
-
-        console.log("hesStrC: ", hexStrC);
 
         // save in localStorage as hex strings
         localStorage.c_tmp = hexStrC;
@@ -38,22 +35,19 @@ export const Cipher = () => {
             .toPromise()
             .then((result) => {
                 // get back encrypted symmetric key from server
-                console.log("res: ", result.data.getCipher);
                 // convert to byte array
                 var cipher = aesjs.utils.hex.toBytes(result.data.getCipher);
-                console.log("cipher byte array:", cipher);
 
 
-                var iv = cipher.slice(0,32);
-                var encryptedBytes = cipher.slice(32,64);
+                var iv = cipher.slice(0,16);
+                var encryptedBytes = cipher.slice(16,48);
                 // decrypt cipher using output[1]
                 var aesCbc = new aesjs.ModeOfOperation.cbc(output[1], iv);
                 var ss = aesCbc.decrypt(encryptedBytes);
 
                 // convert to hex string and store
-                //localStorage.ss = bytesToHexStr(ss);
-                console.log("ss from aes", ss);
-                // console.log("ss in local storage", localStorage.ss);
+                localStorage.ss = bytesToHexStr(ss);
+                console.log("ss in local storage", localStorage.ss);
             });
         // TODO add error handling
         // result.data.getCipher

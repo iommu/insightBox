@@ -17,7 +17,7 @@ const words = [
   {
     text: 'bad',
     value: 17,
-  },
+  }
 ]
  
 function SimpleWordcloud() {

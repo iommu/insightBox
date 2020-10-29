@@ -19,7 +19,7 @@ export default (props) => (
     </div>
     <div id="title-main">
       <div id="title1">insightBox</div>
-      <div id="title2">analytics</div>
+      <div id="title2">insights on your inbox</div>
       <div id="connect">
         <GoogleBtn />
       </div>

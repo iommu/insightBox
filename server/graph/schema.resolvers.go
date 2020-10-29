@@ -133,7 +133,8 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 	fmt.Println(sstmp1)
 	block, err := aes.NewCipher(sstmp1)
 	if err != nil {
-		panic(err)
+		log.Printf("%s Error in aes.NewCipher", consts.Error)
+		return "", nil
 	}
 
 	// The IV needs to be unique, but not secure. Therefore it's common to
@@ -141,7 +142,8 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 	ciphertext := make([]byte, aes.BlockSize+len(ss1))
 	iv := ciphertext[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		panic(err)
+		log.Printf("%s Error in in aes rand numbers", consts.Error)
+		return "", nil
 	}
 
 	mode := cipher.NewCBCEncrypter(block, iv)

@@ -237,10 +237,10 @@ func ProcessMailRange(email string, countBack int, db *gorm.DB) {
 		// check if day already exists in db and quit if does
 		var day model.Day
 		err := db.Where("id = ? AND date = ?", email, indexDate).First(&day).Error
-		if errors.Is(err, gorm.ErrRecordNotFound) { // if found existing
+		if err == nil {
 			log.Printf("%s Found existing record, exiting", consts.Notif)
 			break
-		} else { // else if err exists and isn't err because no existing entry
+		} else if !errors.Is(err, gorm.ErrRecordNotFound) { // else if err exists and isn't err because no existing entry
 			log.Fatalf("%s GORM error checking for existing day rows : %v", consts.Error, err)
 		}
 

@@ -5,7 +5,6 @@ import { GenerateKEM } from "./components/Crypto";
 // import { aesjs } from 'aes-js';
 
 var aesjs = require('aes-js');
-var CryptoJS = require("crypto-js");
 
 export const Cipher = () => {
     const client = useClient();

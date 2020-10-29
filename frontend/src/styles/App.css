@@ -187,7 +187,7 @@ a:active {
   font-weight: normal;
   margin-top: 1vh;
   color: grey;
-  padding-right: 40px;
+  margin-left: 200;
 }
 
 @media screen and (min-width: 1788px) {
@@ -286,6 +286,7 @@ a:active {
   flex-wrap: wrap;
   justify-content: center;
   font-size: 14px;
+  margin-top: 25px;
 }
 
 .stat-container {

@@ -20,11 +20,6 @@ class SignIn extends React.Component {
     // do a check for the code and check we didn't accidentally come back to this page with same code
     if (code != null && code !== localStorage.getItem("old_code")) {
 
-      
-
-
-
-
       localStorage.setItem("old_code", code);
       client
         .mutation(

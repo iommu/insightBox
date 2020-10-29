@@ -6,9 +6,17 @@ import { withRouter } from "react-router-dom";
 class AuthButton extends React.Component {
   render() {
     function ShowAuthWindow(that) {
-      console.log("ee");
+      const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
+      const dualScreenTop = window.screenTop !==  undefined   ? window.screenTop  : window.screenY;
+
+      const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : window.screen.width;
+      const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : window.screen.height;
+
+      const systemZoom = width / window.screen.availWidth;
+      const left = (width - 500) / 2 / systemZoom + dualScreenLeft;
+      const top = (height - 650) / 2 / systemZoom + dualScreenTop;
       var windowName = "ConnectWithOAuth"; // should not include space for IE
-      var windowOptions = "location=0,status=0,width=800,height=400";
+      var windowOptions = "location=0,status=0,width=500,height=650,top="+top+",left="+left;
       that._oauthWindow = window.open(
         Consts.OAUTHLINK,
         windowName,

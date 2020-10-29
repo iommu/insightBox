@@ -1,6 +1,5 @@
 import React, { useReducer } from "react";
 import { useQuery, useClient } from "urql";
-import { Graphtest } from "./components/Graphtest";
 import { GenerateKEM } from "./components/Crypto";
 // import { aesjs } from 'aes-js';
 
@@ -37,16 +36,21 @@ export const Cipher = () => {
                 // convert to byte array
                 var cipher = aesjs.utils.hex.toBytes(result.data.getCipher);
 
-
+                console.log(cipher);
                 var iv = cipher.slice(0,16);
-                var encryptedBytes = cipher.slice(16,48);
-                // decrypt cipher using output[1]
-                var aesCbc = new aesjs.ModeOfOperation.cbc(output[1], iv);
-                var ss = aesCbc.decrypt(encryptedBytes);
+                if (iv.length != 16){
+                    
+                }
+                else{
+                    var encryptedBytes = cipher.slice(16,48);
+                    // decrypt cipher using output[1]
+                    var aesCbc = new aesjs.ModeOfOperation.cbc(output[1], iv);
+                    var ss = aesCbc.decrypt(encryptedBytes);
 
-                // convert to hex string and store
-                localStorage.ss = bytesToHexStr(ss);
-                console.log("ss in local storage", localStorage.ss);
+                    // convert to hex string and store
+                    localStorage.ss = bytesToHexStr(ss);
+                    console.log("ss in local storage", localStorage.ss);
+                }
             });
         // TODO add error handling
         // result.data.getCipher

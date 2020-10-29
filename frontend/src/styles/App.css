@@ -325,9 +325,9 @@ a:active {
   border: none;
   cursor: pointer;
   display: inline-block;
-  width: 280px;
+  width: 200px;
   vertical-align: middle;
-  margin-right: 30px;
+  margin-right: 50px;
 }
 
 .dropdown {
@@ -336,7 +336,7 @@ a:active {
   display: inline-block;
   text-align: center;
   margin-bottom: 10px;
-  margin-right: -10px;
+  margin-left: 50px;
   vertical-align: middle;
 }
 
@@ -608,3 +608,33 @@ a:active {
   }
 }
 
+.notifications .icon {
+  position: relative;
+  height: 40px !important;
+  width: 40px !important;
+  box-sizing: border-box;
+}
+
+.notifications .icon .image {
+  height: 40px !important;
+  width: 40px !important;
+  cursor: pointer;
+}
+
+.notifications .icon .count {
+  height: 20px !important;
+  width: 20px !important;
+  max-width: 20px !important;
+  min-height: 20px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -2px;
+  right: 0;
+  font-size: 12px !important;
+  border-radius: 50%;
+  background-color: #ea0000 !important;
+  font-weight: 400;
+  color: white;
+}

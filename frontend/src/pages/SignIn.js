@@ -68,7 +68,9 @@ class SignIn extends React.Component {
     return (
       <div>
         <div class="homepage-content">
-          <p >Just one sec... signing you in</p>
+          <br/>
+          <br/>
+          <div class="loader"></div>
         </div>
       </div>
     );

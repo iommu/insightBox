@@ -72,7 +72,7 @@ class SignIn extends React.Component {
           <br/>
           <br/>
           <br/>
-          <div class="loader"></div>
+          <div class="loader1"></div>
         </div>
       </div>
     );

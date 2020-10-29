@@ -647,7 +647,7 @@ a:active {
   height: 120px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
-  margin-left: 30px;
+  margin-left: 34px;
 }
 
 /* Safari */

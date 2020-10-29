@@ -70,6 +70,8 @@ class SignIn extends React.Component {
         <div class="homepage-content">
           <br/>
           <br/>
+          <br/>
+          <br/>
           <div class="loader"></div>
         </div>
       </div>

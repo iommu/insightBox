@@ -74,7 +74,7 @@ class NavBar extends React.Component {
                   </Link>
                   &nbsp;&nbsp;|&nbsp;&nbsp;
                   <Link to="/about" style={{ color: "#333" }}>
-                    About
+                    Security
                   </Link>
                   &nbsp;&nbsp;|&nbsp;&nbsp;
                   <Link to="/privacypolicy" style={{ color: "#333" }}>

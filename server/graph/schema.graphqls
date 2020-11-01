@@ -74,6 +74,7 @@ type Mutation {
 type Query {
   user: User # can only query for current user info
   data(start: Time!, end: Time!): [Day!]!
+  WordCount(start: Time!, end: Time!): [Word!]!
   getCipher(cTmp: String!): String!
 }
 

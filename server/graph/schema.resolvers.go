@@ -86,6 +86,23 @@ func (r *queryResolver) Data(ctx context.Context, start time.Time, end time.Time
 	return days, nil
 }
 
+func (r *queryResolver) WordCounts(ctx context.Context, start time.Time, end time.Time) ([]*model.Word, error) {
+	var words []*model.Word
+
+	email := auth.ForContext(ctx)
+	if email == nil {
+		log.Printf("%s User tried to get WordCounts data with invalid JWT", consts.Error)
+		return words, nil
+	}
+	
+	r.DB.Select("text, sum(value) as value").
+		Where("id = ? AND date BETWEEN ? AND ?", email, start, end).
+		Group("text").
+		Find(&words)
+
+	return words, nil
+}
+
 func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, error) {
 	email := auth.ForContext(ctx)
 	if email == nil {

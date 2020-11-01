@@ -33,6 +33,14 @@ func (c *contactCounter) incrementReceived() {
 	c.received++
 }
 
+func (c *contactCounter) getSent() int {
+	return c.sent
+}
+
+func (c *contactCounter) getReceived() int {
+	return c.received
+}
+
 func makeContactCounter() contactCounter {
 	return contactCounter{
 		sent:     0,
@@ -155,33 +163,30 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	// fill in data to Day
 	template.Sent = sentEmails
 	template.Received = receivedEmails
-	//fill in all hours
-	/*
-		template.received_0 = hourCounts[0]
-		template.received_1 = hourCounts[1]
-		template.received_2 = hourCounts[2]
-		template.received_3 = hourCounts[3]
-		template.received_4 = hourCounts[4]
-		template.received_5 = hourCounts[5]
-		template.received_6 = hourCounts[6]
-		template.received_7 = hourCounts[7]
-		template.received_8 = hourCounts[8]
-		template.received_9 = hourCounts[9]
-		template.received_10 = hourCounts[10]
-		template.received_11 = hourCounts[11]
-		template.received_12 = hourCounts[12]
-		template.received_13 = hourCounts[13]
-		template.received_14 = hourCounts[14]
-		template.received_15 = hourCounts[15]
-		template.received_16 = hourCounts[16]
-		template.received_17 = hourCounts[17]
-		template.received_18 = hourCounts[18]
-		template.received_19 = hourCounts[19]
-		template.received_20 = hourCounts[20]
-		template.received_21 = hourCounts[21]
-		template.received_22 = hourCounts[22]
-		template.received_23 = hourCounts[23]
-	*/
+	template.Received0 = hourCounts[0]
+	template.Received1 = hourCounts[1]
+	template.Received2 = hourCounts[2]
+	template.Received3 = hourCounts[3]
+	template.Received4 = hourCounts[4]
+	template.Received5 = hourCounts[5]
+	template.Received6 = hourCounts[6]
+	template.Received7 = hourCounts[7]
+	template.Received8 = hourCounts[8]
+	template.Received9 = hourCounts[9]
+	template.Received10 = hourCounts[10]
+	template.Received11 = hourCounts[11]
+	template.Received12 = hourCounts[12]
+	template.Received13 = hourCounts[13]
+	template.Received14 = hourCounts[14]
+	template.Received15 = hourCounts[15]
+	template.Received16 = hourCounts[16]
+	template.Received17 = hourCounts[17]
+	template.Received18 = hourCounts[18]
+	template.Received19 = hourCounts[19]
+	template.Received20 = hourCounts[20]
+	template.Received21 = hourCounts[21]
+	template.Received22 = hourCounts[22]
+	template.Received23 = hourCounts[23]
 
 	// save Day to database
 	db.Create(&template)
@@ -198,8 +203,8 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	templateContact := model.Email{ID: template.ID, Date: template.Date}
 	for contact, counter := range contactMap {
 		templateContact.PoiEmail = contact
-		templateContact.Sent = counter.sent
-		templateContact.Received = counter.received
+		templateContact.Sent = counter.getSent()
+		templateContact.Received = counter.getReceived()
 		db.Create(&templateContact)
 	}
 }

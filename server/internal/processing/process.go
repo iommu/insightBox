@@ -19,33 +19,7 @@ import (
 
 // struct for counting contacts
 type contactCounter struct {
-	sent     int
-	received int
-}
-
-// incrementSent/Received was done this way because it did not like
-// directly incrementing the values inside the main functions
-func (c *contactCounter) incrementSent() {
-	c.sent++
-}
-
-func (c *contactCounter) incrementReceived() {
-	c.received++
-}
-
-func (c *contactCounter) getSent() int {
-	return c.sent
-}
-
-func (c *contactCounter) getReceived() int {
-	return c.received
-}
-
-func makeContactCounter() contactCounter {
-	return contactCounter{
-		sent:     0,
-		received: 0,
-	}
+	sent, received int
 }
 
 //authenticate and connect to gmail
@@ -90,7 +64,7 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	receivedEmails := 0
 	sentEmails := 0
 	wordMap := make(map[string]int)
-	contactMap := make(map[string]contactCounter)
+	contactMap := make(map[string]*contactCounter)
 	hourCounts := make([]int, 24)
 
 	// interate through all mails in array
@@ -134,10 +108,9 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 			// check if the contact has been initialized in the map, initialize if not done
 			_, initialized := contactMap[to]
 			if !initialized {
-				contactMap[to] = makeContactCounter()
+				contactMap[to] = &contactCounter{0, 0}
 			}
-			contact := contactMap[to]
-			contact.incrementSent()
+			contactMap[to].sent++
 		} else {
 			receivedEmails++
 			// count words in subject and add it to the map
@@ -147,10 +120,9 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 			// check if the contact has been initialized in the map, initialize if not done
 			_, initialized := contactMap[from]
 			if !initialized {
-				contactMap[from] = makeContactCounter()
+				contactMap[from] = &contactCounter{0, 0}
 			}
-			contact := contactMap[from]
-			contact.incrementReceived()
+			contactMap[from].received++
 
 			// increment hour when email was received, only count received because time when you
 			// send is not too useful
@@ -203,8 +175,8 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	templateContact := model.Email{ID: template.ID, Date: template.Date}
 	for contact, counter := range contactMap {
 		templateContact.PoiEmail = contact
-		templateContact.Sent = counter.getSent()
-		templateContact.Received = counter.getReceived()
+		templateContact.Sent = counter.sent
+		templateContact.Received = counter.received
 		db.Create(&templateContact)
 	}
 }

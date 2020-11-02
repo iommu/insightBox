@@ -82,6 +82,7 @@ func (r *queryResolver) Data(ctx context.Context, start time.Time, end time.Time
 	}
 	for index, day := range days {
 		r.DB.Where("id = ? AND date = ?", email, day.Date).Find(&days[index].Words)
+		r.DB.Where("id = ? AND date = ?", email, day.Date).Find(&days[index].Emails)
 	}
 	return days, nil
 }

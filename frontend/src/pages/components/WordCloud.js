@@ -18,11 +18,11 @@ const callbacks = {
 const options = {
   determinstic: 1,
   fontFamily: "arial",
-  fontSizes: [10, 45],
+  fontSizes: [10, 40],
   rotations: 1,
   rotationAngles: [0],
 };
-const size = [200, 200];
+const size = [50, 50];
 
 export const WordCloud = (dates) => {
     // define query to use
@@ -84,6 +84,7 @@ export const WordCloud = (dates) => {
         callbacks={callbacks}
         options={options}
         maxWords={30}
+        minSize={size}
         words={words} />
     );
 };

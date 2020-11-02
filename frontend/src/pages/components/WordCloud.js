@@ -2,24 +2,27 @@ import React from 'react';
 import { useQuery } from "urql";
 import ReactWordcloud from 'react-wordcloud';
 
+var end = new Date().toISOString();
+var d = new Date();
+// for some reason you have to set the date back an extra day if you want 14 days returned from graphql
+d.setDate(d.getDate()-8); // ie: minus 15 days from today's date
+var start = new Date(d).toISOString();
+
 export const WordCloud = (dates) => {
     // define query to use
     const [result] = useQuery({
         query:
         `query {
-            data(
-                start:"` + dates.sDate + `",
-                end:"` + dates.eDate + `"
-            )
-            {
-                date,
-                received
+          data(start:"` + start + `", end:"` + end + `") {
+                words{text, value},
             }
         }`
     });
 
     // get data
     const { fetching, error } = result;
+
+    console.log("wordcloud data:", result);
 
     // return errors if something wrong happened
     if (fetching) return <p> Loading user data </p>;
@@ -36,7 +39,7 @@ export const WordCloud = (dates) => {
     var word, value, map, res;
     for (var i = 0; i < rlen; i++) {
         // get every text/value received
-        var wordsLen = result.data.data[i].length;
+        var wordsLen = result.data.data[i].words.length;
         for (var j = 0; j < wordsLen; j++) {
             //setting data to make code cleaner
             word = result.data.data[i].words[j].text;
@@ -52,10 +55,12 @@ export const WordCloud = (dates) => {
         }
     }
 
+    console.log();
+
     // turn the map into an array
     var words = [];
-    map.forEach(function(val, key) {
-        res.push({ text: key, value: val });
+    wordMap.forEach(function(val, key) {
+        words.push({ text: key, value: val });
     });
  
     return (

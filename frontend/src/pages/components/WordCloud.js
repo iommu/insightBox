@@ -33,6 +33,7 @@ export const WordCloud = (dates) => {
     var rlen = result.data.data.length;
 
     // for every day
+    var word, value, map, res;
     for (var i = 0; i < rlen; i++) {
         // get every text/value received
         var wordsLen = result.data.data[i].length;

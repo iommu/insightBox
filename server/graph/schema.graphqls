@@ -49,6 +49,7 @@ type Day {
   received_21: Int!
   received_22: Int!
   received_23: Int!
+  emails: [Email!]!
 }
 
 type Word {

@@ -46,6 +46,7 @@ type DirectiveRoot struct {
 type ComplexityRoot struct {
 	Day struct {
 		Date       func(childComplexity int) int
+		Emails     func(childComplexity int) int
 		ID         func(childComplexity int) int
 		Received   func(childComplexity int) int
 		Received0  func(childComplexity int) int
@@ -93,6 +94,7 @@ type ComplexityRoot struct {
 		Data      func(childComplexity int, start time.Time, end time.Time) int
 		GetCipher func(childComplexity int, cTmp string) int
 		User      func(childComplexity int) int
+		WordCount func(childComplexity int, start time.Time, end time.Time) int
 	}
 
 	Token struct {
@@ -128,6 +130,7 @@ type MutationResolver interface {
 type QueryResolver interface {
 	User(ctx context.Context) (*model.User, error)
 	Data(ctx context.Context, start time.Time, end time.Time) ([]*model.Day, error)
+	WordCount(ctx context.Context, start time.Time, end time.Time) ([]*model.Word, error)
 	GetCipher(ctx context.Context, cTmp string) (string, error)
 }
 
@@ -152,6 +155,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Day.Date(childComplexity), true
+
+	case "Day.emails":
+		if e.complexity.Day.Emails == nil {
+			break
+		}
+
+		return e.complexity.Day.Emails(childComplexity), true
 
 	case "Day.id":
 		if e.complexity.Day.ID == nil {
@@ -439,6 +449,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.User(childComplexity), true
 
+	case "Query.WordCount":
+		if e.complexity.Query.WordCount == nil {
+			break
+		}
+
+		args, err := ec.field_Query_WordCount_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.WordCount(childComplexity, args["start"].(time.Time), args["end"].(time.Time)), true
+
 	case "Token.access_token":
 		if e.complexity.Token.AccessToken == nil {
 			break
@@ -666,6 +688,7 @@ type Day {
   received_21: Int!
   received_22: Int!
   received_23: Int!
+  emails: [Email!]!
 }
 
 type Word {
@@ -691,6 +714,7 @@ type Mutation {
 type Query {
   user: User # can only query for current user info
   data(start: Time!, end: Time!): [Day!]!
+  WordCount(start: Time!, end: Time!): [Word!]!
   getCipher(cTmp: String!): String!
 }
 
@@ -729,6 +753,28 @@ func (ec *executionContext) field_Mutation_signIn_args(ctx context.Context, rawA
 		}
 	}
 	args["authCode"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_WordCount_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 time.Time
+	if tmp, ok := rawArgs["start"]; ok {
+		arg0, err = ec.unmarshalNTime2timeᚐTime(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["start"] = arg0
+	var arg1 time.Time
+	if tmp, ok := rawArgs["end"]; ok {
+		arg1, err = ec.unmarshalNTime2timeᚐTime(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["end"] = arg1
 	return args, nil
 }
 
@@ -1804,6 +1850,40 @@ func (ec *executionContext) _Day_received_23(ctx context.Context, field graphql.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Day_emails(ctx context.Context, field graphql.CollectedField, obj *model.Day) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Day",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Emails, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Email)
+	fc.Result = res
+	return ec.marshalNEmail2ᚕᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐEmailᚄ(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Email_id(ctx context.Context, field graphql.CollectedField, obj *model.Email) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -2126,6 +2206,47 @@ func (ec *executionContext) _Query_data(ctx context.Context, field graphql.Colle
 	res := resTmp.([]*model.Day)
 	fc.Result = res
 	return ec.marshalNDay2ᚕᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐDayᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_WordCount(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_WordCount_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().WordCount(rctx, args["start"].(time.Time), args["end"].(time.Time))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Word)
+	fc.Result = res
+	return ec.marshalNWord2ᚕᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐWordᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_getCipher(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -4001,6 +4122,11 @@ func (ec *executionContext) _Day(ctx context.Context, sel ast.SelectionSet, obj 
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "emails":
+			out.Values[i] = ec._Day_emails(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4130,6 +4256,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_data(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "WordCount":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_WordCount(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}
@@ -4618,6 +4758,57 @@ func (ec *executionContext) marshalNDay2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋs
 		return graphql.Null
 	}
 	return ec._Day(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNEmail2githubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐEmail(ctx context.Context, sel ast.SelectionSet, v model.Email) graphql.Marshaler {
+	return ec._Email(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNEmail2ᚕᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐEmailᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Email) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNEmail2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐEmail(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalNEmail2ᚖgithubᚗcomᚋiommuᚋinsightboxᚋserverᚋgraphᚋmodelᚐEmail(ctx context.Context, sel ast.SelectionSet, v *model.Email) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Email(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface{}) (string, error) {

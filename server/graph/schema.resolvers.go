@@ -86,21 +86,8 @@ func (r *queryResolver) Data(ctx context.Context, start time.Time, end time.Time
 	return days, nil
 }
 
-func (r *queryResolver) WordCounts(ctx context.Context, start time.Time, end time.Time) ([]*model.Word, error) {
-	var words []*model.Word
-
-	email := auth.ForContext(ctx)
-	if email == nil {
-		log.Printf("%s User tried to get WordCounts data with invalid JWT", consts.Error)
-		return words, nil
-	}
-	
-	r.DB.Select("text, sum(value) as value").
-		Where("id = ? AND date BETWEEN ? AND ?", email, start, end).
-		Group("text").
-		Find(&words)
-
-	return words, nil
+func (r *queryResolver) WordCount(ctx context.Context, start time.Time, end time.Time) ([]*model.Word, error) {
+	panic(fmt.Errorf("not implemented"))
 }
 
 func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, error) {
@@ -184,3 +171,26 @@ func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//    it when you're done.
+//  - You have helper methods in this file. Move them out to keep these resolver files clean.
+func (r *queryResolver) WordCounts(ctx context.Context, start time.Time, end time.Time) ([]*model.Word, error) {
+	var words []*model.Word
+
+	email := auth.ForContext(ctx)
+	if email == nil {
+		log.Printf("%s User tried to get WordCounts data with invalid JWT", consts.Error)
+		return words, nil
+	}
+
+	r.DB.Select("text, sum(value) as value").
+		Where("id = ? AND date BETWEEN ? AND ?", email, start, end).
+		Group("text").
+		Find(&words)
+
+	return words, nil
+}

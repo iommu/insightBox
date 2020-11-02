@@ -8,6 +8,22 @@ var d = new Date();
 d.setDate(d.getDate()-8); // ie: minus 15 days from today's date
 var start = new Date(d).toISOString();
 
+
+const callbacks = {
+  getWordColor: word => word.value > 50 ? "black" : "black",
+  onWordClick: console.log,
+  onWordMouseOver: console.log,
+  getWordTooltip: word => `${word.text} (${word.value})`,
+}
+const options = {
+  determinstic: 1,
+  fontFamily: "arial",
+  fontSizes: [10, 45],
+  rotations: 1,
+  rotationAngles: [0],
+};
+const size = [200, 200];
+
 export const WordCloud = (dates) => {
     // define query to use
     const [result] = useQuery({
@@ -64,6 +80,10 @@ export const WordCloud = (dates) => {
     });
  
     return (
-        <ReactWordcloud words={words} />
+        <ReactWordcloud 
+        callbacks={callbacks}
+        options={options}
+        maxWords={30}
+        words={words} />
     );
 };

@@ -18,6 +18,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-wordcloud": "^1.2.7",
     "rebass": "^4.0.7",
     "recharts": "^1.8.5",
     "secure-random": "^1.1.2",

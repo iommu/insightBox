@@ -9,6 +9,7 @@ import { Graph5 } from "./components/Graph5";
 import { Graph6 } from "./components/Graph6";
 import { Graph7 } from "./components/Graph7";
 import { Graph8 } from "./components/Graph8";
+import { WordCloud } from "./components/WordCloud";
 import SideBar from "./components/SideBar";
 import { GraphTest2 } from "./components/GraphTest2";
 import { GraphTest3 } from "./components/GraphTest3";
@@ -46,69 +47,42 @@ class Dashboard extends React.Component {
                 >
                     <div className="stat-container">
                         <Graph1 />
-                        <div className="info">
-                            <img className="info-img" src={info} alt="info" />
-                        </div>
                     </div>
                     <div className="stat-container">
                         <Graph2 />
-                        <div className="info">
-                            <img className="info-img" src={info} alt="info" />
-                        </div>
                     </div>
                     <div className="stat-container">
                         <Graph3 />
-                        <div className="info">
-                            <img className="info-img" src={info} alt="info" />
-                        </div>
                     </div>
                     <div className="stat-container">
                         <Graph4 />
-                        <div className="info">
-                            <img className="info-img" src={info} alt="info" />
-                        </div>
                     </div>
                     <div className="stat-container">
                         <Graph5 />
-                        <div className="info">
-                            <img className="info-img" src={info} alt="info" />
-                        </div>
+                    </div>
+                    <div className="stat-container">
+                        <WordCloud />
                     </div>
                     <div className="stat-container">
                         <Graph6 />
-                        <div className="info">
-                            <img className="info-img" src={info} alt="info" />
-                        </div>
                     </div>
                     <div className="stat-container">
                         <Graph7 />
-                        <div className="info">
-                            <img className="info-img" src={info} alt="info" />
-                        </div>
                     </div>
                     <div className="stat-container">
                         <Graph8 />
-                        <div className="info">
-                            <img className="info-img" src={info} alt="info" />
-                        </div>
                     </div>
                     <div className="stat-container">
                         <GraphTest2
                             sDate={this.state.startDate.toISOString()}
                             eDate={this.state.endDate.toISOString()}
                         />
-                        <div className="info">
-                            <img className="info-img" src={info} alt="info" />
-                        </div>
                     </div>
                     <div className="stat-container">
                     <GraphTest3
                             sDate={this.state.startDate.toISOString()}
                             eDate={this.state.endDate.toISOString()}
                         />
-                        <div className="info">
-                            <img className="info-img" src={info} alt="info" />
-                        </div>
                     </div>
                 </div>
             </div>

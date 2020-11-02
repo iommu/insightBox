@@ -51,8 +51,11 @@ export const WordCloud = (dates) => {
     var wordMap = new Map();
     var rlen = result.data.data.length;
 
+    var freqWord;
+    var freq = 0;
+
     // for every day
-    var word, value, map, res;
+    var word, value;
     for (var i = 0; i < rlen; i++) {
         // get every text/value received
         var wordsLen = result.data.data[i].words.length;
@@ -71,12 +74,19 @@ export const WordCloud = (dates) => {
         }
     }
 
-    console.log();
-
     // turn the map into an array
     var words = [];
     wordMap.forEach(function(val, key) {
+
         words.push({ text: key, value: val });
+
+        if (val >= freq){
+            freq = val;
+            freqWord = key;
+            console.log(key, val);
+            localStorage.freqWord = freqWord;
+        }
+
     });
  
     return (

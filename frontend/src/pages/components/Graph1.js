@@ -6,6 +6,7 @@ import { PureComponent } from 'react';
 // eslint-disable-next-line
 import { PieChart, Pie, Sector, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 
+
 var end = new Date().toISOString();
 var d = new Date();
 // for some reason you have to set the date back an extra day if you want 7 days returned from graphql
@@ -52,27 +53,25 @@ export const Graph1 = () => {
     );
   };
 
-
-
-
-
-
-
-
-
-
-  
   // do computation here
   var graphdata = [];
   var rlen = result.data.data.length;
+  var busiestDay = "";
   var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   // order doesnt matter here
+  var most = 0;
   for (var i = 0; i < rlen; i++) {
     var date = new Date(result.data.data[i].date);
     var day = date.getDay(date);
     var received = result.data.data[i].received;
+    if (received > most){
+      most = received;
+      busiestDay = days[day];
+    }
     var value = {name: days[day], value: received};
     graphdata.push(value);
+
+    localStorage.busiestDay = busiestDay;
   }
   return (
     <div>

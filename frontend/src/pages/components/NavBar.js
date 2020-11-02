@@ -4,34 +4,14 @@ import { Switch, Route, Link, withRouter } from "react-router-dom";
 import AuthButton from "./Oauth";
 import ThemeButton from "./ThemeButton";
 import logo from "../../images/logo.png";
-import bulb from "../../images/bulb.png";
 import GoogleBtn2 from "./GoogleBtn2";
-import Notifications from "react-notifications-menu";
-
 import ProfileDropDown from "./ProfileDropDown";
+import {Insights} from "./Insights";
 
 
 
 class NavBar extends React.Component {
   render() {
-
-    const data = [
-      {
-        image :'https://synergi-dev.s3.ap-southeast-1.amazonaws.com/profile-pictures/6b9.png' ,
-        message : 'Lorem ipsum dolor sit amet.',
-        detailPage : '/events', 
-        receivedTime:'12h ago'
-      },
-      {
-        image :'https://synergi-dev.s3.ap-southeast-1.amazonaws.com/profile-pictures/6b9.png' ,
-        message : 'Lorem ipsum dolor sit amet.',
-        detailPage : '/events', 
-        receivedTime:'12h ago'
-      }
-    ];
-
-
-
     return (
       <div id="topbar-container" style={{ height: "85px" }}>
         <div id="topbar-fixed">
@@ -59,11 +39,7 @@ class NavBar extends React.Component {
               <Route path="/signin"></Route>
               <Route path={["/dashboard", "/settings"]}>
                 <Box mx="auto" />
-                <Notifications
-                  data={data}
-                  icon={bulb}
-                  />
-
+                <Insights />
                 <ProfileDropDown />
               </Route>
               <Route path="/">

@@ -27,3 +27,4 @@ Temporary Items
 .apdisk
 server/test.db
 server/server_keys.txt
+server/test.log

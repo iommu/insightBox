@@ -3,6 +3,7 @@ package processing
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"strings"
@@ -168,6 +169,7 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 		return
 	}
 	key := user.SecretKey
+	fmt.Println(key)
 
 	// save Day to database
 	db.Create(&template)
@@ -175,7 +177,7 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	templateWord := model.Word{ID: template.ID, Date: template.Date}
 	// save all word counts from map to db
 	for word, count := range wordMap {
-		templateWord.Text = model.EncryptData(word, key)
+		templateWord.Text = word
 		templateWord.Value = count
 		db.Create(&templateWord)
 	}
@@ -183,7 +185,7 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	//save all contact counts from map to db
 	templateContact := model.Email{ID: template.ID, Date: template.Date}
 	for contact, counter := range contactMap {
-		templateContact.PoiEmail = model.EncryptData(contact, key)
+		templateContact.PoiEmail = contact
 		templateContact.Sent = counter.sent
 		templateContact.Received = counter.received
 		db.Create(&templateContact)

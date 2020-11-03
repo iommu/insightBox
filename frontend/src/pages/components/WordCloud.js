@@ -94,7 +94,7 @@ export const WordCloud = (dates) => {
         callbacks={callbacks}
         options={options}
         maxWords={30}
-        minSize={size}
+        size={size}
         words={words} />
     );
 };

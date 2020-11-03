@@ -8,6 +8,8 @@ import {
   Route
 } from 'react-router-dom';
 import { createClient, Provider } from 'urql';
+
+// import theme
 import { ThemeProvider } from 'theme-ui';
 import theme from './styles/theme';
 

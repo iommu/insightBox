@@ -1,6 +1,5 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import info from "../images/info.png";
 import { Graph1 } from "./components/Graph1";
 import { Graph2 } from "./components/Graph2";
 import { Graph3 } from "./components/Graph3";
@@ -80,13 +79,13 @@ class Dashboard extends React.Component {
                         />
                     </div>
                     <div className="stat-container-large">
-                    <GraphTest3
+                        <GraphTest3
                             sDate={this.state.startDate.toISOString()}
                             eDate={this.state.endDate.toISOString()}
                         />
                     </div>
                     <div className="stat-container">
-                        <Graph9 
+                        <Graph9
                             sDate={this.state.startDate.toISOString()}
                             eDate={this.state.endDate.toISOString()}
                         />

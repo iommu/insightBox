@@ -17,7 +17,6 @@
 span.label {
   font-family: serif;
   font-weight: normal;
-  color: #000;
   font-family: "Roboto", sans-serif;
 }
 
@@ -35,6 +34,49 @@ span.buttonText {
   padding-left: 12px;
   padding-right: 42px;
   font-size: 14px;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+}
+
+#customBtnAlt {
+  display: inline-block;
+  background: #4285f4;
+  color: #ffffff;
+  width: 184px;
+  border-radius: 3px;
+  border: 1px solid #4285f4;
+  white-space: nowrap;
+  padding: 0px;
+  margin-left: 5px;
+  margin-right: 2px;
+}
+
+#customBtnAlt:hover {
+  cursor: pointer;
+}
+
+span.labelAlt {
+  font-family: serif;
+  font-weight: normal;
+  color: #000;
+  font-family: "Roboto", sans-serif;
+}
+
+span.iconAlt {
+  background: url("../images/g-normal.png") transparent 0px 50% no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  width: 40px;
+  height: 32px;
+  border-radius: 2px;
+}
+
+span.buttonTextAlt {
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 2px;
+  padding-right: 20px;
+  font-size: 12px;
   font-weight: bold;
   /* Use the Roboto font that is loaded in the <head> */
   font-family: "Roboto", sans-serif;

@@ -3,7 +3,7 @@ import { jsx } from "theme-ui";
 
 import logo from "../images/logo.png";
 import "../styles/App.css";
-import GoogleBtn from "./components/GoogleBtn";
+import { GoogleBtn } from "./components/GoogleBtn";
 
 import { Graph1Home } from "./components/Graph1Home";
 import { Graph2Home } from "./components/Graph2Home";
@@ -25,7 +25,7 @@ export default (props) => (
       </div>
     </div>
 
-    <div className="homepage-slide">
+    <div className="homepage-slide" style={{color:"#000"}}>
       <div id="home-graph1">
         <Graph2Home />
       </div>

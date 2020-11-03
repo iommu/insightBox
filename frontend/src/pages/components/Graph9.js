@@ -41,8 +41,19 @@ export const Graph9 = (dates) => {
     console.log(result);
     // do computation here
     var rlen = result.data.data.length;
-    console.log(rlen);
-/*
+    console.log(result.data.data[0]);
+    console.log(result.data.data[0].emails.length);
+
+    for(var i = 0; i < result.data.data.length; i++)
+    {
+        for(var j = 0; j < result.data.data[i].emails.length; j++)
+        {
+
+            
+        }
+    }
+
+    /*
     for (var i = 0; i < rlen; i++) {
         var received = result.data.data[i].received;
         total += received;

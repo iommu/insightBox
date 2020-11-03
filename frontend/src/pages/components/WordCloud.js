@@ -22,7 +22,7 @@ const options = {
   rotations: 1,
   rotationAngles: [0],
 };
-const size = [50, 50];
+const size = [150, 150];
 
 export const WordCloud = (dates) => {
     // define query to use

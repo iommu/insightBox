@@ -177,7 +177,7 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	templateWord := model.Word{ID: template.ID, Date: template.Date}
 	// save all word counts from map to db
 	for word, count := range wordMap {
-		templateWord.Text = word
+		templateWord.Text = model.EncryptData(word, key)
 		templateWord.Value = count
 		db.Create(&templateWord)
 	}

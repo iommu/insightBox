@@ -88,12 +88,12 @@ export function DecryptData(input){
         var output = aesCbc.decrypt(encryptedBytes);
     }
 
-    // convert bytes to plaintext
-    var text = new TextDecoder().decode(output);
-    console.log(output);
-
     // remove padding from decrypted string (PKCS7 padding scheme)
-    var textUnpadded = pkcs7.unpad(text);
+    var text = pkcs7.unpad(output);
+
+    // convert bytes to plaintext
+    var textUnpadded = aesjs.utils.utf8.fromBytes(text)
+    console.log(output);
 
     return textUnpadded;
 }

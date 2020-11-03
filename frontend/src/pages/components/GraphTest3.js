@@ -12,12 +12,13 @@ function splitToChunks(a, size) {
 }
 
 export const GraphTest3 = (dates) => {
+    var start = moment(dates.sDate).subtract(1,"day").toISOString();  //subtract one day to match the sidebar
     const [result] = useQuery({
         query:
             `
     query {
       data(start:"` +
-            dates.sDate +
+            start +
             `", end:"` +
             dates.eDate +
             `") {
@@ -39,7 +40,7 @@ export const GraphTest3 = (dates) => {
     var graphdata = [];
     var rlen = result.data.data.length;
     var days = ["S", "M", "T", "W", "T", "F", "S"];
-
+    console.log(result);
     // order doesnt matter here
     for (var i = 0; i < rlen; i++) {
         var date = new Date(result.data.data[i].date);
@@ -48,9 +49,9 @@ export const GraphTest3 = (dates) => {
         var value = { name: days[day], Total: received, pv: 2400, amt: 2400, date:date };
         graphdata.push(value);
     }
-
+    console.log(graphdata[0].name);
     const splitArray = splitToChunks(graphdata, 7);
-
+    console.log(splitArray);
     return (
         <div>
             <div className="graph-title">
@@ -58,9 +59,11 @@ export const GraphTest3 = (dates) => {
             </div>
             <div id="mutliContainer">
             {splitArray.map((arr) => (
+                <div> 
+                    Week
                 <BarChart
-                    width={400}
-                    height={165}
+                    width={800}
+                    height={330}
                     data={arr}
                     margin={{ top: 5, right: 20, left: -20, bottom: 5 }}
                 >
@@ -70,6 +73,7 @@ export const GraphTest3 = (dates) => {
                     <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                     <Bar dataKey="Total" fill="#40a1f1" barSize={30} />
                 </BarChart>
+                </div>
             ))}
             </div>
         </div>

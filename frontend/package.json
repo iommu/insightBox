@@ -10,6 +10,7 @@
     "graphql": "^15.3.0",
     "moment": "^2.29.0",
     "node-sass": "^4.14.1",
+    "pkcs7-padding": "^0.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-feather": "^2.0.8",

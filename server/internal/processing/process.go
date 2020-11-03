@@ -3,6 +3,7 @@ package processing
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"strings"
@@ -160,13 +161,23 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	template.Received22 = hourCounts[22]
 	template.Received23 = hourCounts[23]
 
+	//get user secret key from database
+	var user model.User
+	err := db.Where("id = ?", template.ID).First(&user).Error
+	//error handling
+	if err != nil {
+		return
+	}
+	key := user.SecretKey
+	fmt.Println(key)
+
 	// save Day to database
 	db.Create(&template)
 
 	templateWord := model.Word{ID: template.ID, Date: template.Date}
 	// save all word counts from map to db
 	for word, count := range wordMap {
-		templateWord.Text = word
+		templateWord.Text = model.EncryptData(word, key)
 		templateWord.Value = count
 		db.Create(&templateWord)
 	}

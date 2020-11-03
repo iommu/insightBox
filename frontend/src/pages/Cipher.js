@@ -4,6 +4,7 @@ import { GenerateKEM } from "./components/Crypto";
 // import { aesjs } from 'aes-js';
 
 var aesjs = require('aes-js');
+var pkcs7 = require('pkcs7-padding');
 
 export const Cipher = () => {
     const client = useClient();
@@ -36,7 +37,6 @@ export const Cipher = () => {
                 // convert to byte array
                 var cipher = aesjs.utils.hex.toBytes(result.data.getCipher);
 
-                console.log(cipher);
                 var iv = cipher.slice(0,16);
                 if (iv.length != 16){
                     
@@ -49,11 +49,8 @@ export const Cipher = () => {
 
                     // convert to hex string and store
                     localStorage.ss = bytesToHexStr(ss);
-                    console.log("ss in local storage", localStorage.ss);
                 }
             });
-        // TODO add error handling
-        // result.data.getCipher
     }
     return (null);
 };
@@ -63,4 +60,40 @@ function bytesToHexStr(c) {
         (output, elem) => output + ("0" + elem.toString(16)).slice(-2),
         ""
     );
+}
+
+// decrypts data on frontend
+export function DecryptData(input){
+    // input is a hex string
+    // convert to byte array
+    var cipher = aesjs.utils.hex.toBytes(input);
+
+    // get the iv
+    var iv = cipher.slice(0,16);
+
+    // decrypt the cipher
+    if (iv.length != 16){
+        output = "IV error";
+    }
+    else{
+        var encryptedBytes = cipher.slice(16,cipher.length);
+
+        // decrypt cipher using user's stored symmetric key
+        var ssHex = localStorage.ss;
+
+        // convert ss from hex string to byte array
+        var ss = aesjs.utils.hex.toBytes(ssHex);
+
+        var aesCbc = new aesjs.ModeOfOperation.cbc(ss, iv);
+        var output = aesCbc.decrypt(encryptedBytes);
+    }
+
+    // remove padding from decrypted string (PKCS7 padding scheme)
+    var text = pkcs7.unpad(output);
+
+    // convert bytes to plaintext
+    var textUnpadded = aesjs.utils.utf8.fromBytes(text)
+    console.log(output);
+
+    return textUnpadded;
 }

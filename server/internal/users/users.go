@@ -46,11 +46,11 @@ func DeleteAccount(email string, db *gorm.DB) error {
 	if err != nil {
 		return err
 	}
-	err = db.Where("id = ?", email).Delete(&model.Day{}).Error
+	err = db.Where("id = ?", email).Delete(&model.Email{}).Error
 	if err != nil {
 		return err
 	}
-	err = db.Where("id = ?", email).Delete(&model.Email{}).Error
+	err = db.Where("id = ?", email).Delete(&model.Day{}).Error
 	if err != nil {
 		return err
 	}

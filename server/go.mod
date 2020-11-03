@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/99designs/gqlgen v0.11.3
+	github.com/apexskier/cryptoPadding v0.0.0-20140318015739-5b1a6ab1223a
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-chi/chi v3.3.2+incompatible
 	github.com/go-sql-driver/mysql v1.5.0

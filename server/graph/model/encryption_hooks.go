@@ -1,19 +1,26 @@
 package model
 
 import (
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/rand"
+	"encoding/hex"
 	"fmt"
+	"io"
 	"io/ioutil"
+	"log"
 	"strconv"
 	"strings"
 
-	kyberk2so "github.com/symbolicsoft/kyber-k2so"
+	"github.com/apexskier/cryptoPadding"
 
-	"gorm.io/gorm"
+	"github.com/iommu/insightbox/server/internal/consts"
+	kyberk2so "github.com/symbolicsoft/kyber-k2so"
 )
 
 func check(e error) {
 	if e != nil {
-		panic(e)
+		log.Printf("%s Encryption error", e)
 	}
 }
 
@@ -63,32 +70,47 @@ func DecryptSymmetricKey(c [1088]byte) ([32]byte, error) {
 	return ss, nil
 }
 
-func encrypt(decrypted string) (encrypted string) {
-	// do fancy stuff
-	encrypted = decrypted
-	return encrypted
-}
+// EncryptData encrypts data before it goes into the database
+func EncryptData(input string, key string) (output string) {
 
-func decrypt(encrypted string) (decrypted string) {
-	// undo fancy stuff
-	decrypted = encrypted
-	return decrypted
+	// encrypt data with the user's symmetric key
+	// convert hex string to byte array
+	ss, _ := hex.DecodeString(key)
+
+	// cipher = encrypt(ss, input)
+	// ss is key, input is message
+	block, err := aes.NewCipher(ss)
+	if err != nil {
+		log.Printf("%s Error in aes.NewCipher", consts.Error)
+		return ""
+	}
+	// convert input string to byte array
+	inputBytes := []byte(input)
+
+	// add padding to byte array
+	var padding cryptoPadding.PKCS7
+	paddedData, _ := padding.Pad(inputBytes, 16)
+
+	// The IV needs to be unique, but not secure. Therefore it's common to
+	// include it at the beginning of the ciphertext.
+	ciphertext := make([]byte, aes.BlockSize+len(paddedData))
+	iv := ciphertext[:aes.BlockSize]
+	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
+		log.Printf("%s Error in aes rand numbers", consts.Error)
+		return ""
+	}
+
+	mode := cipher.NewCBCEncrypter(block, iv)
+	mode.CryptBlocks(ciphertext[aes.BlockSize:], paddedData)
+
+	// cipher []byte to hex string
+	cipherHex := hex.EncodeToString(ciphertext[:])
+
+	return cipherHex
 }
 
 /* Encrypt/Decrypt functions */
 
 /* Token hooks */
-
-//BeforeCreate method for model.Token
-func (token *Token) BeforeCreate(tx *gorm.DB) (err error) {
-	token.AccessToken = encrypt(token.AccessToken)
-	return nil
-}
-
-//AfterFind method for model.Token
-func (token *Token) AfterFind(tx *gorm.DB) (err error) {
-	token.AccessToken = decrypt(token.AccessToken)
-	return nil
-}
 
 /* Token hooks */

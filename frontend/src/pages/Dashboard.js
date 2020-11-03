@@ -9,6 +9,7 @@ import { Graph5 } from "./components/Graph5";
 import { Graph6 } from "./components/Graph6";
 import { Graph7 } from "./components/Graph7";
 import { Graph8 } from "./components/Graph8";
+import { Graph9 } from "./components/Graph9";
 import { WordCloud } from "./components/WordCloud";
 import SideBar from "./components/SideBar";
 import { GraphTest2 } from "./components/GraphTest2";
@@ -60,7 +61,7 @@ class Dashboard extends React.Component {
                     <div className="stat-container">
                         <Graph5 />
                     </div>
-                    <div className="stat-container">
+                    <div className="stat-container-test">
                         <WordCloud />
                     </div>
                     <div className="stat-container">
@@ -78,8 +79,14 @@ class Dashboard extends React.Component {
                             eDate={this.state.endDate.toISOString()}
                         />
                     </div>
-                    <div className="stat-container">
+                    <div className="stat-container-large">
                     <GraphTest3
+                            sDate={this.state.startDate.toISOString()}
+                            eDate={this.state.endDate.toISOString()}
+                        />
+                    </div>
+                    <div className="stat-container">
+                        <Graph9 
                             sDate={this.state.startDate.toISOString()}
                             eDate={this.state.endDate.toISOString()}
                         />

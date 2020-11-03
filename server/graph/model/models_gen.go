@@ -36,7 +36,7 @@ type Day struct {
 	Received21 int       `json:"received_21"`
 	Received22 int       `json:"received_22"`
 	Received23 int       `json:"received_23"`
-	Emails     []*Email  `json:"emails"`
+	Emails     []*Email  `json:"emails"  gorm:"foreignKey:ID"`
 }
 
 type Email struct {

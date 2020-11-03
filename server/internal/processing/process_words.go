@@ -12,7 +12,7 @@ import (
 )
 
 //ignoreWords is a map of words to ignore in word counting
-var ignoreWords map[string]bool
+var ignoreWords map[string]struct{}
 
 //checks if a word is inside IgnoreWords
 func filterWord(word string) bool {
@@ -78,7 +78,7 @@ func InitIgnoreWords() {
 		log.Printf("Could not open stopwords file: %v", err)
 	}
 	// initialize the map
-	ignoreWords = make(map[string]bool)
+	ignoreWords = make(map[string]struct{})
 
 	// parsing the file
 	r := csv.NewReader(file)
@@ -97,7 +97,7 @@ func InitIgnoreWords() {
 
 		// add every word to the map
 		for _, word := range record {
-			ignoreWords[word] = true
+			ignoreWords[word] = struct{}{}
 		}
 
 	}

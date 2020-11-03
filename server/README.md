@@ -6,11 +6,11 @@ gqlgen : provided the basis for the entire server, automatically builds golang s
 GORM   : manages database and provides go functions to do database operations
 
 ## Folder structure
-├── graph 
+├── graph  
     contains all code the GraphQL schema including auto generated schematic for resolver functions and modules for acting on the schema  
-├── internal 
+├── internal  
     contains all code modules for server actions outside of vanilla GraphQL e.g. authentication, processing, signup  
-└── pkg
+└── pkg  
     contains all externally created packages, namely the Json Web Token package  
 
 ## Files of interest

@@ -4,6 +4,7 @@ import { GenerateKEM } from "./components/Crypto";
 // import { aesjs } from 'aes-js';
 
 var aesjs = require('aes-js');
+var pkcs7 = require('pkcs7-padding');
 
 export const Cipher = () => {
     const client = useClient();
@@ -62,7 +63,7 @@ function bytesToHexStr(c) {
 }
 
 // decrypts data on frontend
-export function decryptData(input){
+export function DecryptData(input){
     // input is a hex string
     // convert to byte array
     var cipher = aesjs.utils.hex.toBytes(input);
@@ -86,5 +87,13 @@ export function decryptData(input){
         var aesCbc = new aesjs.ModeOfOperation.cbc(ss, iv);
         var output = aesCbc.decrypt(encryptedBytes);
     }
-    return output;
+
+    // remove padding from decrypted string (PKCS7 padding scheme)
+    var text = pkcs7.unpad(output);
+
+    // convert bytes to plaintext
+    var textUnpadded = aesjs.utils.utf8.fromBytes(text)
+    console.log(output);
+
+    return textUnpadded;
 }

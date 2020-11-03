@@ -63,13 +63,60 @@ func DecryptSymmetricKey(c [1088]byte) ([32]byte, error) {
 	return ss, nil
 }
 
-func encrypt(decrypted string) (encrypted string) {
-	// do fancy stuff
-	encrypted = decrypted
-	return encrypted
+func encryptData(input string, key string, db *gorm.DB) (output string) {
+
+	//get token from database
+	var tokendb model.User
+	err := db.Where("id = ?", email).First(&tokendb).Error
+	//error handling
+	if err != nil {
+		return nil, err
+	}
+
+
+
+
+
+
+
+
+	// encrypt data with the user's symmetric key
+	// convert hex string to byte array
+	ss, _ := hex.DecodeString(key)
+
+	// cipher = encrypt(ss, input)
+	// ss is key, input is message
+	block, err := aes.NewCipher(ss)
+	if err != nil {
+		log.Printf("%s Error in aes.NewCipher", consts.Error)
+		return "", nil
+	}
+
+	// convert input string to byte array
+	inputBytes := []byte(input)
+
+	// The IV needs to be unique, but not secure. Therefore it's common to
+	// include it at the beginning of the ciphertext.
+	ciphertext := make([]byte, aes.BlockSize+len(inputBytes))
+	iv := ciphertext[:aes.BlockSize]
+	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
+		log.Printf("%s Error in aes rand numbers", consts.Error)
+		return "", nil
+	}
+
+	mode := cipher.NewCBCEncrypter(block, iv)
+	mode.CryptBlocks(ciphertext[aes.BlockSize:], inputBytes)
+
+	// cipher []byte to hex string
+	cipherHex := hex.EncodeToString(ciphertext[:])
+
+	output := cipherHex
+
+	return output
 }
 
-func decrypt(encrypted string) (decrypted string) {
+// probably dont need this function for now
+func decryptData(encrypted string) (decrypted string) {
 	// undo fancy stuff
 	decrypted = encrypted
 	return decrypted
@@ -81,13 +128,7 @@ func decrypt(encrypted string) (decrypted string) {
 
 //BeforeCreate method for model.Token
 func (token *Token) BeforeCreate(tx *gorm.DB) (err error) {
-	token.AccessToken = encrypt(token.AccessToken)
-	return nil
-}
-
-//AfterFind method for model.Token
-func (token *Token) AfterFind(tx *gorm.DB) (err error) {
-	token.AccessToken = decrypt(token.AccessToken)
+	token.AccessToken = encryptData(token.AccessToken)
 	return nil
 }
 

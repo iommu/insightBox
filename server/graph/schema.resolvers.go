@@ -147,7 +147,7 @@ func (r *queryResolver) GetCipher(ctx context.Context, cTmp string) (string, err
 	ciphertext := make([]byte, aes.BlockSize+len(ss1))
 	iv := ciphertext[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		log.Printf("%s Error in in aes rand numbers", consts.Error)
+		log.Printf("%s Error in aes rand numbers", consts.Error)
 		return "", nil
 	}
 

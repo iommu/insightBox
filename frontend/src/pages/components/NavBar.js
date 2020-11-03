@@ -1,8 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "theme-ui";
-import { Flex, Button, Box, Text } from "rebass";
-import { Switch, Route, Link, withRouter } from "react-router-dom";
-import AuthButton from "./Oauth";
+import { Flex, Text } from "rebass";
+import { Switch, Route, Link } from "react-router-dom";
 import ThemeButton from "./ThemeButton";
 import logo from "../../images/logo.png";
 import { GoogleBtnAlt } from "./GoogleBtn";
@@ -38,6 +37,7 @@ export default (props) => (
                     <Route path="/signin"></Route>
                     <Route path={["/dashboard", "/settings"]}>
                         <div sx={{ margin: "0 auto" }} />
+                        <ThemeButton />
                         <Insights />
                         <ProfileDropDown />
                     </Route>

@@ -89,7 +89,7 @@ export function DecryptData(input){
     }
 
     // convert bytes to plaintext
-    var text = new TextDecoder().decode(output);
+    var text = aesjs.utils.utf8.fromBytes(output)
     console.log(output);
 
     // remove padding from decrypted string (PKCS7 padding scheme)

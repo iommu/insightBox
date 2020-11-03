@@ -11,13 +11,17 @@ var start = new Date(d).toISOString();
 
 
 const callbacks = {
-  getWordColor: word => word.value > 50 ? "black" : "black",
+  //don't think this is necessary after setting colours, left to easily roll back  
+  //getWordColor: word => word.value > 50 ? "black" : "black",
   onWordClick: console.log,
   onWordMouseOver: console.log,
   getWordTooltip: word => `${word.text} (${word.value})`,
 }
 const options = {
   determinstic: 1,
+  // colours for words? test
+  // currently using the colours on the top line
+  colors: ["#40A1F1", "#65AD50", "#FFD151", "#F13333"],
   fontFamily: "arial",
   fontSizes: [10, 40],
   rotations: 1,

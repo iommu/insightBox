@@ -7,11 +7,11 @@ GORM   : manages database and provides go functions to do database operations
 
 ## Folder structure
 ├── graph 
-    contains all code the GraphQL schema including auto generated schematic for resolver functions and modules for acting on the schema
+    contains all code the GraphQL schema including auto generated schematic for resolver functions and modules for acting on the schema  
 ├── internal 
-    contains all code modules for server actions outside of vanilla GraphQL e.g. authentication, processing, signup
+    contains all code modules for server actions outside of vanilla GraphQL e.g. authentication, processing, signup  
 └── pkg
-    contains all externally created packages, namely the Json Web Token package
+    contains all externally created packages, namely the Json Web Token package  
 
 ## Files of interest
 - server.go : this is the main go file and all code in called from there

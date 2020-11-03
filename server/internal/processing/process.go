@@ -160,6 +160,15 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	template.Received22 = hourCounts[22]
 	template.Received23 = hourCounts[23]
 
+	//get user secret key from database
+	var user model.User
+	err := db.Where("id = ?", id).First(&user).Error
+	//error handling
+	if err != nil {
+		return nil, err
+	}
+	key := user.SecretKey
+
 	// save Day to database
 	db.Create(&template)
 

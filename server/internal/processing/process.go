@@ -162,7 +162,7 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 
 	//get user secret key from database
 	var user model.User
-	err := db.Where("id = ?", id).First(&user).Error
+	err := db.Where("id = ?", template.ID).First(&user).Error
 	//error handling
 	if err != nil {
 		return

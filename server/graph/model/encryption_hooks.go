@@ -1,11 +1,18 @@
 package model
 
 import (
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/rand"
+	"encoding/hex"
 	"fmt"
+	"io"
 	"io/ioutil"
+	"log"
 	"strconv"
 	"strings"
 
+	"github.com/iommu/insightbox/server/internal/consts"
 	kyberk2so "github.com/symbolicsoft/kyber-k2so"
 
 	"gorm.io/gorm"
@@ -63,22 +70,7 @@ func DecryptSymmetricKey(c [1088]byte) ([32]byte, error) {
 	return ss, nil
 }
 
-func encryptData(input string, key string, db *gorm.DB) (output string) {
-
-	//get token from database
-	var tokendb model.User
-	err := db.Where("id = ?", email).First(&tokendb).Error
-	//error handling
-	if err != nil {
-		return nil, err
-	}
-
-
-
-
-
-
-
+func encryptData(input string, key string) (output string) {
 
 	// encrypt data with the user's symmetric key
 	// convert hex string to byte array

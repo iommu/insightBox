@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from "urql";
 import ReactWordcloud from 'react-wordcloud';
+import { DecryptData } from '../Cipher';
 
 var end = new Date().toISOString();
 var d = new Date();
@@ -65,7 +66,7 @@ export const WordCloud = (dates) => {
         var wordsLen = result.data.data[i].words.length;
         for (var j = 0; j < wordsLen; j++) {
             //setting data to make code cleaner
-            word = result.data.data[i].words[j].text;
+            word = DecryptData(result.data.data[i].words[j].text);
             value = result.data.data[i].words[j].value;
 
             //if word does not exist in map yet, set it

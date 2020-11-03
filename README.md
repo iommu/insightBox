@@ -9,7 +9,8 @@ Database : MySQL (MariaDB)
 
 ## Folder structure
 ├── frontend 
-    contains all code relating to the React based frontend
+    contains all code relating to the React based frontend  
+
 └── server
     contains all golang (gqlgen) code for hosting the GraphQL server interface
 

@@ -14,8 +14,6 @@ import (
 
 	"github.com/iommu/insightbox/server/internal/consts"
 	kyberk2so "github.com/symbolicsoft/kyber-k2so"
-
-	"gorm.io/gorm"
 )
 
 func check(e error) {
@@ -70,7 +68,7 @@ func DecryptSymmetricKey(c [1088]byte) ([32]byte, error) {
 	return ss, nil
 }
 
-func encryptData(input string, key string) (output string) {
+func EncryptData(input string, key string) (output string) {
 
 	// encrypt data with the user's symmetric key
 	// convert hex string to byte array
@@ -81,7 +79,7 @@ func encryptData(input string, key string) (output string) {
 	block, err := aes.NewCipher(ss)
 	if err != nil {
 		log.Printf("%s Error in aes.NewCipher", consts.Error)
-		return "", nil
+		return ""
 	}
 
 	// convert input string to byte array
@@ -93,7 +91,7 @@ func encryptData(input string, key string) (output string) {
 	iv := ciphertext[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
 		log.Printf("%s Error in aes rand numbers", consts.Error)
-		return "", nil
+		return ""
 	}
 
 	mode := cipher.NewCBCEncrypter(block, iv)
@@ -102,26 +100,11 @@ func encryptData(input string, key string) (output string) {
 	// cipher []byte to hex string
 	cipherHex := hex.EncodeToString(ciphertext[:])
 
-	output := cipherHex
-
-	return output
-}
-
-// probably dont need this function for now
-func decryptData(encrypted string) (decrypted string) {
-	// undo fancy stuff
-	decrypted = encrypted
-	return decrypted
+	return cipherHex
 }
 
 /* Encrypt/Decrypt functions */
 
 /* Token hooks */
-
-//BeforeCreate method for model.Token
-func (token *Token) BeforeCreate(tx *gorm.DB) (err error) {
-	token.AccessToken = encryptData(token.AccessToken)
-	return nil
-}
 
 /* Token hooks */

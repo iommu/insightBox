@@ -165,7 +165,7 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	err := db.Where("id = ?", id).First(&user).Error
 	//error handling
 	if err != nil {
-		return nil, err
+		return
 	}
 	key := user.SecretKey
 
@@ -175,7 +175,7 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	templateWord := model.Word{ID: template.ID, Date: template.Date}
 	// save all word counts from map to db
 	for word, count := range wordMap {
-		templateWord.Text = word
+		templateWord.Text = model.EncryptData(word, key)
 		templateWord.Value = count
 		db.Create(&templateWord)
 	}
@@ -183,7 +183,7 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	//save all contact counts from map to db
 	templateContact := model.Email{ID: template.ID, Date: template.Date}
 	for contact, counter := range contactMap {
-		templateContact.PoiEmail = contact
+		templateContact.PoiEmail = model.EncryptData(contact, key)
 		templateContact.Sent = counter.sent
 		templateContact.Received = counter.received
 		db.Create(&templateContact)

@@ -155,16 +155,18 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 		// set user default variables for user
 		user.ColorSchemeID = 1
 		// user doesnt exist
+		// set up user secret key (hex string output)
+		SK := generateSK()
+		fmt.Println("SK")
+		fmt.Println(SK)
+		// save SK string in database
+		user.SecretKey = SK
 	} else if err != nil {
 		log.Fatalf("%s GORM error connecting to db : %v", consts.Error, err)
 	}
 
-	// set up user secret key (hex string output)
-	SK := generateSK()
-	fmt.Println("SK")
-	fmt.Println(SK)
-	// save SK string in database
-	user.SecretKey = SK
+	// pass forward old SecretKey
+	user.SecretKey = tempUser.SecretKey
 
 	// Save(Create/Update) user to db
 	err = db.Save(&user).Error

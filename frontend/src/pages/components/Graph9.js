@@ -41,50 +41,54 @@ export const Graph9 = (dates) => {
     console.log(result);
     // do computation here
     var rlen = result.data.data.length;
-    console.log(result.data.data[0]);
-    console.log(result.data.data[0].emails.length);
+    //console.log(result.data.data);
+    //console.log(result.data.data[0].emails.length);
 
+
+    //generates a simple aggregate list of received contacts
+    var emailList = [];
     for(var i = 0; i < result.data.data.length; i++)
     {
         for(var j = 0; j < result.data.data[i].emails.length; j++)
         {
+            emailList.push(result.data.data[i].emails[j].poi_email);
+        }
+    }
+    console.log(emailList);
 
-            
+
+    //code to generate matches
+    var matched = [];
+    var matchedCount = [];
+    for(var i = 0; i < emailList.length; i++)
+    {
+        console.log(getRepetition(emailList, emailList[i]));
+        
+        if(matched.length === 0)
+        {
+            matched.push(emailList[i]);
+            matchedCount.push(getRepetition(emailList, emailList[i]));
+        }
+        else  if (matched.includes(emailList[i]) === false)
+        {
+          matched.push(emailList[i]);
+          matchedCount.push(getRepetition(emailList, emailList[i]));
         }
     }
 
-    /*
-    for (var i = 0; i < rlen; i++) {
-        var received = result.data.data[i].received;
-        total += received;
-      }
-
-
-
-
-
-    var total = 0;
-    var avg_day, avg_week, avg_month;
-    for (var i = 0; i < rlen; i++) {
-      var received = result.data.data[i].received;
-      total += received;
-    }
-    avg_day = total/56.0;
-    avg_week = total/8.0;
-    avg_month = total/2.0;
-
-    if(!Number.isInteger(avg_day)){
-        avg_day = avg_day.toFixed(2);
+    console.log(matched)
+    console.log(matchedCount)
+    
+    var final = [];
+    let finalTest = new Map();
+    for(var i = 0; i < matched.length; i++)
+    {
+      final.push([matched[i],matchedCount[i]]);
+      finalTest.set(matched[i],matchedCount[i]);
     }
 
-    if(!Number.isInteger(avg_week)){
-        avg_week = avg_week.toFixed(2);
-    }
-
-    if(!Number.isInteger(avg_month)){
-      avg_month = avg_month.toFixed(2);
-  }
-*/
+    //console.log(final);
+    //console.log(finalTest);
   return (
     <div id="graph9">
     

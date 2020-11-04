@@ -1,43 +1,46 @@
-import React from 'react';
+import React from "react";
 import { useQuery } from "urql";
-import ReactWordcloud from 'react-wordcloud';
-import { DecryptData } from '../Cipher';
+import ReactWordcloud from "react-wordcloud";
+import { DecryptData } from "../Cipher";
 
 var end = new Date().toISOString();
 var d = new Date();
 // for some reason you have to set the date back an extra day if you want 14 days returned from graphql
-d.setDate(d.getDate()-8); // ie: minus 15 days from today's date
+d.setDate(d.getDate() - 8); // ie: minus 15 days from today's date
 var start = new Date(d).toISOString();
 
-
 const callbacks = {
-  //don't think this is necessary after setting colours, left to easily roll back  
-  //getWordColor: word => word.value > 50 ? "black" : "black",
-  onWordClick: console.log,
-  onWordMouseOver: console.log,
-  getWordTooltip: word => `${word.text} (${word.value})`,
-}
-const options = {
-  determinstic: 1,
-  // colours for words? test
-  // currently using the colours on the top line
-  colors: ["#40A1F1", "#65AD50", "#FFD151", "#F13333"],
-  fontFamily: "arial",
-  fontSizes: [10, 40],
-  rotations: 1,
-  rotationAngles: [0],
+    //don't think this is necessary after setting colours, left to easily roll back
+    //getWordColor: word => word.value > 50 ? "black" : "black",
+    onWordClick: console.log,
+    onWordMouseOver: console.log,
+    getWordTooltip: (word) => `${word.text} (${word.value})`,
 };
-const size = [150, 150];
+const options = {
+    determinstic: 1,
+    // colours for words? test
+    // currently using the colours on the top line
+    colors: ["#40A1F1", "#65AD50", "#FFD151", "#F13333"],
+    fontFamily: "arial",
+    fontSizes: [10, 40],
+    rotations: 1,
+    rotationAngles: [0],
+};
+const size = [100, 100];
 
 export const WordCloud = (dates) => {
     // define query to use
     const [result] = useQuery({
         query:
-        `query {
-          data(start:"` + start + `", end:"` + end + `") {
+            `query {
+          data(start:"` +
+            start +
+            `", end:"` +
+            end +
+            `") {
                 words{text, value},
             }
-        }`
+        }`,
     });
 
     // get data
@@ -70,8 +73,7 @@ export const WordCloud = (dates) => {
             //if word does not exist in map yet, set it
             if (!wordMap.has(word)) {
                 wordMap.set(word, value);
-            }
-            else {
+            } else {
                 wordMap.set(word, wordMap.get(word) + value);
             }
         }
@@ -79,24 +81,23 @@ export const WordCloud = (dates) => {
 
     // turn the map into an array
     var words = [];
-    wordMap.forEach(function(val, key) {
-
+    wordMap.forEach(function (val, key) {
         words.push({ text: key, value: val });
 
-        if (val >= freq){
+        if (val >= freq) {
             freq = val;
             freqWord = key;
             localStorage.freqWord = freqWord;
         }
-
     });
- 
+
     return (
-        <ReactWordcloud 
-        callbacks={callbacks}
-        options={options}
-        maxWords={30}
-        size={size}
-        words={words} />
+        <ReactWordcloud
+            callbacks={callbacks}
+            options={options}
+            maxWords={30}
+            size={size}
+            words={words}
+        />
     );
 };

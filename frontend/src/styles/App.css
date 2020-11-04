@@ -684,9 +684,15 @@ span {
     text-align: center;
 }
 
-.homepage-content-pptos {
-    width: 600px;
+.homepage-content-pptos{
+  width: 600px;
+  text-align: left;
+  margin: auto;
+  /* color: #545454; */
+}
+
+#ul-about{
     text-align: left;
+    width: 200px;
     margin: auto;
-    color: #545454;
 }

@@ -13,7 +13,7 @@ const Settings = (props) => {
 
   const [result, executeMutation] = useMutation(DeleteAccountMutation);
 
-  const deleteAccount = React.useCallback(() => {
+  const deleteAccount = React.useCallback((props) => {
     executeMutation({ email }).then((result) => {
       if (result.data) {
         if (result.data.deleteAccount === 0) {

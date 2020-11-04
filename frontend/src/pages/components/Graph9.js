@@ -1,6 +1,5 @@
 import React from 'react'; 
 import { useQuery } from 'urql';
-import moment from "moment";
 
 var end = new Date().toISOString();
 var d = new Date();
@@ -40,16 +39,12 @@ export const Graph9 = () => {
     
     console.log(result);
     // do computation here
-    var rlen = result.data.data.length;
-    //console.log(result.data.data);
-    //console.log(result.data.data[0].emails.length);
-
 
     //generates a simple aggregate list of received contacts
     var emailList = [];
-    for(var i = 0; i < result.data.data.length; i++)
+    for(let i = 0; i < result.data.data.length; i++)
     {
-        for(var j = 0; j < result.data.data[i].emails.length; j++)
+        for(let j = 0; j < result.data.data[i].emails.length; j++)
         {
             emailList.push(result.data.data[i].emails[j].poi_email);
         }
@@ -60,7 +55,7 @@ export const Graph9 = () => {
     //code to generate matches
     var matched = [];
     var matchedCount = [];
-    for(var i = 0; i < emailList.length; i++)
+    for(let i = 0; i < emailList.length; i++)
     {
         console.log(getRepetition(emailList, emailList[i]));
         
@@ -81,7 +76,7 @@ export const Graph9 = () => {
     
     var final = [];
     let finalTest = new Map();
-    for(var i = 0; i < matched.length; i++)
+    for(let i = 0; i < matched.length; i++)
     {
       final.push([matched[i],matchedCount[i]]);
       finalTest.set(matched[i],matchedCount[i]);

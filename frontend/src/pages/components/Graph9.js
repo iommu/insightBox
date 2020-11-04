@@ -92,6 +92,9 @@ export const Graph9 = () => {
     //console.log([...finalTest.entries()].reduce((a, f ) => f[1] > a[1] ? f : a)); //logic to get most contacted
     const mostContact = [...finalTest.entries()].reduce((a, f ) => f[1] > a[1] ? f : a);
     console.log(mostContact);
+
+    // add to insights
+    localStorage.popularContact = mostContact[0];
     
   return (
     <div id="graph3">

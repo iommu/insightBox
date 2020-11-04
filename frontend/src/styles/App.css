@@ -627,6 +627,14 @@ a:active {
   color: white;
 }
 
+.react-terminal-wrapper{
+  font-size: 12px !important;
+}
+
+span {
+  white-space: pre-wrap;
+}
+
 .loader1 {
   border: 12px solid #f3f3f3;
   border-radius: 50%;

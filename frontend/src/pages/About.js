@@ -1,10 +1,12 @@
 import React from "react";
 import "../styles/App.css";
+import {TerminalController} from './components/Terminal';
 
 export default () => (
     <div>
         <div class="homepage-content">
-            <h1>About</h1>
+            <br/>
+            <br/>
             <p>
                 <b>insightBox</b> is an email analytics service that connects to
                 a Gmail account and provides insights and statistics. The main
@@ -18,9 +20,11 @@ export default () => (
             <p>
                 short description
             </p>
+            <br/>
             <p>
                 This is what our database looks like:
             </p>
+            <TerminalController/>
         </div>
     </div>
 );

@@ -36,7 +36,7 @@ func (d *daemon) updateDaemon() {
 	d.timer.Reset(getNextTimerDuration())
 }
 
-//InitDaemon initilizes daemon for updating user data at 00:01
+// InitDaemon initilizes daemon for updating user data at 00:01
 func InitDaemon(db *gorm.DB) {
 	d := newDaemon()
 	for {

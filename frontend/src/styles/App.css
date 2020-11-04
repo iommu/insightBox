@@ -666,7 +666,6 @@ span {
 }
 
 @keyframes spin {
-<<<<<<< HEAD
     0% {
         transform: rotate(0deg);
     }
@@ -674,25 +673,3 @@ span {
         transform: rotate(360deg);
     }
 }
-=======
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.homepage-content-about{
-  width: 800px;
-  text-align: center;
-  margin: auto;
-}
-
-.homepage-content-about-text{
-  text-align: center;
-}
-
-.homepage-content-pptos{
-  width: 600px;
-  text-align: left;
-  margin: auto;
-  color: #545454;
-}
->>>>>>> dc58558549b2631040f1321acc50e2d7364c3891

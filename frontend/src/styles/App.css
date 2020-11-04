@@ -689,5 +689,11 @@ span {
   width: 600px;
   text-align: left;
   margin: auto;
-  color: #545454;
+  /* color: #545454; */
+}
+
+#ul-about{
+    text-align: left;
+    width: 200px;
+    margin: auto;
 }

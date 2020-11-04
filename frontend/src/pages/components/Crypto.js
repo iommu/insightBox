@@ -242,11 +242,6 @@ export function GenerateKEM(){
     for (i=0; i<32; i++){
         sharedSecret[i] = hexToDec(ss_str[2*i] + ss_str[2*i+1]);
     }
-    
-    // return (c, ss)
-    console.log("c: ", ciphertext);
-    console.log("ss: ", sharedSecret);
-    console.log(JSON.stringify(ciphertext));
 
     var result = new Array(2);
     result[0] = ciphertext;
@@ -496,9 +491,9 @@ function byteopsCbd(buf) {
 function byteopsLoad32(x) {
 	var r;
     r = uint32(x[0]);
-    r = ((r | (uint32(x[1]) << 8) >>> 0) >>> 0);
-	r = ((r | (uint32(x[2]) << 16) >>> 0) >>> 0);
-	r = ((r | (uint32(x[3]) << 24) >>> 0) >>> 0);
+    r = (((r | (uint32(x[1]) << 8)) >>> 0) >>> 0);
+	r = (((r | (uint32(x[2]) << 16)) >>> 0) >>> 0);
+	r = (((r | (uint32(x[3]) << 24)) >>> 0) >>> 0);
 	return uint32(r);
 }
 
@@ -670,7 +665,6 @@ function nttInv(r) {
     var k = 0;
     var zeta;
     var t;
-    var r1 = new Array(384);
 	for (var l = 2; l <= 128; l <<= 1) {
 		for (var start = 0; start < 256; start = j + l) {
 			zeta = nttZetasInv[k];
@@ -784,6 +778,7 @@ function byte(n){
     return n;
 }
 
+/*
 function int8(n){
     var end = -128;
     var start = 127;
@@ -805,10 +800,12 @@ function int8(n){
     }
 }
 
+
 function uint8(n){
     n = n%256;
     return n;
 }
+*/
 
 function int16(n){
     var end = -32768;

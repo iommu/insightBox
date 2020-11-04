@@ -63,7 +63,7 @@ export const GraphTest3 = (dates) => {
                     Week
                 <BarChart
                     width={800}
-                    height={330}
+                    height={150}
                     data={arr}
                     margin={{ top: 5, right: 20, left: -20, bottom: 5 }}
                 >

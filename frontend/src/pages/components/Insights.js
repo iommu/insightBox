@@ -14,7 +14,7 @@ var data = [
     },
     {
         image : bulb ,
-        message : 'Your most popular contact is <>.',
+        message : 'Your most popular contact is ' + localStorage.popularContact + '.',
     }
   ];
 

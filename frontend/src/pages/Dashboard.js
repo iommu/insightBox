@@ -60,7 +60,7 @@ class Dashboard extends React.Component {
                     <div className="stat-container">
                         <Graph5 />
                     </div>
-                    <div className="stat-container-test">
+                    <div className="stat-container">
                         <WordCloud />
                     </div>
                     <div className="stat-container">
@@ -78,7 +78,7 @@ class Dashboard extends React.Component {
                             eDate={this.state.endDate.toISOString()}
                         />
                     </div>
-                    <div className="stat-container-large">
+                    <div className="stat-container">
                         <GraphTest3
                             sDate={this.state.startDate.toISOString()}
                             eDate={this.state.endDate.toISOString()}

@@ -49,7 +49,7 @@ export default (props) => (
                             </Link>
                             &nbsp;&nbsp;|&nbsp;&nbsp;
                             <Link to="/about" sx={{ color: "text" }}>
-                                Security
+                                About
                             </Link>
                             &nbsp;&nbsp;|&nbsp;&nbsp;
                             <Link to="/privacypolicy" sx={{ color: "text" }}>

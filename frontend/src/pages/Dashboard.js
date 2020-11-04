@@ -60,7 +60,7 @@ class Dashboard extends React.Component {
                     <div className="stat-container">
                         <Graph5 />
                     </div>
-                    <div className="stat-container-test">
+                    <div className="stat-container">
                         <WordCloud />
                     </div>
                     <div className="stat-container">

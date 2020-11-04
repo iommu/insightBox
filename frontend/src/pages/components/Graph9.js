@@ -5,7 +5,7 @@ import moment from "moment";
 var end = new Date().toISOString();
 var d = new Date();
 // for some reason you have to set the date back an extra day if you want 56 days returned from graphql
-d.setDate(d.getDate()-5); // ie: minus 57 days from today's date
+d.setDate(d.getDate()-30); // ie: minus 57 days from today's date
 var start = new Date(d).toISOString();
 
 function getRepetition(array, value) {
@@ -14,12 +14,12 @@ function getRepetition(array, value) {
     return count;
 }
 
-export const Graph9 = (dates) => {
-    var start = moment(dates.sDate).subtract(1,"day").toISOString();  //subtract one day to match the sidebar
+export const Graph9 = () => {
+   // var start = moment(dates.sDate).subtract(1,"day").toISOString();  //subtract one day to match the sidebar
     const [result] = useQuery({
       query: `
       query {
-        data(start:"` + start + `", end:"` + dates.eDate + `") {
+        data(start:"` + start + `", end:"` + end + `") {
        
           emails{id,poi_email},
         }
@@ -89,9 +89,19 @@ export const Graph9 = (dates) => {
 
     //console.log(final);
     //console.log(finalTest);
-  return (
-    <div id="graph9">
+    //console.log([...finalTest.entries()].reduce((a, f ) => f[1] > a[1] ? f : a)); //logic to get most contacted
+    const mostContact = [...finalTest.entries()].reduce((a, f ) => f[1] > a[1] ? f : a);
+    console.log(mostContact);
     
+  return (
+    <div id="graph3">
+     <div className="graph-title">Most Received (over 30 days)</div>
+        
+        <div className="graph-title2">Contact:</div>
+        <div className="numbers">{mostContact[0]}</div>
+        
+        <div className="graph-title2">Received Emails</div>
+        <div className="numbers">{mostContact[1]}</div>
     </div>
 );
   }

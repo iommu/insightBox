@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Terminal, { ColorMode, LineType } from "react-terminal-ui";
+import Terminal, { ColorMode, LineType } from "./TerminalUI";
 
 export const TerminalController = (props = {}) => {
     const [terminalLineData] = useState([
@@ -165,22 +165,7 @@ export const TerminalController = (props = {}) => {
                 prompt="MariaDB [insightbox]>"
                 colorMode={ColorMode.Dark}
                 lineData={terminalLineData}
-                onInput={(terminalInput) =>
-                    console.log(
-                        `New terminal input received: '${terminalInput}'`
-                    )
-                }
             />
         </div>
     );
-};
-
-export const TopScroll = () => {
-    document.querySelector("body").scrollTo(0, 0);
-
-    window.onload = function () {
-        window.scrollTo(0, 0);
-    };
-
-    return <div></div>;
 };

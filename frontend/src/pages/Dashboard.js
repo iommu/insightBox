@@ -9,6 +9,7 @@ import { Graph6 } from "./components/Graph6";
 import { Graph7 } from "./components/Graph7";
 import { Graph8 } from "./components/Graph8";
 import { Graph9 } from "./components/Graph9";
+import { Graph10 } from "./components/Graph10";
 import { WordCloud } from "./components/WordCloud";
 import SideBar from "./components/SideBar";
 import { GraphTest2 } from "./components/GraphTest2";
@@ -23,6 +24,7 @@ class Dashboard extends React.Component {
             console.log("error: no login token, redirecting");
             this.props.history.push("/");
         }
+        
         this.state = {
             startDate: moment().subtract(7, "day"), // sets default dashboard dates to be current date subtract 7 days
             endDate: moment().subtract(0, "day"),
@@ -35,6 +37,7 @@ class Dashboard extends React.Component {
             endDate: endDate,
         });
     };
+
 
     render() {
         return (

@@ -601,6 +601,7 @@ a:active {
 }
 
 .notifications .icon .count {
+<<<<<<< HEAD
     height: 20px !important;
     width: 20px !important;
     max-width: 20px !important;
@@ -627,6 +628,33 @@ a:active {
     margin: 0px !important;
     left: 140px !important;
     text-align: left !important;
+=======
+  height: 20px !important;
+  width: 20px !important;
+  max-width: 20px !important;
+  min-height: 20px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -2px;
+  right: 0;
+  font-size: 12px !important;
+  border-radius: 50%;
+  background-color: #ea0000 !important;
+  font-weight: 400;
+  color: white;
+}
+
+.react-terminal-wrapper{
+  font-size: 10px !important;
+  width: 840px !important;
+  height: 600px !important;
+  padding-left: 15px !important;
+  padding-right: 20px !important;
+  margin: 0px !important;
+  text-align: left !important;
+>>>>>>> dc58558549b2631040f1321acc50e2d7364c3891
 }
 
 .react-terminal-wrapper:before {
@@ -667,6 +695,7 @@ span {
 }
 
 @keyframes spin {
+<<<<<<< HEAD
     0% {
         transform: rotate(0deg);
     }
@@ -674,3 +703,25 @@ span {
         transform: rotate(360deg);
     }
 }
+=======
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.homepage-content-about{
+  width: 800px;
+  text-align: center;
+  margin: auto;
+}
+
+.homepage-content-about-text{
+  text-align: center;
+}
+
+.homepage-content-pptos{
+  width: 600px;
+  text-align: left;
+  margin: auto;
+  color: #545454;
+}
+>>>>>>> dc58558549b2631040f1321acc50e2d7364c3891

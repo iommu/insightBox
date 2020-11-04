@@ -8,7 +8,7 @@ var pkcs7 = require('pkcs7-padding');
 
 export const Cipher = () => {
     const client = useClient();
-    if (localStorage.getItem("ss") == null) {
+        // get key again from server securely
         // generate a (c, ss) pair
         var output = new Array(2);
         output = GenerateKEM();
@@ -35,6 +35,12 @@ export const Cipher = () => {
             .then((result) => {
                 // get back encrypted symmetric key from server
                 // convert to byte array
+
+                if (result.data.getCipher.length < 48){
+                    console.log("Error: Key from server isn't correct. Check database.")
+                    return (null);
+                }
+
                 var cipher = aesjs.utils.hex.toBytes(result.data.getCipher);
 
                 var iv = cipher.slice(0,16);
@@ -51,7 +57,7 @@ export const Cipher = () => {
                     localStorage.ss = bytesToHexStr(ss);
                 }
             });
-    }
+    
     return (null);
 };
  
@@ -64,6 +70,12 @@ function bytesToHexStr(c) {
 
 // decrypts data on frontend
 export function DecryptData(input){
+
+    if(input.length == 0){
+        console.log("Error: No encrypted data received from database. Check Words table in database.");
+        return "";
+    }
+
     // input is a hex string
     // convert to byte array
     var cipher = aesjs.utils.hex.toBytes(input);

@@ -633,6 +633,32 @@ a:active {
   color: white;
 }
 
+.react-terminal-wrapper{
+  font-size: 10.5px !important;
+  width: 900px !important;
+  height: 600px !important;
+  padding-left: 18px !important;
+  padding-right: 20px !important;
+  margin: 0px !important;
+  left: 140px !important;
+  text-align: left !important;
+}
+
+.react-terminal-wrapper:before {
+    width: 12px !important;
+    height: 12px !important;
+    top: 8px !important;
+}
+
+#terminal-center{
+  text-align: center !important;
+  width: 100%;
+}
+
+span {
+  white-space: pre-wrap;
+}
+
 .loader1 {
   border: 12px solid #f3f3f3;
   border-radius: 50%;

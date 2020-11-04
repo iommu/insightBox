@@ -38,7 +38,7 @@ export const Graph9 = () => {
       );
     };
     
-    console.log(result);
+    //console.log(result);
     // do computation here
     var rlen = result.data.data.length;
     //console.log(result.data.data);
@@ -54,7 +54,7 @@ export const Graph9 = () => {
             emailList.push(result.data.data[i].emails[j].poi_email);
         }
     }
-    console.log(emailList);
+    //console.log(emailList);
 
 
     //code to generate matches
@@ -62,7 +62,7 @@ export const Graph9 = () => {
     var matchedCount = [];
     for(var i = 0; i < emailList.length; i++)
     {
-        console.log(getRepetition(emailList, emailList[i]));
+        //console.log(getRepetition(emailList, emailList[i]));
         
         if(matched.length === 0)
         {
@@ -76,8 +76,8 @@ export const Graph9 = () => {
         }
     }
 
-    console.log(matched)
-    console.log(matchedCount)
+   // console.log(matched)
+    //console.log(matchedCount)
     
     var final = [];
     let finalTest = new Map();
@@ -91,7 +91,7 @@ export const Graph9 = () => {
     //console.log(finalTest);
     //console.log([...finalTest.entries()].reduce((a, f ) => f[1] > a[1] ? f : a)); //logic to get most contacted
     const mostContact = [...finalTest.entries()].reduce((a, f ) => f[1] > a[1] ? f : a);
-    console.log(mostContact);
+    //console.log(mostContact);
 
     // add to insights
     localStorage.popularContact = mostContact[0];

@@ -1,6 +1,7 @@
 
 import React from 'react'; 
 import { useQuery } from 'urql';
+import moment from "moment";
 // eslint-disable-next-line
 import { PureComponent } from 'react';
 // eslint-disable-next-line
@@ -41,10 +42,11 @@ export const GraphTest2 = (dates) => {
     );
   };
 
+  var start = moment(dates.sDate).subtract(1,"day").toISOString();
   const [result] = useQuery({
     query: `
     query {
-      data(start:"` + sDates + `", end:"` + eDates + `") {
+      data(start:"` + start + `", end:"` + eDates + `") {
         date,
         received
       }
@@ -66,6 +68,7 @@ export const GraphTest2 = (dates) => {
 
   
   // do computation here
+  console.log(result)
   var graphdata = [];
   var rlen = result.data.data.length;
   var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -75,11 +78,28 @@ export const GraphTest2 = (dates) => {
     var day = date.getDay(date);
     var received = result.data.data[i].received;
     var value = {name: days[day], value: received};
-    graphdata.push(value);
+    console.log(value.name)
+    if(graphdata.length == 0)
+    {
+      graphdata.push(value);
+    }
+    var match = false;
+    for(var j = 0; j < graphdata.length; j++)
+    {
+      if(graphdata[j].name === value.name)
+      {
+        match = true;
+        graphdata[j].value = graphdata[j].value + value.value;
+      }
+    }
+    if(match !== true) {graphdata.push(value); }
+
   }
+
+  console.log(graphdata);
   return (
     <div>
-    <div className="graph-title">Email Received %<br /> Day of the Week</div>
+    <div className="graph-title">Email Received %<br /> Day of the Week (Range)</div>
     
     <PieChart width={170} height={150}>
     <Pie

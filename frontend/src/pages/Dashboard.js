@@ -9,6 +9,7 @@ import { Graph6 } from "./components/Graph6";
 import { Graph7 } from "./components/Graph7";
 import { Graph8 } from "./components/Graph8";
 import { Graph9 } from "./components/Graph9";
+import { Graph10 } from "./components/Graph10";
 import { WordCloud } from "./components/WordCloud";
 import SideBar from "./components/SideBar";
 import { GraphTest2 } from "./components/GraphTest2";

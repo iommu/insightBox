@@ -634,13 +634,12 @@ a:active {
 }
 
 .react-terminal-wrapper{
-  font-size: 10.5px !important;
-  width: 900px !important;
+  font-size: 10px !important;
+  width: 840px !important;
   height: 600px !important;
-  padding-left: 18px !important;
+  padding-left: 15px !important;
   padding-right: 20px !important;
   margin: 0px !important;
-  left: 140px !important;
   text-align: left !important;
 }
 
@@ -680,4 +679,21 @@ span {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.homepage-content-about{
+  width: 800px;
+  text-align: center;
+  margin: auto;
+}
+
+.homepage-content-about-text{
+  text-align: center;
+}
+
+.homepage-content-pptos{
+  width: 600px;
+  text-align: left;
+  margin: auto;
+  color: #545454;
 }

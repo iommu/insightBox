@@ -23,6 +23,7 @@ class Dashboard extends React.Component {
             console.log("error: no login token, redirecting");
             this.props.history.push("/");
         }
+        
         this.state = {
             startDate: moment().subtract(7, "day"), // sets default dashboard dates to be current date subtract 7 days
             endDate: moment().subtract(0, "day"),
@@ -35,6 +36,7 @@ class Dashboard extends React.Component {
             endDate: endDate,
         });
     };
+
 
     render() {
         return (

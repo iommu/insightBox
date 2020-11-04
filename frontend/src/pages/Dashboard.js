@@ -43,7 +43,7 @@ class Dashboard extends React.Component {
                 <SideBar updateDates={this.updateDates} />
                 <div
                     className="dashboard-content"
-                    style={{ marginLeft: "300px" }}
+                    style={{ marginLeft: "300px", color:"#333" }}
                 >
                     <div className="stat-container">
                         <Graph1 />

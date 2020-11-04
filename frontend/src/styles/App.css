@@ -601,31 +601,31 @@ a:active {
 }
 
 .notifications .icon .count {
-  height: 20px !important;
-  width: 20px !important;
-  max-width: 20px !important;
-  min-height: 20px !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: -2px;
-  right: 0;
-  font-size: 12px !important;
-  border-radius: 50%;
-  background-color: #ea0000 !important;
-  font-weight: 400;
-  color: white;
+    height: 20px !important;
+    width: 20px !important;
+    max-width: 20px !important;
+    min-height: 20px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -2px;
+    right: 0;
+    font-size: 12px !important;
+    border-radius: 50%;
+    background-color: #ea0000 !important;
+    font-weight: 400;
+    color: white;
 }
 
-.react-terminal-wrapper{
-  font-size: 10px !important;
-  width: 820px !important;
-  height: 600px !important;
-  padding-left: 15px !important;
-  padding-right: 5px !important;
-  margin: 0px !important;
-  text-align: left !important;
+.react-terminal-wrapper {
+    font-size: 10px !important;
+    width: 820px !important;
+    height: 600px !important;
+    padding-left: 15px !important;
+    padding-right: 5px !important;
+    margin: 0px !important;
+    text-align: left !important;
 }
 
 .react-terminal-wrapper:before {
@@ -674,20 +674,19 @@ span {
     }
 }
 
-.homepage-content-about{
-  width: 800px;
-  text-align: center;
-  margin: auto;
+.homepage-content-about {
+    width: 800px;
+    text-align: center;
+    margin: auto;
 }
 
-
-.homepage-content-about-text{
-  text-align: center;
+.homepage-content-about-text {
+    text-align: center;
 }
 
-.homepage-content-pptos{
-  width: 600px;
-  text-align: left;
-  margin: auto;
-  color: #545454;
+.homepage-content-pptos {
+    width: 600px;
+    text-align: left;
+    margin: auto;
+    color: #545454;
 }

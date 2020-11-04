@@ -12,7 +12,7 @@ function splitToChunks(a, size) {
 }
 
 export const GraphTest3 = (dates) => {
-    var start = moment(dates.sDate).subtract(1,"day").toISOString();  //subtract one day to match the sidebar
+    var start = moment(dates.sDate).subtract(1, "day").toISOString(); //subtract one day to match the sidebar
     const [result] = useQuery({
         query:
             `
@@ -46,7 +46,13 @@ export const GraphTest3 = (dates) => {
         var date = new Date(result.data.data[i].date);
         var day = date.getDay(date);
         var received = result.data.data[i].received;
-        var value = { name: days[day], Total: received, pv: 2400, amt: 2400, date:date };
+        var value = {
+            name: days[day],
+            Total: received,
+            pv: 2400,
+            amt: 2400,
+            date: date,
+        };
         graphdata.push(value);
     }
     const splitArray = splitToChunks(graphdata, 7);
@@ -57,23 +63,26 @@ export const GraphTest3 = (dates) => {
                 Email Received per week of selected
             </div>
             <div id="mutliContainer">
-            {splitArray.map((arr) => (
-                <div> 
-                    Week
-                <BarChart
-                    width={800}
-                    height={150}
-                    data={arr}
-                    margin={{ top: 5, right: 20, left: -20, bottom: 5 }}
-                >
-                    <XAxis dataKey="name" stroke="#47494d" />
-                    <YAxis />
-                    <Tooltip />
-                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                    <Bar dataKey="Total" fill="#40a1f1" barSize={30} />
-                </BarChart>
-                </div>
-            ))}
+                {splitArray.map((arr) => (
+                    <div>
+                        Week
+                        <BarChart
+                            width={800}
+                            height={150}
+                            data={arr}
+                            margin={{ top: 5, right: 20, left: -20, bottom: 5 }}
+                        >
+                            <XAxis dataKey="name" stroke="#47494d" />
+                            <YAxis />
+                            <Tooltip />
+                            <CartesianGrid
+                                stroke="#ccc"
+                                strokeDasharray="5 5"
+                            />
+                            <Bar dataKey="Total" fill="#40a1f1" barSize={30} />
+                        </BarChart>
+                    </div>
+                ))}
             </div>
         </div>
     );

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Terminal, { ColorMode, LineType } from "react-terminal-ui";
 
 export const TerminalController = (props = {}) => {
-
     const [terminalLineData] = useState([
         {
             type: LineType.Output,
@@ -176,16 +175,12 @@ export const TerminalController = (props = {}) => {
     );
 };
 
-export const TopScroll = () =>{
-
-    document.querySelector('body').scrollTo(0,0);
+export const TopScroll = () => {
+    document.querySelector("body").scrollTo(0, 0);
 
     window.onload = function () {
         window.scrollTo(0, 0);
-      }
+    };
 
-    return(
-        <div></div>
-    );
-
-}
+    return <div></div>;
+};

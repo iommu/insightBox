@@ -3,10 +3,6 @@ import "../styles/App.css";
 import { TerminalController } from "./components/Terminal";
 
 export default () => {
-    document.querySelector("body").scrollTo(0, 0);
-
-    document.querySelector("body").scrollTo(0, 0);
-
     return (
         <div class="homepage-content-about">
             <div class="homepage-content-about-text">

@@ -673,3 +673,21 @@ span {
         transform: rotate(360deg);
     }
 }
+
+.homepage-content-about{
+  width: 800px;
+  text-align: center;
+  margin: auto;
+}
+
+
+.homepage-content-about-text{
+  text-align: center;
+}
+
+.homepage-content-pptos{
+  width: 600px;
+  text-align: left;
+  margin: auto;
+  color: #545454;
+}

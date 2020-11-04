@@ -1,14 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Graph1 } from "./components/Graph1";
-import { Graph2 } from "./components/Graph2";
-import { Graph3 } from "./components/Graph3";
-import { Graph4 } from "./components/Graph4";
-import { Graph5 } from "./components/Graph5";
-import { Graph6 } from "./components/Graph6";
-import { Graph7 } from "./components/Graph7";
-import { Graph8 } from "./components/Graph8";
-import { Graph9 } from "./components/Graph9";
+import { Graph1, Graph2, Graph3, Graph4, Graph5, Graph6, Graph7, Graph8, Graph9 } from "./components/Graphs";
 import { WordCloud } from "./components/WordCloud";
 import SideBar from "./components/SideBar";
 import { GraphTest2 } from "./components/GraphTest2";

@@ -43,8 +43,6 @@ export const WordCloud = (dates) => {
     // get data
     const { fetching, error } = result;
 
-    console.log("wordcloud data:", result);
-
     // return errors if something wrong happened
     if (fetching) return <p> Loading user data </p>;
 
@@ -88,7 +86,6 @@ export const WordCloud = (dates) => {
         if (val >= freq){
             freq = val;
             freqWord = key;
-            console.log(key, val);
             localStorage.freqWord = freqWord;
         }
 

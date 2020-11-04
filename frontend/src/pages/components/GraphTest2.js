@@ -16,21 +16,10 @@ import { PieChart, Pie, Sector, Cell, Tooltip, ResponsiveContainer } from 'recha
 //import {startDate} from '../Dashboard'
 //alert(startDate);
 
-var end = new Date().toISOString();
-var d = new Date();
-// for some reason you have to set the date back an extra day if you want 7 days returned from graphql
-d.setDate(d.getDate()-8); // ie: minus 8 days from today's date
-var start = new Date(d).toISOString();
-console.log(start);
 var sDates;
 var eDates;
 
 export const GraphTest2 = (dates) => {
-  
-  
-  console.log(dates);             //returns date array, which contains sDate and eDate
-  console.log(dates.sDate);
-  console.log(dates.eDate);
 
   sDates = dates.sDate;
   eDates = dates.eDate;
@@ -73,14 +62,12 @@ export const GraphTest2 = (dates) => {
       <p> Error getting user data </p>
     );
   };
-  console.log(result);
   //console.log(Dashboard.state.startDate.toISOString())
 
   
   // do computation here
   var graphdata = [];
   var rlen = result.data.data.length;
-  console.log(rlen)
   var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   // order doesnt matter here
   for (var i = 0; i < rlen; i++) {

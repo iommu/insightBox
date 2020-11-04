@@ -1,7 +1,5 @@
-import React, { useReducer } from "react";
-import { useQuery, useClient } from "urql";
+import { useClient } from "urql";
 import { GenerateKEM } from "./components/Crypto";
-// import { aesjs } from 'aes-js';
 
 var aesjs = require('aes-js');
 var pkcs7 = require('pkcs7-padding');
@@ -44,7 +42,7 @@ export const Cipher = () => {
                 var cipher = aesjs.utils.hex.toBytes(result.data.getCipher);
 
                 var iv = cipher.slice(0,16);
-                if (iv.length != 16){
+                if (iv.length !== 16){
                     
                 }
                 else{
@@ -71,7 +69,7 @@ function bytesToHexStr(c) {
 // decrypts data on frontend
 export function DecryptData(input){
 
-    if(input.length == 0){
+    if(input.length === 0){
         console.log("Error: No encrypted data received from database. Check Words table in database.");
         return "";
     }
@@ -84,8 +82,8 @@ export function DecryptData(input){
     var iv = cipher.slice(0,16);
 
     // decrypt the cipher
-    if (iv.length != 16){
-        output = "IV error";
+    if (iv.length !== 16){
+        var output = "IV error";
     }
     else{
         var encryptedBytes = cipher.slice(16,cipher.length);
@@ -105,7 +103,6 @@ export function DecryptData(input){
 
     // convert bytes to plaintext
     var textUnpadded = aesjs.utils.utf8.fromBytes(text)
-    console.log(output);
 
     return textUnpadded;
 }

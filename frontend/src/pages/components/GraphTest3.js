@@ -49,7 +49,6 @@ export const GraphTest3 = (dates) => {
         var value = { name: days[day], Total: received, pv: 2400, amt: 2400, date:date };
         graphdata.push(value);
     }
-    console.log(graphdata[0].name);
     const splitArray = splitToChunks(graphdata, 7);
     console.log(splitArray);
     return (

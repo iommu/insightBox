@@ -2,29 +2,12 @@
 import React from 'react'; 
 import { useQuery } from 'urql';
 import moment from "moment";
-// eslint-disable-next-line
-import { PureComponent } from 'react';
-// eslint-disable-next-line
-import { PieChart, Pie, Sector, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-//import Dashboard, { sDate } from '../Dashboard';
-//alert('test: ' + Dashboard.updateDates);
-//alert(sDatetoISOString());
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 
-//import SideBar from "./SideBar";
-//import {Days} from './SideBar'
-//alert(Days.day);
-
-//import {startDate} from '../Dashboard'
-//alert(startDate);
-
-var sDates;
 var eDates;
 
 export const GraphTest2 = (dates) => {
-
-  sDates = dates.sDate;
   eDates = dates.eDate;
-  
 
   const COLORS = ['#40a1f1', '#65AD50', '#FFD151', '#FF8042', '#f13333', '#9636ff', '#3461d1'];
   const RADIAN = Math.PI / 180;
@@ -79,7 +62,7 @@ export const GraphTest2 = (dates) => {
     var received = result.data.data[i].received;
     var value = {name: days[day], value: received};
     console.log(value.name)
-    if(graphdata.length == 0)
+    if(graphdata.length === 0)
     {
       graphdata.push(value);
     }

@@ -23,24 +23,24 @@ type contactCounter struct {
 	sent, received int
 }
 
-//authenticate and connect to gmail
+// authenticate and connect to gmail
 func authenticate(email string, db *gorm.DB) (*gmail.Service, error) {
-	//get token from database
+	// get token from database
 	var tokendb model.Token
 	err := db.Where("id = ?", email).First(&tokendb).Error
-	//error handling
+	// error handling
 	if err != nil {
 		return nil, err
 	}
 
-	//reconstruct token
+	// reconstruct token
 	tok := &oauth2.Token{}
 	tok.AccessToken = tokendb.AccessToken
 	tok.TokenType = tokendb.TokenType
 	tok.RefreshToken = tokendb.RefreshToken
 	tok.Expiry = tokendb.Expiry
 
-	//connect to gmail and get service
+	// connect to gmail and get service
 	b, err := ioutil.ReadFile("credentials.json")
 	if err != nil {
 		return nil, err
@@ -55,7 +55,7 @@ func authenticate(email string, db *gorm.DB) (*gmail.Service, error) {
 		return nil, err
 	}
 
-	//return the service to be used
+	// return the service to be used
 	return srv, nil
 }
 
@@ -82,26 +82,30 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 				to = obj.Value
 			case "From":
 				from = obj.Value
-			//default means we got unknown/unwanted data
+			// default means we got unknown/unwanted data(should not happen)
 			default:
 				log.Printf("Unknown data in Header: %v", obj)
 				continue
 			}
 		}
 
-		//clean the "to" string to only get email address
+		// examples of to/from(we want the top one)
+		// - testinsightbox@gmail.com
+		// - Test T<testinsightbox@gmail.com>
+
+		// clean the "to" string to only get email address
 		temp := strings.IndexByte(to, '<')
 		if temp >= 0 {
 			to = to[strings.IndexByte(to, '<')+1 : strings.IndexByte(to, '>')]
 		}
 
-		//clean the "from" string to only get email address
+		// clean the "from" string to only get email address
 		temp = strings.IndexByte(from, '<')
 		if temp >= 0 {
 			from = from[strings.IndexByte(from, '<')+1 : strings.IndexByte(from, '>')]
 		}
 
-		//checking if its a sent or received mail
+		// checking if its a sent or received mail
 		if from == template.ID {
 			sentEmails++
 			// increment number of times user sent an email to a contact
@@ -112,6 +116,7 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 				contactMap[to] = &contactCounter{0, 0}
 			}
 			contactMap[to].sent++
+			// if it's not sent by user, it must be a received email
 		} else {
 			receivedEmails++
 			// count words in subject and add it to the map

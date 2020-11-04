@@ -108,9 +108,3 @@ func EncryptData(input string, key string) (output string) {
 
 	return cipherHex
 }
-
-/* Encrypt/Decrypt functions */
-
-/* Token hooks */
-
-/* Token hooks */

@@ -5,11 +5,11 @@ import (
 )
 
 var (
-	//Notif formatted string
+	// Notif formatted string
 	Notif = fmt.Sprintf(teal, fmt.Sprint("Notif :"))
-	//Warn formatted string
+	// Warn formatted string
 	Warn = fmt.Sprintf(yellow, fmt.Sprint("Warn  :"))
-	//Error formatted strin
+	// Error formatted strin
 	Error = fmt.Sprintf(red, fmt.Sprint("Error :"))
 )
 

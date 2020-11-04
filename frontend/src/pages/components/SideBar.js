@@ -4,11 +4,11 @@ import moment from "moment";
 
 const Heading = ({ date, changeMonth, resetDate }) => (
   <nav className="calendar--nav">
-    <a href="/#" onClick={() => changeMonth(date.month() - 1)}>&#8249;</a>
+    <a href="#/" onClick={() => changeMonth(date.month() - 1)}>&#8249;</a>
     <h1 onClick={() => resetDate()}>
       {date.format("MMMM")} <small>{date.format("YYYY")}</small>
     </h1>
-    <a href="/#" onClick={() => changeMonth(date.month() + 1)}>&#8250;</a>
+    <a href="#/" onClick={() => changeMonth(date.month() + 1)}>&#8250;</a>
   </nav>
 );
 

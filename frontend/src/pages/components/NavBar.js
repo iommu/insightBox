@@ -16,7 +16,7 @@ export default (props) => (
                 py={2}
                 alignItems="center"
                 sx={{
-                    backgroundColor: "background",
+                    backgroundColor: "secondary",
                     color: "text",
                     position: "static",
                     borderBottom: "3px solid",

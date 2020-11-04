@@ -8,6 +8,11 @@ export default (props) => {
   return (
     <button
       id="themeButton"
+      sx={{backgroundColor: 'text',
+    color: 'background',
+  borderRadius: '3px',
+border: '0px',
+height:'34px'}}
       onClick={(e) => {
         const index = modes.indexOf(mode);
         let next = modes[(index + 1) % modes.length];

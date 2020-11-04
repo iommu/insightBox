@@ -167,7 +167,6 @@ class SideBar extends React.Component {
       width: "300px",
       height: "450px",
       position: "fixed",
-      backgroundColor: "#f8f7fa",
     };
     return (
       <div style={sBStyle}>

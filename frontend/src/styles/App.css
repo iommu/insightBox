@@ -601,34 +601,6 @@ a:active {
 }
 
 .notifications .icon .count {
-<<<<<<< HEAD
-    height: 20px !important;
-    width: 20px !important;
-    max-width: 20px !important;
-    min-height: 20px !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: -2px;
-    right: 0;
-    font-size: 12px !important;
-    border-radius: 50%;
-    background-color: #ea0000 !important;
-    font-weight: 400;
-    color: white;
-}
-
-.react-terminal-wrapper {
-    font-size: 10.5px !important;
-    width: 900px !important;
-    height: 600px !important;
-    padding-left: 18px !important;
-    padding-right: 20px !important;
-    margin: 0px !important;
-    left: 140px !important;
-    text-align: left !important;
-=======
   height: 20px !important;
   width: 20px !important;
   max-width: 20px !important;
@@ -654,7 +626,6 @@ a:active {
   padding-right: 20px !important;
   margin: 0px !important;
   text-align: left !important;
->>>>>>> dc58558549b2631040f1321acc50e2d7364c3891
 }
 
 .react-terminal-wrapper:before {

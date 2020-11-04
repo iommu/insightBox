@@ -78,7 +78,7 @@ class Dashboard extends React.Component {
                             eDate={this.state.endDate.toISOString()}
                         />
                     </div>
-                    <div className="stat-container-large">
+                    <div className="stat-container">
                         <GraphTest3
                             sDate={this.state.startDate.toISOString()}
                             eDate={this.state.endDate.toISOString()}

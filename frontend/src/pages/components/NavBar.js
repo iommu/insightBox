@@ -16,7 +16,7 @@ export default (props) => (
                 py={2}
                 alignItems="center"
                 sx={{
-                    backgroundColor: "background",
+                    backgroundColor: "secondary",
                     color: "text",
                     position: "static",
                     borderBottom: "3px solid",
@@ -49,7 +49,7 @@ export default (props) => (
                             </Link>
                             &nbsp;&nbsp;|&nbsp;&nbsp;
                             <Link to="/about" sx={{ color: "text" }}>
-                                Security
+                                About
                             </Link>
                             &nbsp;&nbsp;|&nbsp;&nbsp;
                             <Link to="/privacypolicy" sx={{ color: "text" }}>

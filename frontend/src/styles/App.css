@@ -620,10 +620,10 @@ a:active {
 
 .react-terminal-wrapper{
   font-size: 10px !important;
-  width: 840px !important;
+  width: 820px !important;
   height: 600px !important;
   padding-left: 15px !important;
-  padding-right: 20px !important;
+  padding-right: 5px !important;
   margin: 0px !important;
   text-align: left !important;
 }

@@ -93,22 +93,10 @@ a:active {
 
 .homepage-content {
   position: absolute;
-  margin-left: 30%;
-  width: 40%;
-  text-align: left;
-  color: #3a3a3a;
-}
-
-.aboutpage-content {
-  position: absolute;
   margin-left: 25%;
   width: 50%;
   text-align: left;
-  color: #3a3a3a;
-}
-
-.pptos {
-  color: #656565;
+  color: text;
 }
 
 #home-icon {

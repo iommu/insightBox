@@ -1,14 +1,26 @@
-import React from "react";
+/** @jsx jsx */
+import { jsx } from "theme-ui";
 import "../../styles/GoogleBtn.css";
 import AuthButton from "./Oauth";
 
-export default () => (
+export const GoogleBtn = () => (
   <AuthButton>
     <div id="gSignInWrapper">
-      <span className="label">Sign up with : </span>
+      <span className="label" sx={{color: 'text'}}>Sign up with : </span>
       <button id="customBtn" className="customGPlusSignIn">
         <span className="icon"></span>
         <span className="buttonText">Google</span>
+      </button>
+    </div>
+  </AuthButton>
+);
+
+export const GoogleBtnAlt = () => (
+  <AuthButton>
+    <div id="gSignInWrapper">
+      <button id="customBtnAlt" className="customGPlusSignIn">
+        <span className="iconAlt"></span>
+        <span className="buttonTextAlt">Sign in with Google</span>
       </button>
     </div>
   </AuthButton>

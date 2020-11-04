@@ -150,6 +150,10 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	// find user and create if can't
 	var tempUser model.User
 	err = db.Model(&tempUser).Where("id = ?", user.ID).First(&tempUser).Error
+
+	// pass forward old SecretKey
+	user.SecretKey = tempUser.SecretKey
+
 	if errors.Is(err, gorm.ErrRecordNotFound) { // if no current user with PK
 		log.Printf("%s User with email addr %s not found, creating", consts.Notif, user.ID)
 		// set user default variables for user
@@ -164,6 +168,7 @@ func SignIn(authCode string, db *gorm.DB) (string /*Email*/, error) {
 	} else if err != nil {
 		log.Fatalf("%s GORM error connecting to db : %v", consts.Error, err)
 	}
+
 	// Save(Create/Update) user to db
 	err = db.Save(&user).Error
 	if err != nil {

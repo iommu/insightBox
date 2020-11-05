@@ -44,7 +44,7 @@ const Settings = (props) => {
             />
             <br />
             <button disabled={result.fetching} onClick={deleteAccount}>
-                deleteAccount
+                Delete account
             </button>
             <p id="errorText"></p>
         </div>

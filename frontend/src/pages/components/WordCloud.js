@@ -92,6 +92,7 @@ export const WordCloud = (dates) => {
     });
 
     return (
+        <div className="wordcloud-style">
         <ReactWordcloud
             callbacks={callbacks}
             options={options}
@@ -99,5 +100,6 @@ export const WordCloud = (dates) => {
             size={size}
             words={words}
         />
+        </div>
     );
 };

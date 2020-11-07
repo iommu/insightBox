@@ -2,11 +2,11 @@
 An email analytics application that connects to a user's Gmail account and processes data based on their inbox.
 
 ## Language breakdown
-Webserver : NGINX (+ Let's Encrypt for HTTPS)
-Frontend : React
-API      : GraphQL
-Server   : Go
-Database : MySQL (MariaDB)
+Webserver : NGINX (+ Let's Encrypt for HTTPS)  
+Frontend : React  
+API      : GraphQL  
+Server   : Go  
+Database : MySQL (MariaDB)  
 
 ## Folder structure
 ├── frontend 

@@ -137,12 +137,19 @@ class Dashboard extends React.Component {
                         >
                             <WordCloud />
                         </div>
-                        {/* <div key="GraphTest2" data-grid={{x: 1, y: 0, w: 2, h: 4}}>
-                            <GraphTest2 />
+                        
+                        <div key="GraphTest2" data-grid={{x: 1, y: 0, w: 2, h: 4}}>
+                            <GraphTest2 
+                                sDate={this.state.startDate.toISOString()}
+                                eDate={this.state.endDate.toISOString()}
+                            />
                         </div>
                         <div key="GraphTest3" data-grid={{x: 1, y: 0, w: 2, h: 2}}>
-                            <GraphTest3 />
-                        </div> */}
+                            <GraphTest3 
+                                sDate={this.state.startDate.toISOString()}
+                                eDate={this.state.endDate.toISOString()}
+                            />
+                        </div>
                         <div
                             key="Graph9"
                             data-grid={{ x: 8, y: 4, w: 2, h: 2 }}

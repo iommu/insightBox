@@ -1,7 +1,14 @@
 /** @jsx jsx */
 import { jsx, useColorMode } from "theme-ui";
 
+
 const modes = ["default", "dark"];
+var index;
+var next;
+
+function updateColor(mode) {
+    index = modes.indexOf(mode);
+}
 
 export default (props) => {
     const [mode, setMode] = useColorMode();
@@ -16,7 +23,7 @@ export default (props) => {
                 height: "34px",
             }}
             onClick={(e) => {
-                const index = modes.indexOf(mode);
+                updateColor(mode);
                 let next = modes[(index + 1) % modes.length];
                 setMode(next);
             }}

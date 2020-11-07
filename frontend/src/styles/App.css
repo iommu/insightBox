@@ -99,6 +99,53 @@ a:active {
     color: text;
 }
 
+#settings-page {
+    background-color: #fff;
+    position: fixed;
+    width: 60%;
+    height: 60%;
+    border: 1px solid #eee;
+    top: 25%;
+    left: 20%;
+}
+
+#settings-page p:not(:first-child) {
+    color:#333;
+}
+
+#settings-page > div {
+    border: 1px solid #333;
+    margin: 2% 20%;
+    padding: 1%;
+    color:#333;
+}
+
+#settings-title {
+    position: absolute;
+    top: -90px;
+    font-size: 2.5em;
+}
+
+#theme-picker {
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #333;
+    max-width: 600px;
+    display: flex;
+    flex-direction: row;
+}
+
+#theme-picker div {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 20px;
+    font-size: 1.3em;
+    flex: 1;
+    height: 199px;
+}
+
 #home-icon {
     display: inline-block;
     position: fixed;
@@ -694,8 +741,7 @@ span {
     margin: auto;
 }
 
-
-.wordcloud-style svg{
+.wordcloud-style svg {
     position: relative;
     top: -50px;
 }

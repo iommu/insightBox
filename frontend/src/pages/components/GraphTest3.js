@@ -13,6 +13,8 @@ function splitToChunks(a, size) {
 
 export const GraphTest3 = (dates) => {
     var start = moment(dates.sDate).subtract(1, "day").toISOString(); //subtract one day to match the sidebar
+    console.log(start)
+    console.log(dates.eDate)
     const [result] = useQuery({
         query:
             `
@@ -67,7 +69,7 @@ export const GraphTest3 = (dates) => {
                     <div>
                         Week
                         <BarChart
-                            width={800}
+                            width={600}
                             height={150}
                             data={arr}
                             margin={{ top: 5, right: 20, left: -20, bottom: 5 }}

@@ -70,7 +70,7 @@ export const GraphTest2 = (dates) => {
     //console.log(Dashboard.state.startDate.toISOString())
 
     // do computation here
-    console.log(result);
+    //console.log(result);
     var graphdata = [];
     var rlen = result.data.data.length;
     var days = [
@@ -88,7 +88,7 @@ export const GraphTest2 = (dates) => {
         var day = date.getDay(date);
         var received = result.data.data[i].received;
         var value = { name: days[day], value: received };
-        console.log(value.name);
+        //console.log(value.name);
         if (graphdata.length === 0) {
             graphdata.push(value);
         }
@@ -104,7 +104,7 @@ export const GraphTest2 = (dates) => {
         }
     }
 
-    console.log(graphdata);
+    //console.log(graphdata);
     return (
         <div>
             <div className="graph-title">

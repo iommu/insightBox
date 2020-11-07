@@ -693,3 +693,9 @@ span {
     width: 200px;
     margin: auto;
 }
+
+
+.wordcloud-style svg{
+    position: relative;
+    top: -50px;
+}

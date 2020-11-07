@@ -22,11 +22,11 @@ const options = {
     // currently using the colours on the top line
     colors: ["#40A1F1", "#65AD50", "#FFD151", "#F13333"],
     fontFamily: "arial",
-    fontSizes: [10, 40],
+    fontSizes: [30, 80],
     rotations: 1,
     rotationAngles: [0],
 };
-const size = [100, 100];
+const size = [600, 500];
 
 export const WordCloud = (dates) => {
     // define query to use

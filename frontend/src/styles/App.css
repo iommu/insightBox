@@ -270,9 +270,6 @@ a:active {
     width: auto;
     text-align: center;
     height: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
     font-size: 14px;
     margin-top: 25px;
 }

@@ -35,7 +35,7 @@ func cleanString(str string) string {
 		log.Fatalf("%s Error parsing regex for removing symbols : %v", consts.Error, err)
 	}
 	// replace all the symbols with nothing
-	cleanString = re.ReplaceAllString(cleanString, "")
+	cleanString = re.ReplaceAllString(cleanString, " ")
 
 	return cleanString
 }

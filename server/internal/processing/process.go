@@ -190,7 +190,7 @@ func processDataArray(template model.Day, dataArray []*gmail.Message, db *gorm.D
 	//save all contact counts from map to db
 	templateContact := model.Email{ID: template.ID, Date: template.Date}
 	for contact, counter := range contactMap {
-		templateContact.PoiEmail = contact
+		templateContact.PoiEmail = model.EncryptData(contact, key)
 		templateContact.Sent = counter.sent
 		templateContact.Received = counter.received
 		db.Create(&templateContact)

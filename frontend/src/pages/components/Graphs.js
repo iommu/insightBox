@@ -21,6 +21,7 @@ import {
     PolarRadiusAxis,
     Tooltip,
 } from "recharts";
+import { DecryptData } from "../Cipher";
 
 // init date variables
 const now = new Date();
@@ -679,7 +680,7 @@ export const Graph9 = () => {
     var emailList = [];
     for (let i = 0; i < result.data.data.length; i++) {
         for (let j = 0; j < result.data.data[i].emails.length; j++) {
-            emailList.push(result.data.data[i].emails[j].poi_email);
+            emailList.push(DecryptData(result.data.data[i].emails[j].poi_email));
         }
     }
     //console.log(emailList);

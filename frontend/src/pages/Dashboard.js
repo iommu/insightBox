@@ -11,6 +11,7 @@ import {
     Graph8,
     Graph9,
 } from "./components/Graphs";
+
 import { WordCloud } from "./components/WordCloud";
 import SideBar from "./components/SideBar";
 import { GraphTest2 } from "./components/GraphTest2";
@@ -67,98 +68,40 @@ class Dashboard extends React.Component {
                         height: "auto",
                     }}
                 >
-                    <ResponsiveGridLayout
-                        className="layout"
-                        rowHeight={120}
-                        onBreakpointChange={this.onBreakpointChange}
-                        breakpoints={{
-                            lg: 1200,
-                            md: 960,
-                            sm: 720,
-                            xs: 480,
-                            xxs: 240,
-                        }}
-                        cols={{ lg: 10, md: 8, sm: 6, xs: 4, xxs: 2 }}
-                        measureBeforeMount={true}
-                        compactType={this.state.compactType}
-                        verticalCompact={true}
-                    >
-                        <div
-                            key="Graph1"
-                            data-grid={{ x: 0, y: 0, w: 2, h: 2 }}
-                        >
-                            <Graph1 />
-                        </div>
-                        <div
-                            key="Graph2"
-                            data-grid={{ x: 2, y: 0, w: 4, h: 2 }}
-                        >
-                            <Graph2 />
-                        </div>
-                        <div
-                            key="Graph3"
-                            data-grid={{ x: 6, y: 0, w: 2, h: 2 }}
-                        >
-                            <Graph3 />
-                        </div>
-                        <div
-                            key="Graph4"
-                            data-grid={{ x: 8, y: 0, w: 2, h: 2 }}
-                        >
-                            <Graph4 />
-                        </div>
-                        <div
-                            key="Graph5"
-                            data-grid={{ x: 4, y: 4, w: 4, h: 2 }}
-                        >
-                            <Graph5 />
-                        </div>
-                        <div
-                            key="Graph6"
-                            data-grid={{ x: 4, y: 2, w: 2, h: 2 }}
-                        >
-                            <Graph6 />
-                        </div>
-                        <div
-                            key="Graph7"
-                            data-grid={{ x: 6, y: 2, w: 2, h: 2 }}
-                        >
-                            <Graph7 />
-                        </div>
-                        <div
-                            key="Graph8"
-                            data-grid={{ x: 8, y: 2, w: 2, h: 2 }}
-                        >
-                            <Graph8 />
-                        </div>
-                        <div
-                            key="Wordcloud"
-                            data-grid={{ x: 0, y: 2, w: 4, h: 4 }}
-                        >
-                            <WordCloud />
-                        </div>
-                        
-                        <div key="GraphTest2" data-grid={{x: 1, y: 0, w: 2, h: 2}}>
-                            <GraphTest2 
-                                sDate={this.state.startDate.toISOString()}
-                                eDate={this.state.endDate.toISOString()}
-                            />
-                        </div>
-                        <div key="GraphTest3" data-grid={{x: 1, y: 0, w: 4, h: 2}}>
-                            <GraphTest3 
-                                sDate={this.state.startDate.toISOString()}
-                                eDate={this.state.endDate.toISOString()}
-                            />
-                        </div>
-                        <div
-                            key="Graph9"
-                            data-grid={{ x: 8, y: 4, w: 2, h: 2 }}
-                        >
-                            <Graph9 />
-                        </div>
-                    </ResponsiveGridLayout>
+                <div id="dash-graph1">
+                    <Graph1 />
+                </div>
+
+                <div id="dash-graph2">
+                    <Graph2 />
+                </div>
+
+                <div id="dash-graph3">
+                    <Graph9 />
+                </div>
+
+                <div id="dash-graph4">
+                    <Graph4 />
+                </div>
+
+                <div id="dash-graph5">
+                    <Graph5 />
+                </div>
+
+                <div id="dash-graph6">
+                    <Graph7 />
+                </div>
+                <div id="dash-graph8">
+                    <WordCloud />
+                </div>
+                <div id="dash-graph9">
+                    <Graph8 />
+                </div>
+                <div id="dash-graph10">
+                    <Graph3 />
                 </div>
             </div>
+        </div>
         );
     }
 }

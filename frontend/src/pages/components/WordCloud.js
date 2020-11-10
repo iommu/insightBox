@@ -22,13 +22,18 @@ const options = {
     // currently using the colours on the top line
     colors: ["#40A1F1", "#65AD50", "#FFD151", "#F13333"],
     fontFamily: "arial",
-    fontSizes: [30, 80],
+    fontSizes: [20, 70],
     rotations: 1,
     rotationAngles: [0],
 };
 const size = [500, 500];
 
+var eDates;
+
 export const WordCloud = (dates) => {
+
+    eDates = dates.eDate;
+
     // define query to use
     const [result] = useQuery({
         query:
@@ -96,7 +101,7 @@ export const WordCloud = (dates) => {
         <ReactWordcloud
             callbacks={callbacks}
             options={options}
-            maxWords={30}
+            maxWords={35}
             size={size}
             words={words}
         />

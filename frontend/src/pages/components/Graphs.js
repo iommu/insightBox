@@ -194,7 +194,7 @@ export const Graph2 = () => {
             <div className="graph-title">Emails Received per Day</div>
 
             <BarChart
-                width={400}
+                width={410}
                 height={165}
                 data={graphdata}
                 margin={{ top: 5, right: 20, left: -20, bottom: 5 }}
@@ -341,7 +341,7 @@ export const Graph4 = () => {
             </div>
 
             <RadialBarChart
-                width={190}
+                width={180}
                 height={150}
                 innerRadius={8}
                 outerRadius={80}
@@ -623,7 +623,7 @@ export const Graph8 = () => {
             <RadarChart
                 outerRadius={65}
                 width={280}
-                height={166}
+                height={140}
                 data={graphdata}
             >
                 <PolarGrid />
@@ -723,11 +723,12 @@ export const Graph9 = () => {
 
     return (
         <div id="graph3">
+            <br/>
             <div className="graph-title">Most Received (over 30 days)</div>
 
             <div className="graph-title2">Contact:</div>
-            <div className="numbers">{mostContact[0]}</div>
-
+            <div className="numbers2">{mostContact[0]}</div>
+            <br/>
             <div className="graph-title2">Received Emails</div>
             <div className="numbers">{mostContact[1]}</div>
         </div>

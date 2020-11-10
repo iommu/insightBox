@@ -9,7 +9,7 @@ import ProfileDropDown from "./ProfileDropDown";
 import { Insights } from "./Insights";
 
 export default (props) => (
-    <div id="topbar-container" style={{ height: "85px" }}>
+    <div id="topbar-container" style={{ height: "82px" }}>
         <div id="topbar-fixed">
             <Flex
                 px={2}

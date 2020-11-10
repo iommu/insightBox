@@ -18,6 +18,7 @@ import About from "./pages/About";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfUse from "./pages/TermsofUse";
 import Dashboard from "./pages/Dashboard";
+import DashboardDND from './pages/DashboardDND'
 import Settings from "./pages/Settings";
 import SignIn from "./pages/SignIn";
 
@@ -50,6 +51,9 @@ function App() {
                             </Route>
                             <Route path="/termsofuse">
                                 <TermsOfUse />
+                            </Route>
+                            <Route path="/dashboarddnd">
+                                <DashboardDND />
                             </Route>
                             <Route path="/dashboard">
                                 <Dashboard />

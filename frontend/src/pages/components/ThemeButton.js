@@ -4,7 +4,6 @@ import { jsx, useColorMode } from "theme-ui";
 
 const modes = ["default", "dark"];
 var index;
-var next;
 
 function updateColor(mode) {
     index = modes.indexOf(mode);

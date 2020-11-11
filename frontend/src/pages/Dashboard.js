@@ -6,7 +6,6 @@ import {
     Graph3,
     Graph4,
     Graph5,
-    Graph6,
     Graph7,
     Graph8,
     Graph9,
@@ -14,15 +13,9 @@ import {
 
 import { WordCloud } from "./components/WordCloud";
 import SideBar from "./components/SideBar";
-import { GraphTest2 } from "./components/GraphTest2";
-import { GraphTest3 } from "./components/GraphTest3";
 import moment from "moment";
 import { Cipher } from "./Cipher";
 // import react-grid-layout
-import { Responsive, WidthProvider } from "react-grid-layout";
-import "../styles/react-grid-layout/grid-styles.css";
-import "../styles/react-grid-layout/resizeble-styles.css";
-const ResponsiveGridLayout = WidthProvider(Responsive);
 
 class Dashboard extends React.Component {
     constructor(props) {

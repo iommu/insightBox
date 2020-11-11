@@ -3,7 +3,8 @@ import { useQuery } from "urql";
 import down from "../../images/down.png";
 
 function LogOutFunc(that) {
-    localStorage.clear();
+    localStorage.removeItem("token");
+    localStorage.removeItem("ss");
     that.props.history.push("/");
 }
 

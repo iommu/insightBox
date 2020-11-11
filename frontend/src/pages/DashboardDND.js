@@ -135,17 +135,26 @@ class Dashboard extends React.Component {
                             key="Wordcloud"
                             data-grid={{ x: 0, y: 2, w: 4, h: 4 }}
                         >
-                            <WordCloud />
-                        </div>
-                        
-                        <div key="GraphTest2" data-grid={{x: 1, y: 0, w: 2, h: 2}}>
-                            <GraphTest2 
+                            <WordCloud
                                 sDate={this.state.startDate.toISOString()}
                                 eDate={this.state.endDate.toISOString()}
                             />
                         </div>
-                        <div key="GraphTest3" data-grid={{x: 1, y: 0, w: 4, h: 2}}>
-                            <GraphTest3 
+
+                        <div
+                            key="GraphTest2"
+                            data-grid={{ x: 1, y: 0, w: 2, h: 2 }}
+                        >
+                            <GraphTest2
+                                sDate={this.state.startDate.toISOString()}
+                                eDate={this.state.endDate.toISOString()}
+                            />
+                        </div>
+                        <div
+                            key="GraphTest3"
+                            data-grid={{ x: 1, y: 0, w: 4, h: 2 }}
+                        >
+                            <GraphTest3
                                 sDate={this.state.startDate.toISOString()}
                                 eDate={this.state.endDate.toISOString()}
                             />

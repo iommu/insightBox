@@ -68,40 +68,43 @@ class Dashboard extends React.Component {
                         height: "auto",
                     }}
                 >
-                <div id="dash-graph1">
-                    <Graph1 />
-                </div>
+                    <div id="dash-graph1">
+                        <Graph1 />
+                    </div>
 
-                <div id="dash-graph2">
-                    <Graph2 />
-                </div>
+                    <div id="dash-graph2">
+                        <Graph2 />
+                    </div>
 
-                <div id="dash-graph3">
-                    <Graph9 />
-                </div>
+                    <div id="dash-graph3">
+                        <Graph9 />
+                    </div>
 
-                <div id="dash-graph4">
-                    <Graph4 />
-                </div>
+                    <div id="dash-graph4">
+                        <Graph4 />
+                    </div>
 
-                <div id="dash-graph5">
-                    <Graph5 />
-                </div>
+                    <div id="dash-graph5">
+                        <Graph5 />
+                    </div>
 
-                <div id="dash-graph6">
-                    <Graph7 />
-                </div>
-                <div id="dash-graph8">
-                    <WordCloud />
-                </div>
-                <div id="dash-graph9">
-                    <Graph8 />
-                </div>
-                <div id="dash-graph10">
-                    <Graph3 />
+                    <div id="dash-graph6">
+                        <Graph7 />
+                    </div>
+                    <div id="dash-graph8">
+                        <WordCloud
+                            sDate={this.state.startDate.toISOString()}
+                            eDate={this.state.endDate.toISOString()}
+                        />
+                    </div>
+                    <div id="dash-graph9">
+                        <Graph8 />
+                    </div>
+                    <div id="dash-graph10">
+                        <Graph3 />
+                    </div>
                 </div>
             </div>
-        </div>
         );
     }
 }

@@ -3,12 +3,6 @@ import { useQuery } from "urql";
 import ReactWordcloud from "react-wordcloud";
 import { DecryptData } from "../Cipher";
 
-var end = new Date().toISOString();
-var d = new Date();
-// for some reason you have to set the date back an extra day if you want 14 days returned from graphql
-d.setDate(d.getDate() - 8); // ie: minus 15 days from today's date
-var start = new Date(d).toISOString();
-
 const callbacks = {
     //don't think this is necessary after setting colours, left to easily roll back
     //getWordColor: word => word.value > 50 ? "black" : "black",
@@ -28,20 +22,24 @@ const options = {
 };
 const size = [500, 500];
 
-var eDates;
-
 export const WordCloud = (dates) => {
-
-    eDates = dates.eDate;
-
+    console.log(`query {
+        data(start:"` +
+          dates.sDate +
+          `", end:"` +
+          dates.eDate +
+          `") {
+              words{text, value},
+          }
+      }`);
     // define query to use
     const [result] = useQuery({
         query:
             `query {
           data(start:"` +
-            start +
+            dates.sDate +
             `", end:"` +
-            end +
+            dates.eDate +
             `") {
                 words{text, value},
             }

@@ -3,6 +3,8 @@ import { jsx, useColorMode } from "theme-ui";
 
 
 const modes = ["default", "dark"];
+const  text = ["light", "dark "];
+
 var index;
 
 function updateColor(mode) {
@@ -27,7 +29,7 @@ export default (props) => {
                 setMode(next);
             }}
         >
-            {modes[(modes.indexOf(mode) + 1) % modes.length]} theme
+            {text[(modes.indexOf(mode) + 1) % modes.length]} theme
         </button>
     );
 };

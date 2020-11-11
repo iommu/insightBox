@@ -36,7 +36,6 @@ var m57 = new Date();
 m57.setDate(m57.getDate() - 57);
 
 export const Graph1 = () => {
-    console.log("re-render");
     const COLORS = [
         "#40a1f1",
         "#65AD50",

@@ -35,7 +35,7 @@ export default (props) => (
                 </Link>
                 <Switch>
                     <Route path="/signin"></Route>
-                    <Route path={["/dashboard", "/settings"]}>
+                    <Route path={["/dashboard", "/dashboarddnd", "/settings"]}>
                         <div sx={{ margin: "0 auto" }} />
                         <ThemeButton />
                         <Insights />

@@ -16,7 +16,7 @@ const Heading = ({ date, changeMonth, resetDate }) => (
     </nav>
 );
 
-const Day = ({ currentDate, date, startDate, endDate, onClick }) => {
+const Day = ({ currentdate, date, startDate, endDate, onClick }) => {
     let className = [];
 
     if (moment().isSame(date, "day")) {
@@ -35,14 +35,14 @@ const Day = ({ currentDate, date, startDate, endDate, onClick }) => {
         className.push("end");
     }
 
-    if (!date.isSame(currentDate, "month")) {
+    if (!date.isSame(currentdate, "month")) {
         className.push("muted");
     }
 
     return (
         <span
             onClick={() => onClick(date)}
-            currentDate={date}
+            currentdate={date}
             className={className.join(" ")}
         >
             {date.date()}
@@ -62,7 +62,7 @@ const Days = ({ date, startDate, endDate, onClick }) => {
 
     for (let i = 1; i <= 7; i++) {
         labels.push(
-            <span className="label">{moment().day(i).format("ddd")}</span>
+            <span className="label" key={i}>{moment().day(i).format("ddd")}</span>
         );
     }
 
@@ -73,7 +73,7 @@ const Days = ({ date, startDate, endDate, onClick }) => {
             <Day
                 key={moment(previousMonth).format("DD MM YYYY")}
                 onClick={(date) => onClick(date)}
-                currentDate={date}
+                currentdate={date}
                 date={moment(previousMonth)}
                 startDate={startDate}
                 endDate={endDate}
@@ -88,7 +88,7 @@ const Days = ({ date, startDate, endDate, onClick }) => {
             <Day
                 key={moment(thisDate).format("DD MM YYYY")}
                 onClick={(date) => onClick(date)}
-                currentDate={date}
+                currentdate={date}
                 date={moment(thisDate)}
                 startDate={startDate}
                 endDate={endDate}
@@ -103,7 +103,7 @@ const Days = ({ date, startDate, endDate, onClick }) => {
             <Day
                 key={moment(nextsMonth).format("DD MM YYYY")}
                 onClick={(date) => onClick(date)}
-                currentDate={date}
+                currentdate={date}
                 date={moment(nextsMonth)}
                 startDate={startDate}
                 endDate={endDate}

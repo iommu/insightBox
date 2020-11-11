@@ -26,7 +26,7 @@ const Settings = (props) => {
                     } else {
                         console.log("account deletion failed! :(");
                         document.getElementById("errorText").innerHTML =
-                            "Error deleting account, check that the typed email is the email address of this account";
+                            "Error deleting account, the typed email must be the email address of this account";
                     }
                 }
             });
@@ -42,7 +42,7 @@ const Settings = (props) => {
                     <p style={{ textAlign: "left", marginTop: "-1%" }}>
                         <b>Delete account</b>
                     </p>
-                    <label for="fname">
+                    <label>
                         Please confirm your email address:
                     </label>
                     <br />

@@ -3,7 +3,7 @@ import "../styles/App.css";
 
 export default () => (
     <div>
-        <div class="homepage-content-pptos">
+        <div className="homepage-content-pptos">
             <h1>Privacy Policy</h1>
             <p>Last modified: 6 September 2020</p>
             <p>
@@ -24,14 +24,14 @@ export default () => (
             </p>
             <p>
                 When processing and displaying insights and analytics on a
-                user's Gmail inbox, we retrieve email metadata such as:
-                <ul>
-                    <li>Subject Title</li>
-                    <li>Time sent/received</li>
-                    <li>Recipient information</li>
-                    <li>Sender information</li>
-                </ul>
+                user's Gmail inbox, we retrieve email metadata such as:{" "}
             </p>
+            <ul>
+                <li>Subject Title</li>
+                <li>Time sent/received</li>
+                <li>Recipient information</li>
+                <li>Sender information</li>
+            </ul>
             <h2>How we collect this data</h2>
             <p>
                 When a user signs up with their Google account, we use Google's

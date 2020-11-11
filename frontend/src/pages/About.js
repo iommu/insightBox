@@ -4,8 +4,8 @@ import { TerminalController } from "./components/Terminal";
 
 export default () => {
     return (
-        <div class="homepage-content-about">
-            <div class="homepage-content-about-text">
+        <div className="homepage-content-about">
+            <div className="homepage-content-about-text">
                 <br />
                 <br />
                 <h1>About</h1>
@@ -23,16 +23,16 @@ export default () => {
                 <br />
                 <p>
                     Email metadata is downloaded and processed by the server to
-                    generate analytics. Metadata includes:
-                    <div id="ul-about">
-                        <ul>
-                            <li>Subject title</li>
-                            <li>Date/time</li>
-                            <li>Sender information</li>
-                            <li>Recipient information</li>
-                        </ul>
-                    </div>
+                    generate analytics. Metadata includes:{" "}
                 </p>
+                <div id="ul-about">
+                    <ul>
+                        <li>Subject title</li>
+                        <li>Date/time</li>
+                        <li>Sender information</li>
+                        <li>Recipient information</li>
+                    </ul>
+                </div>
                 <br />
                 <h2>End-to-End Post-Quantum Security</h2>
                 <p>

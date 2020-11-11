@@ -6,8 +6,6 @@ import { DecryptData } from "../Cipher";
 const callbacks = {
     //don't think this is necessary after setting colours, left to easily roll back
     //getWordColor: word => word.value > 50 ? "black" : "black",
-    onWordClick: console.log,
-    onWordMouseOver: console.log,
     getWordTooltip: (word) => `${word.text} (${word.value})`,
 };
 const options = {
@@ -23,15 +21,6 @@ const options = {
 const size = [500, 500];
 
 export const WordCloud = (dates) => {
-    console.log(`query {
-        data(start:"` +
-          dates.sDate +
-          `", end:"` +
-          dates.eDate +
-          `") {
-              words{text, value},
-          }
-      }`);
     // define query to use
     const [result] = useQuery({
         query:

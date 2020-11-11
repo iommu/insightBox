@@ -13,8 +13,6 @@ function splitToChunks(a, size) {
 
 export const GraphTest3 = (dates) => {
     var start = moment(dates.sDate).subtract(1, "day").toISOString(); //subtract one day to match the sidebar
-    console.log(start)
-    console.log(dates.eDate)
     const [result] = useQuery({
         query:
             `
@@ -42,7 +40,6 @@ export const GraphTest3 = (dates) => {
     var graphdata = [];
     var rlen = result.data.data.length;
     var days = ["S", "M", "T", "W", "T", "F", "S"];
-    console.log(result);
     // order doesnt matter here
     for (var i = 0; i < rlen; i++) {
         var date = new Date(result.data.data[i].date);
@@ -58,7 +55,7 @@ export const GraphTest3 = (dates) => {
         graphdata.push(value);
     }
     const splitArray = splitToChunks(graphdata, 7);
-    console.log(splitArray);
+
     return (
         <div>
             <div className="graph-title">

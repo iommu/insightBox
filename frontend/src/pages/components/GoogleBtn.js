@@ -9,10 +9,10 @@ export const GoogleBtn = () => (
             <span className="label" sx={{ color: "text" }}>
                 Sign up with :{" "}
             </span>
-            <button id="customBtn" className="customGPlusSignIn">
+            <div id="customBtn" className="customGPlusSignIn">
                 <span className="icon"></span>
                 <span className="buttonText">Google</span>
-            </button>
+            </div>
         </div>
     </AuthButton>
 );
@@ -20,10 +20,10 @@ export const GoogleBtn = () => (
 export const GoogleBtnAlt = () => (
     <AuthButton>
         <div id="gSignInWrapper">
-            <button id="customBtnAlt" className="customGPlusSignIn">
+            <div id="customBtnAlt" className="customGPlusSignIn">
                 <span className="iconAlt"></span>
                 <span className="buttonTextAlt">Sign in with Google</span>
-            </button>
+            </div>
         </div>
     </AuthButton>
 );

@@ -3,7 +3,7 @@ import "../styles/App.css";
 
 export default () => (
     <div>
-        <div class="homepage-content-pptos">
+        <div className="homepage-content-pptos">
             <h1>Terms of Use</h1>
             <p>Last modified: 6 September 2020</p>
             <p>

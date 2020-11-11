@@ -53,7 +53,6 @@ export const Graph10 = () => {
     if (error) {
         return <p> Error getting user data </p>;
     }
-    console.log(result);
 
     var hoursData = [];
     var hours = [
@@ -82,17 +81,6 @@ export const Graph10 = () => {
         "10pm",
         "11pm",
     ];
-
-    var test = [];
-    for (var i = 0; i < result.data.data.length; i++) {
-        console.log(result.data.data[i]);
-
-        //console.log(result.data.data[i].join());
-        for (var j = 0; j < 24; j++) {
-            //var r = "received_".concat(j.toString())
-            //console.log(result.data.data[i].received_j);
-        }
-    }
 
     // do computation here
     var graphdata = [];

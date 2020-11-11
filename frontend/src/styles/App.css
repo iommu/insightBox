@@ -817,7 +817,7 @@ span {
     height: 120px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
-    margin-left: 34px;
+    margin-left: 50px;
     margin-top: 100px;
 }
 

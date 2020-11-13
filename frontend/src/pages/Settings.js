@@ -19,7 +19,7 @@ const Settings = (props) => {
             executeMutation({ email }).then((result) => {
                 if (result.data) {
                     if (result.data.deleteAccount === 0) {
-                        console.log("account deletion sucessful! :(");
+                        console.log("Good luck without us loser");
                         localStorage.removeItem("token");
                         localStorage.removeItem("old_code");
                         props.history.push("/");

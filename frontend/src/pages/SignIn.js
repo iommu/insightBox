@@ -2,6 +2,9 @@ import React from "react";
 import "../styles/App.css";
 import {K768_Encrypt} from 'crystals-kyber';
 
+// import graphql and create client
+import { createClient } from "urql";
+
 const publicKey = [156, 160, 171, 15, 57, 196, 212, 88, 12, 201, 156, 69, 122, 58, 153, 61, 106, 154, 219, 51, 150, 178, 6, 37, 97, 133, 62, 29,
     232, 23, 56, 132, 93, 197, 20, 123, 188, 217, 13, 53, 103, 150, 99, 120, 14, 238, 65, 52, 69, 85, 38, 221, 165, 19, 217, 181, 207,
     62, 9, 183, 53, 53, 129, 165, 229, 68, 213, 108, 8, 200, 150, 0, 118, 198, 96, 112, 123, 5, 37, 85, 56, 94, 226, 128, 17, 18, 50,
@@ -44,8 +47,7 @@ const publicKey = [156, 160, 171, 15, 57, 196, 212, 88, 12, 201, 156, 69, 122, 5
     183, 90, 187, 59, 153, 106, 85, 157, 222, 147, 84, 175, 201, 24, 175, 50, 39, 20, 166, 155, 58, 191, 89, 175, 80, 67, 16, 221, 51, 210,
     123, 126, 199, 122, 47, 145, 64, 58, 25, 89, 176, 153, 170, 195, 210, 118, 29, 70, 75];
 
-// import graphql and create client
-import { createClient } from "urql";
+
 
 // create custom client for this page where no token should exist
 const client = createClient({

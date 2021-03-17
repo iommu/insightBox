@@ -32,5 +32,3 @@ or build
 ```
 go build server.go
 ```
-
-Online at http://insightbox.xyz

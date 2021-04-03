@@ -6,14 +6,18 @@ import {
     LineChart,
     Line,
     Legend,
-    RadialBarChart,
-    RadialBar,
     BarChart,
     Bar,
     XAxis,
     YAxis,
     Tooltip,
     CartesianGrid,
+    Radar,
+    RadarChart,
+    PolarGrid,
+    PolarAngleAxis,
+    PolarRadiusAxis,
+
 } from "recharts";
 
 export const Graph1Home = () => {
@@ -145,40 +149,37 @@ export const Graph3Home = () => {
 
 export const Graph4Home = () => {
     const graphdata = [
-        { name: "Monday", Received: 23, fill: "#3461d1" },
-        { name: "Tuesday", Received: 26, fill: "#9636ff" },
-        { name: "Wednesday", Received: 24, fill: "#f13333" },
-        { name: "Thursday", Received: 47, fill: "#FF8042" },
-        { name: "Friday", Received: 33, fill: "#FFD151" },
-        { name: "Sunday", Received: 11, fill: "#65AD50" },
-        { name: "Sunday", Received: 10, fill: "#40a1f1" },
+        { "name": "Sunday", "values": 10},
+        { "name": "Monday", "values": 23},
+        { "name": "Tuesday", "values": 26},
+        { "name": "Wednesday", "values": 24},
+        { "name": "Thursday", "values": 47},
+        { "name": "Friday", "values": 33},
+        { "name": "Saturday", "values": 11},
+        
     ];
 
     return (
         <div>
-            <div className="graph-title">
-                Emails Recieved
-                <br />
-                per Week Day
-            </div>
-
-            <RadialBarChart
-                width={190}
-                height={150}
-                innerRadius={8}
-                outerRadius={80}
-                barSize={7}
+            <div className="graph-title">Received per Week Day</div>
+            <RadarChart
+                outerRadius={65}
+                width={270}
+                height={140}
                 data={graphdata}
             >
-                <RadialBar
-                    minAngle={15}
-                    label={{ position: "insideStart", fill: "#fff" }}
-                    background
-                    clockWise
-                    dataKey="Received"
+                <PolarGrid />
+                <PolarAngleAxis dataKey="name" tick={{ fontSize: 12 }} />
+                <PolarRadiusAxis />
+                <Radar
+                    name="Received"
+                    dataKey="values"
+                    stroke="#FF8042"
+                    fill="#FF8042"
+                    fillOpacity={0.6}
                 />
                 <Tooltip />
-            </RadialBarChart>
+            </RadarChart>
         </div>
     );
 };
@@ -254,8 +255,8 @@ export const Graph6Home = () => {
         <div>
             <div className="graph-title">Weekly Trend (Received)</div>
             <LineChart
-                width={280}
-                height={160}
+                width={260}
+                height={155}
                 data={graphdata1}
                 margin={{
                     top: 20,

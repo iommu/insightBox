@@ -502,7 +502,7 @@ a:active {
     border: 1px solid #afafaf;
     background-color: white;
     height: 225px;
-    padding: 10px 12px;
+    padding: 16px 4px;
     margin: 16px 16px;
     overflow-y: hidden;
     overflow-x: hidden;
@@ -528,13 +528,13 @@ a:active {
     border: 1px solid #afafaf;
     background-color: white;
     height: 225px;
-    padding: 10px 12px;
+    padding: 14px 10px;
     margin: 16px 16px;
     overflow-y: hidden;
     overflow-x: hidden;
     position: absolute;
     bottom: 247px;
-    right: 235px;
+    right: 300px;
 }
 
 
@@ -695,7 +695,7 @@ a:active {
     }
 }
 
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1082px) {
     #home-graph4 {
         display: none;
     }

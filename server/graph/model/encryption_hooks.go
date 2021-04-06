@@ -5,7 +5,6 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/hex"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"log"

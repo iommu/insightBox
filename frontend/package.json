@@ -9,7 +9,7 @@
     "crypto-js": "^4.0.0",
     "crystals-kyber": "^3.2.1",
     "graphql": "^15.4.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "node-sass": "^4.14.1",
     "pkcs7-padding": "^0.1.1",
     "react": "^16.14.0",
